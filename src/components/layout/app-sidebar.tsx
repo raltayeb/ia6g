@@ -38,7 +38,7 @@ const operationsNav = [
   { title: "إدارة العقارات", icon: Building2, url: "/properties" },
   { title: "إدارة المركبات", icon: Car, url: "/vehicles" },
   { title: "الموارد البشرية", icon: Users, url: "/employees" },
-  { title: "السكن", icon: Home, url: "/accommodations" },
+  { title: "إدارة السكن", icon: Home, url: "/accommodations" },
 ];
 
 const financeNav = [
