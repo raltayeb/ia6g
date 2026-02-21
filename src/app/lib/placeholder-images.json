@@ -1,0 +1,29 @@
+
+{
+  "placeholderImages": [
+    {
+      "id": "property-1",
+      "description": "Luxury apartment building",
+      "imageUrl": "https://picsum.photos/seed/prop1/800/600",
+      "imageHint": "apartment building"
+    },
+    {
+      "id": "vehicle-1",
+      "description": "Company fleet truck",
+      "imageUrl": "https://picsum.photos/seed/veh1/800/600",
+      "imageHint": "delivery truck"
+    },
+    {
+      "id": "employee-1",
+      "description": "Professional employee portrait",
+      "imageUrl": "https://picsum.photos/seed/emp1/400/400",
+      "imageHint": "professional person"
+    },
+    {
+      "id": "accommodation-1",
+      "description": "Employee housing complex",
+      "imageUrl": "https://picsum.photos/seed/acc1/800/600",
+      "imageHint": "residential housing"
+    }
+  ]
+}
