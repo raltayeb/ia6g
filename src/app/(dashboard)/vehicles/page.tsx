@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Car, Plus, Search, MoreVertical, Fuel, Wrench, User, Edit, Trash2, Eye, History } from "lucide-react";
@@ -48,62 +49,64 @@ export default function VehiclesPage() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset className="bg-muted/30">
-        <header className="flex h-16 shrink-0 items-center justify-between gap-2 px-6 border-b bg-background sticky top-0 z-30">
+      <SidebarInset className="bg-[#F2F2F7]">
+        <header className="flex h-16 shrink-0 items-center justify-between gap-2 px-6 border-b bg-white/60 backdrop-blur-xl sticky top-0 z-30">
           <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1" />
-            <h1 className="font-headline text-lg font-bold">إدارة الأسطول</h1>
+            <h1 className="font-headline text-xl font-bold text-primary">إدارة الأسطول</h1>
           </div>
-          <Button size="sm" className="gap-2" onClick={() => handleAction("تسجيل", "جديدة")}>
+          <Button className="gap-2 rounded-xl shadow-lg shadow-primary/20" onClick={() => handleAction("تسجيل", "جديدة")}>
             <Plus className="h-4 w-4" />
             تسجيل مركبة
           </Button>
         </header>
+        
         <div className="flex flex-1 flex-col gap-6 p-6">
+          {/* MD3 Stats Cards */}
           <div className="grid gap-4 md:grid-cols-4">
-            <Card>
-              <CardContent className="p-4 flex items-center justify-between">
-                <div className="p-2 bg-primary/10 rounded-md">
-                  <Car className="h-4 w-4 text-primary" />
+            <Card className="border-none shadow-sm rounded-3xl bg-white/80">
+              <CardContent className="p-5 flex items-center justify-between">
+                <div className="p-3 bg-primary/10 rounded-2xl">
+                  <Car className="h-5 w-5 text-primary" />
                 </div>
                 <div className="text-right">
-                  <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">إجمالي الوحدات</p>
-                  <p className="text-xl font-bold">{toArabicDigits(58)}</p>
+                  <p className="text-[10px] text-muted-foreground uppercase font-black tracking-widest mb-1">إجمالي الوحدات</p>
+                  <p className="text-2xl font-black">{toArabicDigits(58)}</p>
                 </div>
               </CardContent>
             </Card>
-            <Card>
-              <CardContent className="p-4 flex items-center justify-between">
-                <div className="p-2 bg-blue-500/10 rounded-md">
-                  <User className="h-4 w-4 text-blue-500" />
+            <Card className="border-none shadow-sm rounded-3xl bg-white/80">
+              <CardContent className="p-5 flex items-center justify-between">
+                <div className="p-3 bg-blue-50 rounded-2xl">
+                  <User className="h-5 w-5 text-blue-600" />
                 </div>
                 <div className="text-right">
-                  <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">السائقين النشطين</p>
-                  <p className="text-xl font-bold">{toArabicDigits(42)}</p>
+                  <p className="text-[10px] text-muted-foreground uppercase font-black tracking-widest mb-1">السائقين النشطين</p>
+                  <p className="text-2xl font-black">{toArabicDigits(42)}</p>
                 </div>
               </CardContent>
             </Card>
-            <Card>
-              <CardContent className="p-4 flex items-center justify-between">
-                <div className="p-2 bg-amber-500/10 rounded-md">
-                  <Wrench className="h-4 w-4 text-amber-500" />
+            <Card className="border-none shadow-sm rounded-3xl bg-white/80">
+              <CardContent className="p-5 flex items-center justify-between">
+                <div className="p-3 bg-rose-50 rounded-2xl">
+                  <Wrench className="h-5 w-5 text-rose-600" />
                 </div>
                 <div className="text-right">
-                  <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">في الصيانة</p>
-                  <p className="text-xl font-bold">{toArabicDigits(6)}</p>
+                  <p className="text-[10px] text-muted-foreground uppercase font-black tracking-widest mb-1">في الصيانة</p>
+                  <p className="text-2xl font-black text-rose-600">{toArabicDigits(6)}</p>
                 </div>
               </CardContent>
             </Card>
-            <Card>
-              <CardContent className="p-4 flex items-center justify-between">
-                <div className="p-2 bg-slate-500/10 rounded-md">
-                  <Fuel className="h-4 w-4 text-slate-500" />
+            <Card className="border-none shadow-sm rounded-3xl bg-white/80">
+              <CardContent className="p-5 flex items-center justify-between">
+                <div className="p-3 bg-emerald-50 rounded-2xl">
+                  <Fuel className="h-5 w-5 text-emerald-600" />
                 </div>
                 <div className="text-right">
-                  <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">تكاليف الوقود</p>
+                  <p className="text-[10px] text-muted-foreground uppercase font-black tracking-widest mb-1">تكاليف الوقود</p>
                   <div className="flex items-center gap-1 justify-end">
-                    <span className="text-xl font-bold">{toArabicDigits(12.4)}ألف</span>
-                    <SaudiRiyalIcon className="h-4 w-4" />
+                    <span className="text-2xl font-black">{toArabicDigits(12.4)}ألف</span>
+                    <SaudiRiyalIcon className="h-5 w-5 text-emerald-600 opacity-80" />
                   </div>
                 </div>
               </CardContent>
@@ -113,72 +116,80 @@ export default function VehiclesPage() {
           <div className="flex items-center justify-between gap-4">
             <div className="relative flex-1 max-w-sm">
               <Search className="absolute right-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="بحث برقم اللوحة أو الموديل..." className="pr-9 text-right" dir="rtl" />
+              <Input placeholder="بحث برقم اللوحة أو الموديل..." className="pr-9 rounded-xl border-slate-200 text-right" dir="rtl" />
             </div>
           </div>
 
-          <div className="rounded-md border bg-card overflow-hidden">
+          {/* MD3 Clean Table Container */}
+          <div className="rounded-2xl border bg-card overflow-hidden shadow-sm">
             <Table>
               <TableHeader>
-                <TableRow>
-                  <TableHead className="text-right font-bold">رقم اللوحة</TableHead>
-                  <TableHead className="text-right font-bold">الموديل والنوع</TableHead>
-                  <TableHead className="text-right font-bold">السائق</TableHead>
-                  <TableHead className="text-right font-bold">الحالة</TableHead>
-                  <TableHead className="text-right font-bold">آخر صيانة</TableHead>
-                  <TableHead className="text-right font-bold">التقييم</TableHead>
-                  <TableHead className="w-[80px] text-center font-bold">إجراءات</TableHead>
+                <TableRow className="bg-slate-50/50">
+                  <TableHead className="text-right font-bold text-slate-800">رقم اللوحة</TableHead>
+                  <TableHead className="text-right font-bold text-slate-800">الموديل والنوع</TableHead>
+                  <TableHead className="text-right font-bold text-slate-800">السائق</TableHead>
+                  <TableHead className="text-right font-bold text-slate-800">الحالة</TableHead>
+                  <TableHead className="text-right font-bold text-slate-800">آخر صيانة</TableHead>
+                  <TableHead className="text-right font-bold text-slate-800">التقييم</TableHead>
+                  <TableHead className="w-[80px] text-center font-bold text-slate-800">إجراءات</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {mockVehicles.map((vehicle) => (
-                  <TableRow key={vehicle.id}>
-                    <TableCell className="text-right font-bold text-primary">{toArabicDigits(vehicle.plateNumber)}</TableCell>
+                  <TableRow key={vehicle.id} className="hover:bg-muted/50 transition-colors">
+                    <TableCell className="text-right font-mono font-black text-primary text-xs">
+                      {toArabicDigits(vehicle.plateNumber)}
+                    </TableCell>
                     <TableCell className="text-right">
                       <div className="flex flex-col text-right">
-                        <span className="font-medium text-sm">{vehicle.model}</span>
-                        <span className="text-[10px] text-muted-foreground uppercase">
+                        <span className="font-bold text-sm text-slate-900">{vehicle.model}</span>
+                        <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-tighter">
                           {vehicle.type === 'Truck' ? 'شاحنة' : vehicle.type === 'Sedan' ? 'سيدان' : vehicle.type === 'Van' ? 'فان' : 'حافلة'}
                         </span>
                       </div>
                     </TableCell>
                     <TableCell className="text-right">
-                      <span className="text-sm">{vehicle.driverName || "غير محدد"}</span>
+                      <span className="text-xs font-medium">{vehicle.driverName || "غير محدد"}</span>
                     </TableCell>
                     <TableCell className="text-right">
-                      <Badge variant={vehicle.status === "Active" ? "default" : vehicle.status === "Maintenance" ? "secondary" : "destructive"}>
+                      <Badge 
+                        variant={vehicle.status === "Active" ? "default" : vehicle.status === "Maintenance" ? "secondary" : "destructive"}
+                        className={`rounded-lg ${vehicle.status === "Active" ? "bg-emerald-500 hover:bg-emerald-600 border-none" : ""}`}
+                      >
                         {vehicle.status === 'Active' ? 'نشط' : vehicle.status === 'Maintenance' ? 'صيانة' : 'خارج الخدمة'}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-right text-xs text-muted-foreground">{toArabicDigits(vehicle.lastServiceDate)}</TableCell>
+                    <TableCell className="text-right text-xs text-muted-foreground font-mono">
+                      {toArabicDigits(vehicle.lastServiceDate)}
+                    </TableCell>
                     <TableCell className="text-right">
-                      <div className="flex items-center gap-1 font-bold justify-end text-sm">
+                      <div className="flex items-center gap-1 font-mono font-black justify-end text-sm">
                         {formatCurrencyValue(vehicle.purchaseValue)}
-                        <SaudiRiyalIcon className="h-4 w-4" />
+                        <SaudiRiyalIcon className="h-4 w-4 opacity-70" />
                       </div>
                     </TableCell>
                     <TableCell className="text-center">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-8 w-8">
+                          <Button variant="ghost" size="icon" className="rounded-lg h-8 w-8">
                             <MoreVertical className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-40">
-                          <DropdownMenuItem className="flex justify-end gap-2" onClick={() => handleAction("عرض", vehicle.plateNumber)}>
+                        <DropdownMenuContent align="end" className="w-48 font-headline">
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right" onClick={() => handleAction("عرض", vehicle.plateNumber)}>
                             <span>عرض المركبة</span>
                             <Eye className="h-4 w-4" />
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="flex justify-end gap-2" onClick={() => handleAction("تعديل", vehicle.plateNumber)}>
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right" onClick={() => handleAction("تعديل", vehicle.plateNumber)}>
                             <span>تعديل البيانات</span>
                             <Edit className="h-4 w-4" />
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="flex justify-end gap-2" onClick={() => handleAction("سجل العمليات", vehicle.plateNumber)}>
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right" onClick={() => handleAction("سجل العمليات", vehicle.plateNumber)}>
                             <span>سجل العمليات</span>
                             <History className="h-4 w-4" />
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
-                          <DropdownMenuItem className="flex justify-end gap-2 text-destructive" onClick={() => handleAction("شطب", vehicle.plateNumber)}>
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right text-rose-600 focus:text-rose-600 focus:bg-rose-50" onClick={() => handleAction("شطب", vehicle.plateNumber)}>
                             <span>شطب المركبة</span>
                             <Trash2 className="h-4 w-4" />
                           </DropdownMenuItem>
