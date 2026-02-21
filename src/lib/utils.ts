@@ -7,10 +7,16 @@ export function cn(...inputs: ClassValue[]) {
 
 /**
  * تحويل الأرقام إلى الأرقام العربية الشرقية (٠١٢٣٤٥٦٧٨٩)
+ * مع دعم الفاصلة الآلاف
  */
 export function toArabicDigits(num: string | number | undefined): string {
   if (num === undefined || num === null) return "";
-  const str = typeof num === 'number' ? num.toLocaleString('en-US') : num.toString();
+  
+  // Format with thousand separators first
+  const str = typeof num === 'number' 
+    ? num.toLocaleString('en-US') 
+    : num.toString();
+    
   const arabicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
   return str.replace(/[0-9]/g, (d) => arabicDigits[parseInt(d)]);
 }
@@ -20,7 +26,7 @@ export function toArabicDigits(num: string | number | undefined): string {
  */
 export function formatCurrencyValue(amount: number | undefined): string {
   if (amount === undefined) return toArabicDigits(0);
-  return toArabicDigits(amount.toLocaleString('en-US'));
+  return toArabicDigits(Math.round(amount));
 }
 
 /**

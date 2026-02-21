@@ -9,7 +9,7 @@ import {
   Wallet,
   Settings,
   ShieldCheck,
-  ChevronRight,
+  Plus,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -26,57 +26,56 @@ import {
   SidebarFooter,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { Button } from "@/components/ui/button";
 
 const mainNav = [
   { title: "لوحة التحكم", icon: LayoutDashboard, url: "/" },
-  { title: "إدارة العقارات", icon: Building2, url: "/properties" },
-  { title: "إدارة الأسطول", icon: Car, url: "/vehicles" },
+  { title: "العقارات", icon: Building2, url: "/properties" },
+  { title: "الأسطول", icon: Car, url: "/vehicles" },
   { title: "الموارد البشرية", icon: Users, url: "/employees" },
-  { title: "إدارة السكن", icon: Home, url: "/accommodations" },
+  { title: "السكن", icon: Home, url: "/accommodations" },
 ];
 
-const financialNav = [
-  { title: "الحسابات والمالية", icon: Wallet, url: "/finance" },
+const financeNav = [
+  { title: "المالية", icon: Wallet, url: "/finance" },
   { title: "الزكاة والضريبة", icon: ShieldCheck, url: "/zakat" },
-];
-
-const adminNav = [
-  { title: "إعدادات النظام", icon: Settings, url: "/settings" },
 ];
 
 export function AppSidebar() {
   const pathname = usePathname();
 
   return (
-    <Sidebar side="right" collapsible="icon" className="border-l">
-      <SidebarHeader className="h-14 flex items-center px-4">
+    <Sidebar side="right" collapsible="icon" className="border-l-0 bg-background">
+      <SidebarHeader className="h-20 flex items-center justify-center px-6">
         <div className="flex items-center gap-3 w-full">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-600 text-white shrink-0 shadow-sm">
-            <Building2 className="h-5 w-5" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/20 shrink-0">
+            <Building2 className="h-6 w-6" />
           </div>
-          <div className="flex flex-col overflow-hidden">
-            <span className="text-sm font-bold text-emerald-900 truncate leading-none">نظام السلام</span>
-            <span className="text-[9px] text-muted-foreground truncate mt-1">إدارة موارد المؤسسات</span>
+          <div className="flex flex-col group-data-[collapsible=icon]:hidden">
+            <span className="text-base font-bold tracking-tight text-foreground">نظام السلام</span>
+            <span className="text-[10px] text-muted-foreground uppercase font-black tracking-widest opacity-70">ERP v3.0</span>
           </div>
         </div>
       </SidebarHeader>
       
-      <SidebarContent>
+      <SidebarContent className="px-3">
+        <div className="mb-6 px-3 group-data-[collapsible=icon]:hidden">
+          <Button className="w-full justify-start gap-3 rounded-2xl h-14 bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/20">
+            <Plus className="h-5 w-5" />
+            <span className="font-bold">إضافة سريعة</span>
+          </Button>
+        </div>
+
         <SidebarGroup>
-          <SidebarGroupLabel className="px-4 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">العمليات الرئيسية</SidebarGroupLabel>
+          <SidebarGroupLabel className="px-4 text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2">الرئيسية</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {mainNav.map((item) => (
-                <SidebarMenuItem key={item.url}>
-                  <SidebarMenuButton asChild isActive={pathname === item.url} tooltip={item.title}>
-                    <Link href={item.url} className="flex items-center gap-3 px-4 transition-all hover:bg-emerald-50">
-                      <item.icon className={`h-4 w-4 shrink-0 ${pathname === item.url ? "text-emerald-600" : ""}`} />
-                      <span className="text-xs font-medium">{item.title}</span>
+                <SidebarMenuItem key={item.url} className="mb-1">
+                  <SidebarMenuButton asChild isActive={pathname === item.url} tooltip={item.title} className="h-12 rounded-full px-4 transition-all hover:bg-secondary/50 data-[active=true]:bg-secondary data-[active=true]:text-secondary-foreground">
+                    <Link href={item.url} className="flex items-center gap-4">
+                      <item.icon className={`h-5 w-5 shrink-0 ${pathname === item.url ? "text-primary" : "text-muted-foreground"}`} />
+                      <span className="text-sm font-medium">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -85,16 +84,16 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <SidebarGroup>
-          <SidebarGroupLabel className="px-4 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">المالية والامتثال</SidebarGroupLabel>
+        <SidebarGroup className="mt-4">
+          <SidebarGroupLabel className="px-4 text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2">المالية</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {financialNav.map((item) => (
-                <SidebarMenuItem key={item.url}>
-                  <SidebarMenuButton asChild isActive={pathname === item.url} tooltip={item.title}>
-                    <Link href={item.url} className="flex items-center gap-3 px-4 transition-all hover:bg-emerald-50">
-                      <item.icon className={`h-4 w-4 shrink-0 ${pathname === item.url ? "text-emerald-600" : ""}`} />
-                      <span className="text-xs font-medium">{item.title}</span>
+              {financeNav.map((item) => (
+                <SidebarMenuItem key={item.url} className="mb-1">
+                  <SidebarMenuButton asChild isActive={pathname === item.url} tooltip={item.title} className="h-12 rounded-full px-4 transition-all hover:bg-secondary/50 data-[active=true]:bg-secondary data-[active=true]:text-secondary-foreground">
+                    <Link href={item.url} className="flex items-center gap-4">
+                      <item.icon className={`h-5 w-5 shrink-0 ${pathname === item.url ? "text-primary" : "text-muted-foreground"}`} />
+                      <span className="text-sm font-medium">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -104,18 +103,16 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-4 border-t bg-emerald-50/20">
+      <SidebarFooter className="p-4 bg-background">
         <SidebarMenu>
-          {adminNav.map((item) => (
-            <SidebarMenuItem key={item.url}>
-              <SidebarMenuButton asChild isActive={pathname === item.url} tooltip={item.title}>
-                <Link href={item.url} className="flex items-center gap-3 px-4 transition-all hover:bg-emerald-50">
-                  <item.icon className={`h-4 w-4 shrink-0 ${pathname === item.url ? "text-emerald-600" : ""}`} />
-                  <span className="text-xs font-medium">{item.title}</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild isActive={pathname === "/settings"} className="h-12 rounded-full px-4 transition-all hover:bg-secondary/50">
+              <Link href="/settings" className="flex items-center gap-4">
+                <Settings className="h-5 w-5 text-muted-foreground" />
+                <span className="text-sm font-medium">الإعدادات</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
       <SidebarRail />
