@@ -55,7 +55,6 @@ import {
   TableRow 
 } from "@/components/ui/table";
 
-// بيانات الرسوم البيانية - موحدة باللون الأخضر
 const financialData = [
   { name: "محرم", revenue: 45000, expense: 32000 },
   { name: "صفر", revenue: 52000, expense: 31000 },
@@ -114,19 +113,18 @@ export default function Dashboard() {
         <header className="m3-header">
           <div className="flex items-center gap-4">
             <SidebarTrigger className="-ml-1 text-primary" />
-            <div className="flex flex-col items-start">
+            <div className="flex flex-col items-start text-right">
               <h1 className="text-sm font-medium text-primary">لوحة التحكم الإدارية</h1>
               <span className="text-[10px] font-medium text-muted-foreground">{toHijriDate()}</span>
             </div>
           </div>
           <Button variant="ghost" size="icon" className="rounded-full relative h-9 w-9">
             <Bell className="h-4 w-4" />
-            <span className="absolute top-2 left-2 h-1.5 w-1.5 bg-destructive rounded-full" />
+            <span className="absolute top-2 right-2 h-1.5 w-1.5 bg-destructive rounded-full" />
           </Button>
         </header>
 
         <div className="flex flex-1 flex-col gap-6 p-6" dir="rtl">
-          {/* بطاقات الإحصائيات */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {stats.map((stat) => (
               <Card key={stat.title} className="m3-card border-none">
@@ -140,7 +138,7 @@ export default function Dashboard() {
                 </CardHeader>
                 <CardContent className="p-0 text-right">
                   <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">{stat.title}</p>
-                  <div className="flex items-center gap-1 mt-1 justify-start flex-row-reverse">
+                  <div className="flex items-center gap-1 mt-1 justify-start">
                     <span className="text-xl font-medium">
                       {stat.isCurrency ? formatCurrencyValue(stat.value as number) : toArabicDigits(stat.value)}
                     </span>
@@ -151,7 +149,6 @@ export default function Dashboard() {
             ))}
           </div>
 
-          {/* الرسوم البيانية - الجزء العلوي */}
           <div className="grid gap-6 lg:grid-cols-2">
             <Card className="m3-card border-none">
               <CardHeader className="p-0 mb-6 text-right">
@@ -195,7 +192,6 @@ export default function Dashboard() {
             </Card>
           </div>
 
-          {/* الرسوم البيانية - الجزء السفلي والمهام */}
           <div className="grid gap-6 lg:grid-cols-3">
              <Card className="m3-card border-none lg:col-span-1">
               <CardHeader className="p-0 mb-6 text-right">
@@ -249,7 +245,6 @@ export default function Dashboard() {
             </Card>
           </div>
 
-          {/* جداول العمليات الحديثة */}
           <div className="grid gap-6 lg:grid-cols-2">
             <Card className="m3-card border-none">
               <CardHeader className="p-0 mb-4 flex flex-row items-center justify-between">
@@ -273,7 +268,7 @@ export default function Dashboard() {
                     {recentLeads.map((lead) => (
                       <TableRow key={lead.id} className="m3-table-row cursor-pointer" onClick={() => setSelectedItem(lead)}>
                         <TableCell className="text-right py-3">
-                          <div className="flex flex-col">
+                          <div className="flex flex-col text-right">
                             <span className="text-[11px] font-medium">{lead.company}</span>
                             <span className="text-[9px] text-muted-foreground">{lead.contact}</span>
                           </div>
@@ -283,7 +278,12 @@ export default function Dashboard() {
                             {lead.status}
                           </Badge>
                         </TableCell>
-                        <TableCell className="text-right py-3 text-[10px] font-medium">{toArabicDigits(lead.value.toLocaleString())} ر.س</TableCell>
+                        <TableCell className="text-right py-3 text-[10px] font-medium">
+                          <div className="flex items-center gap-1 justify-start">
+                            <span>{toArabicDigits(lead.value.toLocaleString())}</span>
+                            <SaudiRiyalIcon className="h-3 w-3 opacity-60" />
+                          </div>
+                        </TableCell>
                         <TableCell className="py-3">
                           <MoreVertical className="h-3 w-3 text-muted-foreground" />
                         </TableCell>
@@ -328,7 +328,6 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* نافذة تفاصيل سريعة */}
         <Sheet open={!!selectedItem} onOpenChange={() => setSelectedItem(null)}>
           <SheetContent side="right" className="rounded-l-3xl border-none p-8" dir="rtl">
             <SheetHeader className="text-right mb-8">
@@ -337,25 +336,28 @@ export default function Dashboard() {
             </SheetHeader>
             {selectedItem && (
               <div className="space-y-6 text-right">
-                <div className="p-4 bg-slate-50 rounded-2xl">
+                <div className="p-4 bg-slate-50 rounded-2xl text-right">
                   <p className="text-[10px] text-muted-foreground uppercase mb-1">اسم العميل</p>
                   <p className="text-sm font-medium">{selectedItem.company}</p>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="p-4 bg-slate-50 rounded-2xl">
+                  <div className="p-4 bg-slate-50 rounded-2xl text-right">
                     <p className="text-[10px] text-muted-foreground uppercase mb-1">المرحلة</p>
                     <Badge className="bg-emerald-50 text-emerald-700 border-none">{selectedItem.status}</Badge>
                   </div>
-                  <div className="p-4 bg-slate-50 rounded-2xl">
+                  <div className="p-4 bg-slate-50 rounded-2xl text-right">
                     <p className="text-[10px] text-muted-foreground uppercase mb-1">القيمة</p>
-                    <p className="text-sm font-medium text-emerald-600 font-mono">{toArabicDigits(selectedItem.value.toLocaleString())} ر.س</p>
+                    <div className="flex items-center gap-1 justify-start">
+                      <p className="text-sm font-medium text-emerald-600 font-mono">{toArabicDigits(selectedItem.value.toLocaleString())}</p>
+                      <SaudiRiyalIcon className="h-3 w-3 text-emerald-600" />
+                    </div>
                   </div>
                 </div>
-                <div className="p-4 bg-slate-50 rounded-2xl">
+                <div className="p-4 bg-slate-50 rounded-2xl text-right">
                   <p className="text-[10px] text-muted-foreground uppercase mb-1">المسؤول</p>
-                  <div className="flex items-center gap-2 justify-end">
-                    <span className="text-sm font-medium">{selectedItem.contact}</span>
+                  <div className="flex items-center gap-2 justify-start">
                     <Users className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm font-medium">{selectedItem.contact}</span>
                   </div>
                 </div>
                 <Button className="w-full rounded-full h-11" onClick={() => setSelectedItem(null)}>إغلاق</Button>

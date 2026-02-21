@@ -91,13 +91,6 @@ export default function EmployeesPage() {
     }, 1000);
   };
 
-  const handleAction = (action: string, name: string) => {
-    toast({
-      title: "إدارة الموارد البشرية",
-      description: `تم طلب إجراء "${action}" للموظف ${name}`,
-    });
-  };
-
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -131,8 +124,8 @@ export default function EmployeesPage() {
               <CardHeader className="pb-2 text-right p-0">
                 <CardTitle className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">نسبة المهام المنجزة</CardTitle>
               </CardHeader>
-              <CardContent className="p-0 pt-2 text-right">
-                <p className="text-xl font-medium text-emerald-600">{toArabicDigits(85)}%</p>
+              <CardContent className="p-0 pt-2 text-right text-emerald-600">
+                <p className="text-xl font-medium">{toArabicDigits(85)}%</p>
               </CardContent>
             </Card>
             <Card className="m3-card border-none">
@@ -140,7 +133,7 @@ export default function EmployeesPage() {
                 <CardTitle className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">إجمالي الرواتب</CardTitle>
               </CardHeader>
               <CardContent className="p-0 pt-2 text-right">
-                <div className="flex items-center gap-1 justify-start flex-row-reverse">
+                <div className="flex items-center gap-1 justify-start">
                   <span className="text-xl font-medium">{formatCurrencyValue(845000)}</span>
                   <SaudiRiyalIcon className="h-4 w-4 text-primary opacity-70" />
                 </div>
@@ -175,21 +168,21 @@ export default function EmployeesPage() {
                     onClick={() => setSelectedEmployee(emp)}
                   >
                     <TableCell className="text-right py-4 px-6">
-                      <div className="flex items-center gap-3 justify-start flex-row-reverse">
-                        <div className="flex flex-col text-right">
-                          <span className="font-medium text-xs">{emp.name}</span>
-                          <span className="text-[9px] text-muted-foreground font-mono">#{emp.id.padStart(3, '0')}</span>
-                        </div>
+                      <div className="flex items-center gap-3 justify-start">
                         <Avatar className="h-8 w-8 rounded-xl border-none bg-emerald-50 shrink-0">
                           <AvatarFallback className="text-emerald-700 text-[10px] font-medium">
                             {emp.name.split(' ').map(n => n[0]).join('')}
                           </AvatarFallback>
                         </Avatar>
+                        <div className="flex flex-col text-right">
+                          <span className="font-medium text-xs">{emp.name}</span>
+                          <span className="text-[9px] text-muted-foreground font-mono">#{emp.id.padStart(3, '0')}</span>
+                        </div>
                       </div>
                     </TableCell>
                     <TableCell className="text-right font-mono text-[11px] font-medium py-4 px-6">{toArabicDigits(emp.iqamaNumber)}</TableCell>
                     <TableCell className="text-right py-4 px-6">
-                      <div className="flex flex-col">
+                      <div className="flex flex-col text-right">
                         <span className="text-xs font-medium">{emp.role}</span>
                         <span className="text-[9px] text-muted-foreground">
                           {emp.department === 'Admin' ? 'الإدارة' : emp.department === 'Field' ? 'الميدان' : emp.department === 'Fleet' ? 'الأسطول' : 'الحسابات'}
@@ -205,7 +198,7 @@ export default function EmployeesPage() {
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right py-4 px-6">
-                      <div className="flex items-center gap-1 font-medium justify-start flex-row-reverse text-xs">
+                      <div className="flex items-center gap-1 font-medium justify-start text-xs">
                         {formatCurrencyValue(emp.salary)}
                         <SaudiRiyalIcon className="h-3.5 w-3.5 opacity-60" />
                       </div>
@@ -222,7 +215,6 @@ export default function EmployeesPage() {
           </div>
         </div>
 
-        {/* نافذة تفاصيل الموظف المتطورة مع ربط المهام */}
         <Sheet open={!!selectedEmployee} onOpenChange={() => setSelectedEmployee(null)}>
           <SheetContent side="right" className="rounded-l-3xl border-none p-8" dir="rtl">
             <SheetHeader className="text-right mb-8">
@@ -231,39 +223,39 @@ export default function EmployeesPage() {
             </SheetHeader>
             {selectedEmployee && (
               <div className="space-y-6 text-right">
-                <div className="flex items-center gap-4 flex-row-reverse">
+                <div className="flex items-center gap-4">
                   <Avatar className="h-16 w-16 rounded-3xl bg-emerald-50 shrink-0">
                     <AvatarFallback className="text-emerald-700 text-lg font-medium">
                       {selectedEmployee.name.split(' ').map(n => n[0]).join('')}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="flex-1">
+                  <div className="flex-1 text-right">
                     <p className="text-sm font-medium">{selectedEmployee.name}</p>
                     <p className="text-xs text-muted-foreground">{selectedEmployee.role}</p>
                   </div>
                 </div>
                 
-                <div className="space-y-4">
+                <div className="space-y-4 text-right">
                    <h3 className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest border-b pb-2">المهام المسندة حالياً</h3>
                    {mockEmployeeTasks.map(task => (
                      <div key={task.id} className="p-3 bg-slate-50 rounded-2xl flex items-center justify-between">
-                       <div className="flex items-center gap-2">
-                         {task.status === 'Completed' ? <CheckCircle2 className="h-4 w-4 text-emerald-500" /> : <Clock className="h-4 w-4 text-amber-500 animate-pulse" />}
-                         <span className="text-[11px] font-medium">{task.title}</span>
-                       </div>
                        <Badge className={`text-[8px] border-none rounded-lg ${task.status === 'Completed' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
                          {task.status === 'Completed' ? 'مكتمل' : 'جاري'}
                        </Badge>
+                       <div className="flex items-center gap-2">
+                         <span className="text-[11px] font-medium">{task.title}</span>
+                         {task.status === 'Completed' ? <CheckCircle2 className="h-4 w-4 text-emerald-500" /> : <Clock className="h-4 w-4 text-amber-500 animate-pulse" />}
+                       </div>
                      </div>
                    ))}
                 </div>
 
                 <div className="grid gap-4">
-                  <div className="p-4 bg-slate-50 rounded-2xl">
+                  <div className="p-4 bg-slate-50 rounded-2xl text-right">
                     <p className="text-[10px] text-muted-foreground uppercase mb-1">الراتب الأساسي</p>
-                    <div className="flex items-center gap-1 justify-start flex-row-reverse text-sm font-medium">
+                    <div className="flex items-center gap-1 justify-start font-medium text-sm">
                       {formatCurrencyValue(selectedEmployee.salary)}
-                      <SaudiRiyalIcon className="h-3 w-3" />
+                      <SaudiRiyalIcon className="h-3 w-3 opacity-60" />
                     </div>
                   </div>
                 </div>
@@ -273,7 +265,6 @@ export default function EmployeesPage() {
           </SheetContent>
         </Sheet>
 
-        {/* نافذة إضافة موظف جديد */}
         <Sheet open={isAddSheetOpen} onOpenChange={setIsAddSheetOpen}>
           <SheetContent side="right" className="rounded-l-3xl border-none p-8" dir="rtl">
             <SheetHeader className="text-right mb-8">
@@ -289,7 +280,7 @@ export default function EmployeesPage() {
                     <FormItem>
                       <FormLabel className="text-xs font-medium">الاسم الكامل</FormLabel>
                       <FormControl>
-                        <Input placeholder="الاسم كما هو في الهوية" {...field} className="rounded-xl bg-slate-50 border-none h-11" />
+                        <Input placeholder="الاسم كما هو في الهوية" {...field} className="rounded-xl bg-slate-50 border-none h-11 text-right" />
                       </FormControl>
                       <FormMessage className="text-[10px]" />
                     </FormItem>
@@ -303,7 +294,7 @@ export default function EmployeesPage() {
                       <FormItem>
                         <FormLabel className="text-xs font-medium">رقم الإقامة / الهوية</FormLabel>
                         <FormControl>
-                          <Input placeholder="2XXXXXXXXX" {...field} className="rounded-xl bg-slate-50 border-none h-11 font-mono" />
+                          <Input placeholder="2XXXXXXXXX" {...field} className="rounded-xl bg-slate-50 border-none h-11 font-mono text-right" />
                         </FormControl>
                         <FormMessage className="text-[10px]" />
                       </FormItem>
@@ -317,11 +308,11 @@ export default function EmployeesPage() {
                         <FormLabel className="text-xs font-medium">القسم</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
-                            <SelectTrigger className="rounded-xl bg-slate-50 border-none h-11 text-xs">
+                            <SelectTrigger className="rounded-xl bg-slate-50 border-none h-11 text-xs text-right">
                               <SelectValue placeholder="اختر القسم" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="rounded-xl border-none shadow-xl">
+                          <SelectContent className="rounded-xl border-none shadow-xl text-right">
                             <SelectItem value="Admin" className="text-xs">الإدارة</SelectItem>
                             <SelectItem value="Field" className="text-xs">الميدان</SelectItem>
                             <SelectItem value="Fleet" className="text-xs">الأسطول</SelectItem>

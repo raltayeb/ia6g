@@ -66,7 +66,6 @@ export default function CRMPage() {
   const onSubmit = (values: LeadFormValues) => {
     setIsSubmitting(true);
     setTimeout(() => {
-      console.log("Saving lead:", values);
       setIsSubmitting(false);
       setIsAddSheetOpen(false);
       form.reset();
@@ -114,16 +113,16 @@ export default function CRMPage() {
               <CardHeader className="pb-2 text-right p-0">
                 <CardTitle className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">إجمالي العملاء</CardTitle>
               </CardHeader>
-              <CardContent className="p-0 pt-2">
-                <p className="text-xl font-medium text-right">{toArabicDigits(142)}</p>
+              <CardContent className="p-0 pt-2 text-right">
+                <p className="text-xl font-medium">{toArabicDigits(142)}</p>
               </CardContent>
             </Card>
             <Card className="m3-card border-none">
               <CardHeader className="pb-2 text-right p-0">
                 <CardTitle className="text-[10px] font-medium text-emerald-600 uppercase tracking-widest">المبيعات المتوقعة</CardTitle>
               </CardHeader>
-              <CardContent className="p-0 pt-2 text-emerald-600">
-                <div className="flex items-center gap-1 justify-start flex-row-reverse">
+              <CardContent className="p-0 pt-2 text-emerald-600 text-right">
+                <div className="flex items-center gap-1 justify-start">
                   <span className="text-xl font-medium">{formatCurrencyValue(890000)}</span>
                   <SaudiRiyalIcon className="h-4 w-4 opacity-70" />
                 </div>
@@ -133,8 +132,8 @@ export default function CRMPage() {
               <CardHeader className="pb-2 text-right p-0">
                 <CardTitle className="text-[10px] font-medium text-blue-600 uppercase tracking-widest">نسبة التحويل</CardTitle>
               </CardHeader>
-              <CardContent className="p-0 pt-2 text-blue-600">
-                <p className="text-xl font-medium text-right">{toArabicDigits(24)}%</p>
+              <CardContent className="p-0 pt-2 text-blue-600 text-right">
+                <p className="text-xl font-medium">{toArabicDigits(24)}%</p>
               </CardContent>
             </Card>
           </div>
@@ -169,9 +168,9 @@ export default function CRMPage() {
                     onClick={() => setSelectedLead(lead)}
                   >
                     <TableCell className="text-right py-4 px-6">
-                      <div className="flex flex-col">
+                      <div className="flex flex-col text-right">
                         <span className="font-medium text-xs">{lead.companyName}</span>
-                        <span className="text-[9px] text-muted-foreground flex items-center gap-1 flex-row-reverse">
+                        <span className="text-[9px] text-muted-foreground flex items-center gap-1">
                           <User className="h-2.5 w-2.5" />
                           {lead.contactPerson}
                         </span>
@@ -183,7 +182,7 @@ export default function CRMPage() {
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right py-4 px-6">
-                      <div className="flex items-center gap-1 font-medium justify-start flex-row-reverse text-xs">
+                      <div className="flex items-center gap-1 font-medium justify-start text-xs">
                         {formatCurrencyValue(lead.value)}
                         <SaudiRiyalIcon className="h-3.5 w-3.5 opacity-60" />
                       </div>
@@ -203,7 +202,6 @@ export default function CRMPage() {
           </div>
         </div>
 
-        {/* نافذة إضافة عميل جديد */}
         <Sheet open={isAddSheetOpen} onOpenChange={setIsAddSheetOpen}>
           <SheetContent side="right" className="rounded-l-3xl border-none p-8" dir="rtl">
             <SheetHeader className="text-right mb-8">
@@ -272,7 +270,7 @@ export default function CRMPage() {
                               <SelectValue placeholder="اختر المرحلة" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="rounded-xl border-none shadow-xl">
+                          <SelectContent className="rounded-xl border-none shadow-xl text-right">
                             <SelectItem value="New" className="text-xs">جديد</SelectItem>
                             <SelectItem value="Contacted" className="text-xs">تم التواصل</SelectItem>
                             <SelectItem value="Qualified" className="text-xs">مؤهل</SelectItem>
@@ -311,6 +309,45 @@ export default function CRMPage() {
                 </SheetFooter>
               </form>
             </Form>
+          </SheetContent>
+        </Sheet>
+
+        <Sheet open={!!selectedLead} onOpenChange={() => setSelectedLead(null)}>
+          <SheetContent side="right" className="rounded-l-3xl border-none p-8" dir="rtl">
+            <SheetHeader className="text-right mb-8">
+              <SheetTitle className="text-lg font-medium text-primary">تفاصيل العميل</SheetTitle>
+              <SheetDescription className="text-xs">بيانات الفرصة وتاريخ التواصل</SheetDescription>
+            </SheetHeader>
+            {selectedLead && (
+              <div className="space-y-6 text-right">
+                <div className="grid gap-4">
+                  <div className="p-4 bg-slate-50 rounded-2xl text-right">
+                    <p className="text-[10px] text-muted-foreground uppercase mb-1">اسم الشركة</p>
+                    <p className="text-sm font-medium">{selectedLead.companyName}</p>
+                  </div>
+                  <div className="p-4 bg-slate-50 rounded-2xl text-right">
+                    <p className="text-[10px] text-muted-foreground uppercase mb-1">المسؤول</p>
+                    <p className="text-sm font-medium">{selectedLead.contactPerson}</p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="p-4 bg-slate-50 rounded-2xl text-right">
+                      <p className="text-[10px] text-muted-foreground uppercase mb-1">القيمة</p>
+                      <div className="flex items-center gap-1 justify-start">
+                        <span className="text-sm font-medium">{formatCurrencyValue(selectedLead.value)}</span>
+                        <SaudiRiyalIcon className="h-3 w-3 opacity-60" />
+                      </div>
+                    </div>
+                    <div className="p-4 bg-slate-50 rounded-2xl text-right">
+                      <p className="text-[10px] text-muted-foreground uppercase mb-1">الحالة</p>
+                      <Badge className={`text-[10px] border-none ${getStatusBadge(selectedLead.status).color}`}>
+                        {getStatusBadge(selectedLead.status).label}
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+                <Button className="w-full rounded-full h-11" onClick={() => setSelectedLead(null)}>إغلاق</Button>
+              </div>
+            )}
           </SheetContent>
         </Sheet>
       </SidebarInset>

@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -69,7 +70,6 @@ export default function AccommodationsPage() {
   const onSubmit = (values: AccommodationFormValues) => {
     setIsSubmitting(true);
     setTimeout(() => {
-      console.log("Saving accommodation:", values);
       setIsSubmitting(false);
       setIsAddSheetOpen(false);
       form.reset();
@@ -112,9 +112,9 @@ export default function AccommodationsPage() {
               <CardHeader className="pb-2 text-right p-0">
                 <CardTitle className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">إجمالي السعة</CardTitle>
               </CardHeader>
-              <CardContent className="p-0 pt-2">
-                <div className="text-xl font-medium text-right">{toArabicDigits(212)} وحدة</div>
-                <div className="flex items-center gap-3 mt-3 flex-row-reverse">
+              <CardContent className="p-0 pt-2 text-right">
+                <div className="text-xl font-medium">{toArabicDigits(212)} وحدة</div>
+                <div className="flex items-center gap-3 mt-3">
                   <Progress value={83} className="h-1 flex-1" />
                   <span className="text-[10px] font-medium text-primary">{toArabicDigits(83)}%</span>
                 </div>
@@ -124,8 +124,8 @@ export default function AccommodationsPage() {
               <CardHeader className="pb-2 text-right p-0">
                 <CardTitle className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">التكلفة الشهرية</CardTitle>
               </CardHeader>
-              <CardContent className="p-0 pt-2">
-                <div className="flex items-center gap-1 justify-start flex-row-reverse">
+              <CardContent className="p-0 pt-2 text-right">
+                <div className="flex items-center gap-1 justify-start">
                   <span className="text-xl font-medium">{formatCurrencyValue(93000)}</span>
                   <SaudiRiyalIcon className="h-4 w-4 text-primary opacity-60" />
                 </div>
@@ -135,8 +135,8 @@ export default function AccommodationsPage() {
               <CardHeader className="pb-2 text-right p-0">
                 <CardTitle className="text-[10px] font-medium text-emerald-600 uppercase tracking-widest">الوحدات الشاغرة</CardTitle>
               </CardHeader>
-              <CardContent className="p-0 pt-2">
-                <div className="text-xl font-medium text-emerald-600 text-right">{toArabicDigits(35)} وحدة</div>
+              <CardContent className="p-0 pt-2 text-right">
+                <div className="text-xl font-medium text-emerald-600">{toArabicDigits(35)} وحدة</div>
               </CardContent>
             </Card>
           </div>
@@ -170,25 +170,25 @@ export default function AccommodationsPage() {
                       onClick={() => setSelectedAcc(acc)}
                     >
                       <TableCell className="text-right py-4 px-6">
-                        <div className="flex items-center gap-3 justify-start flex-row-reverse">
+                        <div className="flex items-center gap-3 justify-start">
+                          <div className="p-2 bg-emerald-50 rounded-xl shrink-0">
+                            <Home className="h-4 w-4 text-primary" />
+                          </div>
                           <div className="flex flex-col text-right">
                             <span className="font-medium text-xs">{acc.name}</span>
                             <span className="text-[9px] text-muted-foreground font-mono">#{acc.id}</span>
                           </div>
-                          <div className="p-2 bg-emerald-50 rounded-xl shrink-0">
-                            <Home className="h-4 w-4 text-primary" />
-                          </div>
                         </div>
                       </TableCell>
                       <TableCell className="text-right py-4 px-6">
-                        <div className="flex items-center gap-1 text-[11px] text-muted-foreground justify-start flex-row-reverse">
-                          {acc.location}
+                        <div className="flex items-center gap-1 text-[11px] text-muted-foreground justify-start">
                           <MapPin className="h-3 w-3" />
+                          {acc.location}
                         </div>
                       </TableCell>
                       <TableCell className="text-right py-4 px-6">
                         <div className="flex flex-col gap-1 w-24">
-                          <div className="flex flex-row-reverse justify-between text-[9px] font-medium">
+                          <div className="flex justify-between text-[9px] font-medium">
                             <span>{toArabicDigits(acc.currentOccupants)}/{toArabicDigits(acc.capacity)}</span>
                             <span>{toArabicDigits(Math.round(occupancyRate))}%</span>
                           </div>
@@ -204,7 +204,7 @@ export default function AccommodationsPage() {
                         </Badge>
                       </TableCell>
                       <TableCell className="text-right py-4 px-6">
-                        <div className="flex items-center gap-1 font-medium justify-start flex-row-reverse text-xs">
+                        <div className="flex items-center gap-1 font-medium justify-start text-xs">
                           {formatCurrencyValue(acc.monthlyCost)}
                           <SaudiRiyalIcon className="h-3.5 w-3.5 opacity-60" />
                         </div>
@@ -216,19 +216,19 @@ export default function AccommodationsPage() {
                               <MoreVertical className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-40 rounded-2xl border-none shadow-lg">
-                            <DropdownMenuItem className="flex justify-end gap-2 text-right text-xs" onClick={() => setSelectedAcc(acc)}>
-                              <span>عرض التفاصيل</span>
+                          <DropdownMenuContent align="end" className="w-40 rounded-2xl border-none shadow-lg text-right">
+                            <DropdownMenuItem className="flex justify-start gap-2 text-right text-xs" onClick={() => setSelectedAcc(acc)}>
                               <Eye className="h-4 w-4" />
+                              <span>عرض التفاصيل</span>
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="flex justify-end gap-2 text-right text-xs" onClick={() => handleAction("تعديل", acc.name)}>
-                              <span>تعديل</span>
+                            <DropdownMenuItem className="flex justify-start gap-2 text-right text-xs" onClick={() => handleAction("تعديل", acc.name)}>
                               <Edit className="h-4 w-4" />
+                              <span>تعديل</span>
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem className="flex justify-end gap-2 text-right text-xs text-rose-600" onClick={() => handleAction("حذف", acc.name)}>
-                              <span>حذف</span>
+                            <DropdownMenuItem className="flex justify-start gap-2 text-right text-xs text-rose-600" onClick={() => handleAction("حذف", acc.name)}>
                               <Trash2 className="h-4 w-4" />
+                              <span>حذف</span>
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -241,7 +241,6 @@ export default function AccommodationsPage() {
           </div>
         </div>
 
-        {/* نافذة إضافة مبنى سكن جديد */}
         <Sheet open={isAddSheetOpen} onOpenChange={setIsAddSheetOpen}>
           <SheetContent side="right" className="rounded-l-3xl border-none p-8 w-full max-w-md sm:max-w-lg" dir="rtl">
             <SheetHeader className="text-right mb-8">
@@ -332,7 +331,6 @@ export default function AccommodationsPage() {
           </SheetContent>
         </Sheet>
 
-        {/* نافذة عرض تفاصيل السكن */}
         <Sheet open={!!selectedAcc} onOpenChange={() => setSelectedAcc(null)}>
           <SheetContent side="right" className="rounded-l-3xl border-none p-8" dir="rtl">
             <SheetHeader className="text-right mb-8">
@@ -342,29 +340,29 @@ export default function AccommodationsPage() {
             {selectedAcc && (
               <div className="space-y-6 text-right">
                 <div className="grid gap-4">
-                  <div className="p-4 bg-slate-50 rounded-2xl">
+                  <div className="p-4 bg-slate-50 rounded-2xl text-right">
                     <p className="text-[10px] text-muted-foreground uppercase mb-1">اسم المبنى</p>
                     <p className="text-sm font-medium">{selectedAcc.name}</p>
                   </div>
-                  <div className="p-4 bg-slate-50 rounded-2xl">
+                  <div className="p-4 bg-slate-50 rounded-2xl text-right">
                     <p className="text-[10px] text-muted-foreground uppercase mb-1">الموقع</p>
                     <p className="text-sm font-medium">{selectedAcc.location}</p>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="p-4 bg-slate-50 rounded-2xl">
+                    <div className="p-4 bg-slate-50 rounded-2xl text-right">
                       <p className="text-[10px] text-muted-foreground uppercase mb-1">السعة الكلية</p>
                       <p className="text-sm font-medium">{toArabicDigits(selectedAcc.capacity)} فرد</p>
                     </div>
-                    <div className="p-4 bg-slate-50 rounded-2xl">
+                    <div className="p-4 bg-slate-50 rounded-2xl text-right">
                       <p className="text-[10px] text-muted-foreground uppercase mb-1">المشغول حالياً</p>
                       <p className="text-sm font-medium text-primary">{toArabicDigits(selectedAcc.currentOccupants)} فرد</p>
                     </div>
                   </div>
-                  <div className="p-4 bg-slate-50 rounded-2xl">
+                  <div className="p-4 bg-slate-50 rounded-2xl text-right">
                     <p className="text-[10px] text-muted-foreground uppercase mb-1">التكلفة الشهرية</p>
-                    <div className="flex items-center gap-1 justify-start flex-row-reverse text-sm font-medium">
+                    <div className="flex items-center gap-1 justify-start font-medium text-sm">
                       {formatCurrencyValue(selectedAcc.monthlyCost)}
-                      <SaudiRiyalIcon className="h-3 w-3" />
+                      <SaudiRiyalIcon className="h-3 w-3 opacity-60" />
                     </div>
                   </div>
                 </div>
