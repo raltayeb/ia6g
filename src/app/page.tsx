@@ -1,3 +1,4 @@
+"use client";
 
 import { 
   Building2, 
@@ -28,11 +29,8 @@ import {
   ResponsiveContainer, 
   XAxis, 
   YAxis,
-  Line,
-  LineChart,
   CartesianGrid,
-  Tooltip,
-  Cell
+  Tooltip
 } from "recharts";
 
 const financialData = [
