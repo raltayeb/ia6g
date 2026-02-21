@@ -58,7 +58,7 @@ export function AppSidebar() {
             <Building2 className="h-5 w-5" />
           </div>
           <div className="flex flex-col group-data-[collapsible=icon]:hidden text-right">
-            <span className="text-sm font-medium tracking-tight text-foreground">نظام السلام</span>
+            <span className="text-sm font-medium tracking-tight text-foreground">شركة طارق الجعفرى</span>
             <span className="text-[9px] text-muted-foreground uppercase font-medium tracking-widest opacity-70">ERP v3.0</span>
           </div>
         </div>
