@@ -47,13 +47,13 @@ export default function PropertiesPage() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center justify-between gap-2 px-6 border-b bg-white/60 backdrop-blur-xl sticky top-0 z-30">
+      <SidebarInset className="bg-muted/30">
+        <header className="flex h-16 shrink-0 items-center justify-between gap-2 px-6 border-b bg-background sticky top-0 z-30">
           <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1" />
-            <h1 className="font-headline text-xl font-bold text-primary">إدارة العقارات</h1>
+            <h1 className="font-headline text-lg font-bold">إدارة العقارات</h1>
           </div>
-          <Button className="gap-2 rounded-xl shadow-lg shadow-primary/20" onClick={() => handleAction("إضافة", "جديد")}>
+          <Button size="sm" className="gap-2" onClick={() => handleAction("إضافة", "جديد")}>
             <Plus className="h-4 w-4" />
             إضافة عقار
           </Button>
@@ -62,11 +62,11 @@ export default function PropertiesPage() {
           <div className="flex items-center justify-between gap-4">
             <div className="relative flex-1 max-w-sm">
               <Search className="absolute right-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="بحث عن عقارات..." className="pr-9 rounded-xl border-slate-200 text-right" dir="rtl" />
+              <Input placeholder="بحث عن عقارات..." className="pr-9 text-right" dir="rtl" />
             </div>
             <div className="flex items-center gap-2">
-              <Badge variant="outline" className="px-3 py-1 rounded-lg">الإجمالي: {toArabicDigits(mockProperties.length)}</Badge>
-              <Badge variant="secondary" className="px-3 py-1 bg-blue-50 text-blue-700 border-none rounded-lg flex gap-1">
+              <Badge variant="outline" className="px-3">الإجمالي: {toArabicDigits(mockProperties.length)}</Badge>
+              <Badge variant="secondary" className="px-3 flex gap-1 items-center">
                 <span>الدخل النشط:</span>
                 <span>{formatCurrencyValue(132000)}</span>
                 <SaudiRiyalIcon className="h-3.5 w-3.5" />
@@ -74,11 +74,11 @@ export default function PropertiesPage() {
             </div>
           </div>
 
-          <div className="rounded-2xl border bg-card overflow-hidden shadow-sm">
+          <div className="rounded-md border bg-card">
             <Table>
               <TableHeader>
-                <TableRow className="bg-slate-50/50">
-                  <TableHead className="w-[250px] text-right font-bold">اسم العقار</TableHead>
+                <TableRow>
+                  <TableHead className="text-right font-bold">اسم العقار</TableHead>
                   <TableHead className="text-right font-bold">النوع</TableHead>
                   <TableHead className="text-right font-bold">الموقع</TableHead>
                   <TableHead className="text-right font-bold">الحالة</TableHead>
@@ -89,68 +89,58 @@ export default function PropertiesPage() {
               </TableHeader>
               <TableBody>
                 {mockProperties.map((prop) => (
-                  <TableRow key={prop.id} className="hover:bg-muted/50 transition-colors">
-                    <TableCell className="font-medium text-right">
-                      <div className="flex items-center gap-3 justify-end">
-                        {prop.name}
-                        <div className="p-2 bg-primary/10 rounded-lg shrink-0">
-                          <Building2 className="h-4 w-4 text-primary" />
-                        </div>
-                      </div>
-                    </TableCell>
+                  <TableRow key={prop.id}>
+                    <TableCell className="font-medium text-right">{prop.name}</TableCell>
                     <TableCell className="text-right">
                       {prop.type === 'Commercial' ? 'تجاري' : prop.type === 'Residential' ? 'سكني' : 'صناعي'}
                     </TableCell>
                     <TableCell className="text-right">
-                      <div className="flex items-center gap-1 text-muted-foreground justify-end">
+                      <div className="flex items-center gap-1 text-muted-foreground justify-end text-xs">
                         {prop.location}
                         <MapPin className="h-3 w-3" />
                       </div>
                     </TableCell>
                     <TableCell className="text-right">
-                      <Badge 
-                        variant={prop.status === "Occupied" ? "default" : prop.status === "Vacant" ? "secondary" : "destructive"}
-                        className={`rounded-lg ${prop.status === "Occupied" ? "bg-emerald-500 hover:bg-emerald-600 border-none" : ""}`}
-                      >
+                      <Badge variant={prop.status === "Occupied" ? "default" : prop.status === "Vacant" ? "secondary" : "destructive"}>
                         {prop.status === "Occupied" ? "مؤجر" : prop.status === "Vacant" ? "شاغر" : "صيانة"}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
                       {prop.monthlyIncome > 0 ? (
-                        <div className="flex items-center gap-1 font-mono font-bold justify-end">
+                        <div className="flex items-center gap-1 font-bold justify-end">
                           {formatCurrencyValue(prop.monthlyIncome)}
-                          <SaudiRiyalIcon className="h-4 w-4 opacity-70" />
+                          <SaudiRiyalIcon className="h-4 w-4" />
                         </div>
                       ) : "-"}
                     </TableCell>
                     <TableCell className="text-right">
-                      <div className="flex items-center gap-1 font-mono text-muted-foreground justify-end">
+                      <div className="flex items-center gap-1 text-muted-foreground justify-end text-xs">
                         {toArabicDigits((prop.value / 1000000).toFixed(1))} مليون
-                        <SaudiRiyalIcon className="h-4 w-4 opacity-50" />
+                        <SaudiRiyalIcon className="h-3 w-3" />
                       </div>
                     </TableCell>
                     <TableCell className="text-center">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="rounded-lg h-8 w-8">
+                          <Button variant="ghost" size="icon" className="h-8 w-8">
                             <MoreVertical className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-48 font-headline">
-                          <DropdownMenuItem className="flex justify-end gap-2 text-right" onClick={() => handleAction("عرض", prop.name)}>
+                        <DropdownMenuContent align="end" className="w-40">
+                          <DropdownMenuItem className="flex justify-end gap-2" onClick={() => handleAction("عرض", prop.name)}>
                             <span>عرض البطاقة</span>
                             <Eye className="h-4 w-4" />
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="flex justify-end gap-2 text-right" onClick={() => handleAction("تعديل", prop.name)}>
+                          <DropdownMenuItem className="flex justify-end gap-2" onClick={() => handleAction("تعديل", prop.name)}>
                             <span>تعديل العقار</span>
                             <Edit className="h-4 w-4" />
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="flex justify-end gap-2 text-right" onClick={() => handleAction("سجل الصيانة", prop.name)}>
+                          <DropdownMenuItem className="flex justify-end gap-2" onClick={() => handleAction("سجل الصيانة", prop.name)}>
                             <span>سجل الصيانة</span>
                             <ClipboardList className="h-4 w-4" />
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
-                          <DropdownMenuItem className="flex justify-end gap-2 text-right text-rose-600 focus:text-rose-600 focus:bg-rose-50" onClick={() => handleAction("حذف", prop.name)}>
+                          <DropdownMenuItem className="flex justify-end gap-2 text-destructive" onClick={() => handleAction("حذف", prop.name)}>
                             <span>حذف العقار</span>
                             <Trash2 className="h-4 w-4" />
                           </DropdownMenuItem>

@@ -1,4 +1,3 @@
-
 "use client";
 
 import {
@@ -47,30 +46,30 @@ export function AppSidebar() {
   const pathname = usePathname();
 
   return (
-    <Sidebar variant="sidebar" side="right" collapsible="icon" className="border-l bg-white">
-      <SidebarHeader className="p-6">
+    <Sidebar variant="sidebar" side="right" collapsible="icon" className="border-l">
+      <SidebarHeader className="p-4 border-b">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/30 shrink-0">
-            <Building2 className="h-6 w-6" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-primary-foreground shrink-0">
+            <Building2 className="h-5 w-5" />
           </div>
-          <div className="flex flex-col truncate group-data-[collapsible=icon]:hidden">
-            <span className="font-headline text-lg font-black tracking-tight leading-none">نظام السلام</span>
-            <span className="text-[10px] text-muted-foreground font-bold mt-1 uppercase tracking-widest">إدارة الموارد ERP</span>
+          <div className="flex flex-col truncate group-data-[collapsible=icon]:hidden text-right">
+            <span className="font-headline text-base font-bold leading-none">نظام السلام</span>
+            <span className="text-[10px] text-muted-foreground mt-1">إدارة الموارد ERP</span>
           </div>
         </div>
       </SidebarHeader>
       
-      <SidebarContent className="p-4 gap-6">
+      <SidebarContent className="p-2">
         <SidebarGroup>
-          <SidebarGroupLabel className="px-2 mb-2 font-black text-[10px] tracking-widest text-slate-400">العمليات التشغيلية</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-[10px] font-bold text-muted-foreground uppercase px-2 mb-2">العمليات التشغيلية</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu className="gap-1">
+            <SidebarMenu>
               {mainNav.map((item) => (
                 <SidebarMenuItem key={item.url}>
-                  <SidebarMenuButton asChild isActive={pathname === item.url} tooltip={item.title} className="rounded-xl h-10 px-4 transition-all duration-200">
+                  <SidebarMenuButton asChild isActive={pathname === item.url} tooltip={item.title}>
                     <Link href={item.url} className="flex items-center gap-3">
-                      <item.icon className={`h-5 w-5 ${pathname === item.url ? 'text-primary' : 'text-slate-400'}`} />
-                      <span className="font-bold text-[13px]">{item.title}</span>
+                      <item.icon className="h-4 w-4" />
+                      <span className="text-sm">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -80,15 +79,15 @@ export function AppSidebar() {
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel className="px-2 mb-2 font-black text-[10px] tracking-widest text-slate-400">القسم المالي</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-[10px] font-bold text-muted-foreground uppercase px-2 mb-2">القسم المالي</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu className="gap-1">
+            <SidebarMenu>
               {financialNav.map((item) => (
                 <SidebarMenuItem key={item.url}>
-                  <SidebarMenuButton asChild isActive={pathname === item.url} tooltip={item.title} className="rounded-xl h-10 px-4 transition-all duration-200">
+                  <SidebarMenuButton asChild isActive={pathname === item.url} tooltip={item.title}>
                     <Link href={item.url} className="flex items-center gap-3">
-                      <item.icon className={`h-5 w-5 ${pathname === item.url ? 'text-primary' : 'text-slate-400'}`} />
-                      <span className="font-bold text-[13px]">{item.title}</span>
+                      <item.icon className="h-4 w-4" />
+                      <span className="text-sm">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -98,15 +97,15 @@ export function AppSidebar() {
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel className="px-2 mb-2 font-black text-[10px] tracking-widest text-slate-400">الإدارة</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-[10px] font-bold text-muted-foreground uppercase px-2 mb-2">الإدارة</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu className="gap-1">
+            <SidebarMenu>
               {adminNav.map((item) => (
                 <SidebarMenuItem key={item.url}>
-                  <SidebarMenuButton asChild isActive={pathname === item.url} tooltip={item.title} className="rounded-xl h-10 px-4 transition-all duration-200">
+                  <SidebarMenuButton asChild isActive={pathname === item.url} tooltip={item.title}>
                     <Link href={item.url} className="flex items-center gap-3">
-                      <item.icon className={`h-5 w-5 ${pathname === item.url ? 'text-primary' : 'text-slate-400'}`} />
-                      <span className="font-bold text-[13px]">{item.title}</span>
+                      <item.icon className="h-4 w-4" />
+                      <span className="text-sm">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -116,12 +115,12 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-6 border-t mt-auto bg-slate-50/50">
-        <div className="flex items-center gap-4 group-data-[collapsible=icon]:hidden">
-          <div className="h-10 w-10 rounded-2xl bg-white flex items-center justify-center text-slate-600 font-black shrink-0 shadow-sm border border-slate-200/50">أ</div>
+      <SidebarFooter className="p-4 border-t bg-muted/20">
+        <div className="flex items-center gap-3 group-data-[collapsible=icon]:hidden text-right">
+          <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-xs font-bold shrink-0">أ</div>
           <div className="flex flex-col truncate">
-            <span className="text-[13px] font-black leading-none">أحمد العبدالله</span>
-            <span className="text-[10px] text-muted-foreground font-bold mt-1">المدير التنفيذي</span>
+            <span className="text-sm font-bold leading-none">أحمد العبدالله</span>
+            <span className="text-[10px] text-muted-foreground mt-1">المدير التنفيذي</span>
           </div>
         </div>
       </SidebarFooter>
