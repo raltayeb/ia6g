@@ -4,56 +4,56 @@
 
 @layer base {
   :root {
-    --background: 120 100% 97.5%; /* #F0FFF0 Honey Dew */
-    --foreground: 120 40% 10%;
+    --background: 240 10% 97%; /* iOS Light Gray Background */
+    --foreground: 240 10% 10%;
     --card: 0 0% 100%;
-    --card-foreground: 120 40% 10%;
+    --card-foreground: 240 10% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 120 40% 10%;
-    --primary: 120 61% 34%; /* #228B22 Forest Green */
-    --primary-foreground: 0 0% 98%;
-    --secondary: 120 30% 90%;
-    --secondary-foreground: 120 61% 20%;
-    --muted: 120 20% 92%;
-    --muted-foreground: 120 10% 40%;
-    --accent: 120 61% 50%; /* #32CD32 Lime Green */
+    --popover-foreground: 240 10% 10%;
+    --primary: 210 100% 50%; /* Apple Blue */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 5% 96%;
+    --secondary-foreground: 240 10% 15%;
+    --muted: 240 5% 90%;
+    --muted-foreground: 240 10% 40%;
+    --accent: 210 100% 50%;
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 120 20% 85%;
-    --input: 120 20% 85%;
-    --ring: 120 61% 34%;
-    --radius: 0.75rem;
-    --sidebar-background: 120 40% 98%;
-    --sidebar-foreground: 120 40% 20%;
-    --sidebar-primary: 120 61% 34%;
+    --destructive: 0 100% 50%; /* Apple Red */
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 6% 90%;
+    --input: 240 6% 90%;
+    --ring: 210 100% 50%;
+    --radius: 12px; /* iOS-style rounded corners */
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 240 10% 15%;
+    --sidebar-primary: 210 100% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 120 30% 92%;
-    --sidebar-accent-foreground: 120 61% 25%;
-    --sidebar-border: 120 20% 90%;
-    --sidebar-ring: 120 61% 34%;
+    --sidebar-accent: 240 5% 96%;
+    --sidebar-accent-foreground: 210 100% 45%;
+    --sidebar-border: 240 6% 90%;
+    --sidebar-ring: 210 100% 50%;
   }
 
   .dark {
-    --background: 120 40% 5%;
-    --foreground: 120 10% 98%;
-    --card: 120 40% 8%;
-    --card-foreground: 120 10% 98%;
-    --popover: 120 40% 8%;
-    --popover-foreground: 120 10% 98%;
-    --primary: 120 61% 45%;
+    --background: 0 0% 0%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 10%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 10%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 210 100% 50%;
     --primary-foreground: 0 0% 98%;
-    --secondary: 120 30% 15%;
-    --secondary-foreground: 120 10% 98%;
-    --muted: 120 30% 15%;
-    --muted-foreground: 120 10% 65%;
-    --accent: 120 61% 50%;
+    --secondary: 240 10% 15%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 10% 15%;
+    --muted-foreground: 240 10% 65%;
+    --accent: 210 100% 50%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 120 30% 18%;
-    --input: 120 30% 18%;
-    --ring: 120 61% 45%;
+    --border: 240 10% 20%;
+    --input: 240 10% 20%;
+    --ring: 210 100% 50%;
   }
 }
 
@@ -63,15 +63,23 @@
   }
   body {
     @apply bg-background text-foreground font-body;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
 @layer utilities {
   .font-body {
-    font-family: 'Noto Sans Arabic', 'Inter', sans-serif;
+    font-family: 'Cairo', sans-serif;
   }
   .font-headline {
-    font-family: 'Noto Sans Arabic', 'Inter', sans-serif;
+    font-family: 'Cairo', sans-serif;
+  }
+  /* HIG shadows */
+  .shadow-hig {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+  .shadow-hig-large {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
   }
 }

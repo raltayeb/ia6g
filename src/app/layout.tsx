@@ -2,8 +2,8 @@ import type {Metadata} from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'نظام السلام | تخطيط موارد المؤسسات',
-  description: 'نظام شامل لإدارة العقارات، الأسطول، والموارد البشرية',
+  title: 'نظام السلام | إدارة موارد المؤسسات',
+  description: 'نظام متطور لإدارة العقارات، الأسطول، والموارد البشرية بمعايير عالمية',
 };
 
 export default function RootLayout({
@@ -16,9 +16,9 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
       </head>
-      <body className="font-body antialiased bg-background selection:bg-primary/20 selection:text-primary">
+      <body className="font-body antialiased bg-[#F2F2F7] text-[#1C1C1E] selection:bg-primary/20 selection:text-primary">
         {children}
       </body>
     </html>
