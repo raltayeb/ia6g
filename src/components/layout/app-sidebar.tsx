@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -46,7 +47,7 @@ export function AppSidebar() {
   const pathname = usePathname();
 
   return (
-    <Sidebar variant="floating" side="right" collapsible="icon" className="border-l bg-white/50 backdrop-blur-xl">
+    <Sidebar variant="sidebar" side="right" collapsible="icon" className="border-l bg-white">
       <SidebarHeader className="p-6">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/30 shrink-0">
