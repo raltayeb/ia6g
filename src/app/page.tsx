@@ -25,7 +25,7 @@ import {
   CartesianGrid,
   Tooltip
 } from "recharts";
-import { toArabicDigits, formatCurrency, toHijriDate } from "@/lib/utils";
+import { toArabicDigits, formatCurrencyValue, toHijriDate } from "@/lib/utils";
 
 const financialData = [
   { month: "محرم", revenue: 45000, expense: 32000 },
@@ -47,11 +47,11 @@ export default function Dashboard() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center justify-between px-6 bg-white/80 backdrop-blur-md sticky top-0 z-30 border-b">
+      <SidebarInset className="bg-[#F2F2F7]">
+        <header className="flex h-16 shrink-0 items-center justify-between px-6 bg-white/60 backdrop-blur-xl sticky top-0 z-30 border-b">
           <div className="flex items-center gap-4">
             <SidebarTrigger className="-ml-1 text-slate-500" />
-            <div>
+            <div className="text-right">
               <h1 className="font-headline text-lg font-bold tracking-tight">نظرة عامة</h1>
               <p className="text-[10px] text-muted-foreground font-medium">{toHijriDate()}</p>
             </div>
@@ -61,18 +61,21 @@ export default function Dashboard() {
         <div className="flex flex-1 flex-col gap-8 p-6 lg:p-10 max-w-7xl mx-auto w-full">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {stats.map((stat) => (
-              <Card key={stat.title} className="border-none shadow-hig hover:shadow-hig-large transition-all duration-300">
+              <Card key={stat.title} className="border-none shadow-hig hover:shadow-hig-large transition-all duration-300 rounded-3xl overflow-hidden bg-white/80 backdrop-blur-sm">
                 <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
                   <CardTitle className="text-xs font-bold text-muted-foreground">{stat.title}</CardTitle>
-                  <div className={`p-2 rounded-xl bg-slate-50 ${stat.color}`}>
-                    <stat.icon className="h-4 w-4" />
+                  <div className={`p-2.5 rounded-2xl bg-slate-50 ${stat.color}`}>
+                    <stat.icon className="h-5 w-5" />
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-black">
-                    {stat.isCurrency ? formatCurrency(stat.value as number) : toArabicDigits(stat.value)}
+                  <div className="flex items-center gap-1">
+                    <span className="text-2xl font-black">
+                      {stat.isCurrency ? formatCurrencyValue(stat.value as number) : toArabicDigits(stat.value)}
+                    </span>
+                    {stat.isCurrency && <SaudiRiyalIcon className="h-5 w-5 text-primary opacity-80" />}
                   </div>
-                  <p className="text-[11px] mt-1 font-bold">
+                  <p className="text-[11px] mt-2 font-bold">
                     <span className="text-emerald-500 inline-flex items-center">
                       <ArrowUpRight className="h-3 w-3 ml-0.5" />
                       {stat.trend}
@@ -85,10 +88,10 @@ export default function Dashboard() {
           </div>
 
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-7">
-            <Card className="lg:col-span-4 border-none shadow-hig">
+            <Card className="lg:col-span-4 border-none shadow-hig rounded-3xl bg-white/80 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-base font-bold">نمو الإيرادات</CardTitle>
-                <CardDescription className="text-xs font-medium italic text-slate-400">تحليل الأداء المالي الربعي (ر.س)</CardDescription>
+                <CardDescription className="text-xs font-medium italic text-slate-400">تحليل الأداء المالي الربعي</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="h-[320px]" dir="ltr">
@@ -118,16 +121,22 @@ export default function Dashboard() {
                         content={({ active, payload }) => {
                           if (active && payload && payload.length) {
                             return (
-                              <div className="rounded-2xl border-none bg-white p-3 shadow-hig-large text-right min-w-[120px]">
-                                <p className="text-[10px] font-black mb-2 text-slate-800">{payload[0].payload.month}</p>
-                                <div className="space-y-1">
+                              <div className="rounded-2xl border-none bg-white p-4 shadow-hig-large text-right min-w-[140px]">
+                                <p className="text-[10px] font-black mb-2 text-slate-800 border-b pb-1">{payload[0].payload.month}</p>
+                                <div className="space-y-2 pt-1">
                                   <div className="flex items-center justify-between gap-4">
                                     <span className="text-[10px] font-bold text-slate-500">الإيرادات:</span>
-                                    <span className="text-[11px] font-black text-blue-600">{formatCurrency(payload[0].value as number)}</span>
+                                    <div className="flex items-center gap-0.5">
+                                      <span className="text-[11px] font-black text-blue-600">{formatCurrencyValue(payload[0].value as number)}</span>
+                                      <SaudiRiyalIcon className="h-3 w-3 text-blue-600" />
+                                    </div>
                                   </div>
                                   <div className="flex items-center justify-between gap-4">
                                     <span className="text-[10px] font-bold text-slate-500">المصروفات:</span>
-                                    <span className="text-[11px] font-black text-rose-500">{formatCurrency(payload[1].value as number)}</span>
+                                    <div className="flex items-center gap-0.5">
+                                      <span className="text-[11px] font-black text-rose-500">{formatCurrencyValue(payload[1].value as number)}</span>
+                                      <SaudiRiyalIcon className="h-3 w-3 text-rose-500" />
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -136,15 +145,15 @@ export default function Dashboard() {
                           return null;
                         }}
                       />
-                      <Bar dataKey="revenue" fill="#3b82f6" radius={[6, 6, 0, 0]} barSize={24} />
-                      <Bar dataKey="expense" fill="#f43f5e" radius={[6, 6, 0, 0]} barSize={24} />
+                      <Bar dataKey="revenue" fill="hsl(var(--primary))" radius={[8, 8, 0, 0]} barSize={28} />
+                      <Bar dataKey="expense" fill="#f43f5e" radius={[8, 8, 0, 0]} barSize={28} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="lg:col-span-3 border-none shadow-hig">
+            <Card className="lg:col-span-3 border-none shadow-hig rounded-3xl bg-white/80 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-base font-bold">النشاط الأخير</CardTitle>
                 <CardDescription className="text-xs font-medium text-slate-400">آخر التحديثات عبر جميع الأقسام</CardDescription>
@@ -159,11 +168,11 @@ export default function Dashboard() {
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-4 group cursor-default">
                       <div className={`mt-1.5 h-2 w-2 rounded-full shrink-0 ${item.dot} ring-4 ring-slate-50`} />
-                      <div className="flex-1 space-y-0.5">
+                      <div className="flex-1 space-y-0.5 text-right">
                         <p className="text-xs font-bold group-hover:text-primary transition-colors">{item.title}</p>
                         <p className="text-[10px] text-muted-foreground font-medium">{item.sub}</p>
                       </div>
-                      <div className="text-[9px] font-bold text-slate-400 shrink-0">{item.time}</div>
+                      <div className="text-[9px] font-bold text-slate-400 shrink-0">{toArabicDigits(item.time)}</div>
                     </div>
                   ))}
                 </div>

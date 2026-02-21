@@ -10,17 +10,17 @@ export function cn(...inputs: ClassValue[]) {
  */
 export function toArabicDigits(num: string | number | undefined): string {
   if (num === undefined || num === null) return "";
-  const str = num.toString();
+  const str = typeof num === 'number' ? num.toLocaleString('en-US') : num.toString();
   const arabicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
   return str.replace(/[0-9]/g, (d) => arabicDigits[parseInt(d)]);
 }
 
 /**
- * تنسيق العملة بالريال السعودي مع الأرقام العربية
+ * تنسيق العملة بالأرقام العربية فقط (بدون الرمز)
  */
-export function formatCurrency(amount: number | undefined): string {
-  if (amount === undefined) return toArabicDigits(0) + " ر.س";
-  return toArabicDigits(amount.toLocaleString('en-US')) + " ر.س";
+export function formatCurrencyValue(amount: number | undefined): string {
+  if (amount === undefined) return toArabicDigits(0);
+  return toArabicDigits(amount.toLocaleString('en-US'));
 }
 
 /**

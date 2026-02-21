@@ -46,7 +46,7 @@ export function AppSidebar() {
   const pathname = usePathname();
 
   return (
-    <Sidebar variant="sidebar" side="right" collapsible="icon" className="border-l bg-white">
+    <Sidebar variant="floating" side="right" collapsible="icon" className="border-l bg-white/50 backdrop-blur-xl">
       <SidebarHeader className="p-6">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/30 shrink-0">
@@ -115,9 +115,9 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-6 border-t mt-auto">
+      <SidebarFooter className="p-6 border-t mt-auto bg-slate-50/50">
         <div className="flex items-center gap-4 group-data-[collapsible=icon]:hidden">
-          <div className="h-10 w-10 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-600 font-black shrink-0 shadow-sm border border-slate-200/50">أ</div>
+          <div className="h-10 w-10 rounded-2xl bg-white flex items-center justify-center text-slate-600 font-black shrink-0 shadow-sm border border-slate-200/50">أ</div>
           <div className="flex flex-col truncate">
             <span className="text-[13px] font-black leading-none">أحمد العبدالله</span>
             <span className="text-[10px] text-muted-foreground font-bold mt-1">المدير التنفيذي</span>
