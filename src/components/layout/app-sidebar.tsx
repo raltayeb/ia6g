@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -9,6 +10,8 @@ import {
   Wallet,
   Settings,
   ShieldCheck,
+  Briefcase,
+  CheckSquare,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -28,6 +31,11 @@ import {
 
 const mainNav = [
   { title: "لوحة التحكم", icon: LayoutDashboard, url: "/" },
+  { title: "إدارة المهام", icon: CheckSquare, url: "/tasks" },
+  { title: "علاقات العملاء", icon: Briefcase, url: "/crm" },
+];
+
+const operationsNav = [
   { title: "العقارات", icon: Building2, url: "/properties" },
   { title: "الأسطول", icon: Car, url: "/vehicles" },
   { title: "الموارد البشرية", icon: Users, url: "/employees" },
@@ -58,10 +66,28 @@ export function AppSidebar() {
       
       <SidebarContent className="px-3">
         <SidebarGroup>
-          <SidebarGroupLabel className="px-4 text-[10px] font-medium text-muted-foreground uppercase tracking-widest mb-2 text-right w-full">الرئيسية</SidebarGroupLabel>
+          <SidebarGroupLabel className="px-4 text-[10px] font-medium text-muted-foreground uppercase tracking-widest mb-2 text-right w-full">العامة</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {mainNav.map((item) => (
+                <SidebarMenuItem key={item.url} className="mb-1">
+                  <SidebarMenuButton asChild isActive={pathname === item.url} tooltip={item.title} className="h-11 rounded-full px-4 transition-all hover:bg-emerald-50/50 data-[active=true]:bg-emerald-50 data-[active=true]:text-primary border-none">
+                    <Link href={item.url} className="flex items-center gap-4 flex-row-reverse w-full justify-end">
+                      <span className="text-[13px] font-medium">{item.title}</span>
+                      <item.icon className={`h-5 w-5 shrink-0 ${pathname === item.url ? "text-primary" : "text-slate-400"}`} />
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup className="mt-4">
+          <SidebarGroupLabel className="px-4 text-[10px] font-medium text-muted-foreground uppercase tracking-widest mb-2 text-right w-full">العمليات</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {operationsNav.map((item) => (
                 <SidebarMenuItem key={item.url} className="mb-1">
                   <SidebarMenuButton asChild isActive={pathname === item.url} tooltip={item.title} className="h-11 rounded-full px-4 transition-all hover:bg-emerald-50/50 data-[active=true]:bg-emerald-50 data-[active=true]:text-primary border-none">
                     <Link href={item.url} className="flex items-center gap-4 flex-row-reverse w-full justify-end">

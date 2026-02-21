@@ -48,3 +48,24 @@ export interface Transaction {
   type: 'Income' | 'Expense';
   category: 'Property' | 'Fleet' | 'HR' | 'Other';
 }
+
+export interface Task {
+  id: string;
+  title: string;
+  status: 'Pending' | 'In Progress' | 'Completed' | 'Delayed';
+  priority: 'High' | 'Medium' | 'Low';
+  category: 'CRM' | 'HR' | 'Fleet' | 'Finance' | 'Property';
+  dueDate: string;
+  assigneeId?: string;
+  assigneeName?: string;
+}
+
+export interface Lead {
+  id: string;
+  companyName: string;
+  contactPerson: string;
+  status: 'New' | 'Contacted' | 'Qualified' | 'Proposal' | 'Won' | 'Lost';
+  value: number;
+  source: string;
+  lastContact: string;
+}
