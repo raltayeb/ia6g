@@ -44,7 +44,7 @@ export default function AccommodationsPage() {
           <div className="grid gap-4 md:grid-cols-3">
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground uppercase">إجمالي السعة</<<<<<<< CardTitle>
+                <CardTitle className="text-sm font-medium text-muted-foreground uppercase">إجمالي السعة</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">212 وحدة</div>
