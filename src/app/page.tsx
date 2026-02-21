@@ -1,4 +1,3 @@
-
 "use client";
 
 import { 
@@ -51,17 +50,17 @@ export default function Dashboard() {
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 px-4 border-b">
           <SidebarTrigger className="-ml-1" />
-          <h1 className="font-headline text-xl font-bold text-primary">لوحة قيادة السلام</h1>
+          <h1 className="font-headline text-xl font-bold text-primary mr-2">لوحة قيادة السلام</h1>
         </header>
         <div className="flex flex-1 flex-col gap-6 p-6 overflow-auto">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {stats.map((stat) => (
               <Card key={stat.title} className="hover:shadow-md transition-shadow">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
-                  <stat.icon className={`h-4 w-4 ${stat.color}`} />
+                  <CardTitle className="text-sm font-medium text-right w-full">{stat.title}</CardTitle>
+                  <stat.icon className={`h-4 w-4 ${stat.color} shrink-0`} />
                 </CardHeader>
-                <CardContent>
+                <CardContent className="text-right">
                   <div className="text-2xl font-bold">{stat.value}</div>
                   <p className="text-xs text-muted-foreground">
                     <span className="text-emerald-600 font-medium inline-flex items-center">
@@ -77,12 +76,12 @@ export default function Dashboard() {
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
             <Card className="lg:col-span-4">
-              <CardHeader>
+              <CardHeader className="text-right">
                 <CardTitle>الأداء المالي</CardTitle>
                 <CardDescription>الإيرادات مقابل المصروفات شهرياً (ر.س)</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="h-[300px]">
+                <div className="h-[300px]" dir="ltr">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={financialData}>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} />
@@ -92,15 +91,15 @@ export default function Dashboard() {
                         content={({ active, payload }) => {
                           if (active && payload && payload.length) {
                             return (
-                              <div className="rounded-lg border bg-background p-2 shadow-sm">
+                              <div className="rounded-lg border bg-background p-2 shadow-sm text-right">
                                 <div className="grid grid-cols-2 gap-2">
                                   <div className="flex flex-col">
                                     <span className="text-[0.70rem] uppercase text-muted-foreground">الإيرادات</span>
-                                    <span className="font-bold text-emerald-600">{payload[0].value}</span>
+                                    <span className="font-bold text-emerald-600">{payload[0].value.toLocaleString()} ر.س</span>
                                   </div>
                                   <div className="flex flex-col">
                                     <span className="text-[0.70rem] uppercase text-muted-foreground">المصروفات</span>
-                                    <span className="font-bold text-red-600">{payload[1].value}</span>
+                                    <span className="font-bold text-red-600">{payload[1].value.toLocaleString()} ر.س</span>
                                   </div>
                                 </div>
                               </div>
@@ -118,7 +117,7 @@ export default function Dashboard() {
             </Card>
 
             <Card className="lg:col-span-3">
-              <CardHeader>
+              <CardHeader className="text-right">
                 <CardTitle>آخر التحديثات</CardTitle>
                 <CardDescription>أحدث الأحداث من جميع الأقسام</CardDescription>
               </CardHeader>
@@ -131,12 +130,12 @@ export default function Dashboard() {
                     { title: "معالجة دفعة زكاة", sub: "إقرار الربع الثاني 2024", time: "منذ يومين", type: "finance" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-4">
-                      <div className="h-2 w-2 rounded-full bg-primary" />
+                      <div className="h-2 w-2 rounded-full bg-primary shrink-0" />
                       <div className="flex-1 space-y-1 text-right">
                         <p className="text-sm font-medium leading-none">{item.title}</p>
                         <p className="text-xs text-muted-foreground">{item.sub}</p>
                       </div>
-                      <div className="text-xs text-muted-foreground">{item.time}</div>
+                      <div className="text-xs text-muted-foreground shrink-0">{item.time}</div>
                     </div>
                   ))}
                 </div>

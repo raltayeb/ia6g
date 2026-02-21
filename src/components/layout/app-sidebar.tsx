@@ -1,4 +1,3 @@
-
 "use client";
 
 import {
@@ -47,10 +46,10 @@ export function AppSidebar() {
   const pathname = usePathname();
 
   return (
-    <Sidebar variant="inset" collapsible="icon">
-      <SidebarHeader className="p-4">
+    <Sidebar variant="inset" side="right" collapsible="icon">
+      <SidebarHeader className="p-4 text-right">
         <div className="flex items-center gap-3 overflow-hidden">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-lg">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-lg shrink-0">
             <Building2 className="h-6 w-6" />
           </div>
           <div className="flex flex-col truncate group-data-[collapsible=icon]:hidden">
@@ -59,9 +58,9 @@ export function AppSidebar() {
           </div>
         </div>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="text-right">
         <SidebarGroup>
-          <SidebarGroupLabel>العمليات</SidebarGroupLabel>
+          <SidebarGroupLabel className="justify-start">العمليات</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {mainNav.map((item) => (
@@ -79,7 +78,7 @@ export function AppSidebar() {
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel>المالية والضرائب</SidebarGroupLabel>
+          <SidebarGroupLabel className="justify-start">المالية والضرائب</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {financialNav.map((item) => (
@@ -97,7 +96,7 @@ export function AppSidebar() {
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel>الإدارة</SidebarGroupLabel>
+          <SidebarGroupLabel className="justify-start">الإدارة</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {adminNav.map((item) => (
@@ -114,9 +113,9 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className="p-4 border-t">
+      <SidebarFooter className="p-4 border-t text-right">
         <div className="flex items-center gap-3 group-data-[collapsible=icon]:hidden">
-          <div className="h-9 w-9 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold">مدير</div>
+          <div className="h-9 w-9 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold shrink-0">مدير</div>
           <div className="flex flex-col truncate">
             <span className="text-sm font-bold">المدير العام</span>
             <span className="text-[10px] text-muted-foreground">admin@alsalam.sa</span>
