@@ -29,7 +29,7 @@ import {
 } from "@/components/ui/sidebar";
 
 const mainNav = [
-  { title: "لوحة التحكم", icon: LayoutDashboard, url: "/" },
+  { title: "لوحة التحكم", icon: LayoutDashboard, url: "/overview" },
   { title: "إدارة المهام", icon: CheckSquare, url: "/tasks" },
   { title: "علاقات العملاء", icon: Briefcase, url: "/crm" },
 ];
