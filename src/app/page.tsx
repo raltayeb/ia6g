@@ -8,7 +8,6 @@ import {
   TrendingUp, 
   DollarSign,
   ArrowUpRight,
-  ArrowDownRight
 } from "lucide-react";
 import { 
   Card, 
@@ -19,11 +18,6 @@ import {
 } from "@/components/ui/card";
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/layout/app-sidebar";
-import { 
-  ChartContainer, 
-  ChartTooltip, 
-  ChartTooltipContent 
-} from "@/components/ui/chart";
 import { 
   Bar, 
   BarChart, 
@@ -60,7 +54,6 @@ export default function Dashboard() {
           <h1 className="font-headline text-xl font-bold text-primary">لوحة قيادة السلام</h1>
         </header>
         <div className="flex flex-1 flex-col gap-6 p-6 overflow-auto">
-          {/* Quick Stats */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {stats.map((stat) => (
               <Card key={stat.title} className="hover:shadow-md transition-shadow">
@@ -72,7 +65,7 @@ export default function Dashboard() {
                   <div className="text-2xl font-bold">{stat.value}</div>
                   <p className="text-xs text-muted-foreground">
                     <span className="text-emerald-600 font-medium inline-flex items-center">
-                      <ArrowUpRight className="h-3 w-3 mr-1" />
+                      <ArrowUpRight className="h-3 w-3 ml-1" />
                       {stat.trend}
                     </span>{" "}
                     مقارنة بالشهر الماضي
@@ -83,7 +76,6 @@ export default function Dashboard() {
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
-            {/* Financial Trend */}
             <Card className="lg:col-span-4">
               <CardHeader>
                 <CardTitle>الأداء المالي</CardTitle>
@@ -95,7 +87,7 @@ export default function Dashboard() {
                     <BarChart data={financialData}>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} />
                       <XAxis dataKey="month" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} />
-                      <YAxis stroke="#888888" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `${value/1000}k`} />
+                      <YAxis stroke="#888888" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `${value/1000} ألف`} />
                       <Tooltip 
                         content={({ active, payload }) => {
                           if (active && payload && payload.length) {
@@ -125,7 +117,6 @@ export default function Dashboard() {
               </CardContent>
             </Card>
 
-            {/* Recent Activities */}
             <Card className="lg:col-span-3">
               <CardHeader>
                 <CardTitle>آخر التحديثات</CardTitle>
@@ -141,7 +132,7 @@ export default function Dashboard() {
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-4">
                       <div className="h-2 w-2 rounded-full bg-primary" />
-                      <div className="flex-1 space-y-1">
+                      <div className="flex-1 space-y-1 text-right">
                         <p className="text-sm font-medium leading-none">{item.title}</p>
                         <p className="text-xs text-muted-foreground">{item.sub}</p>
                       </div>

@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -20,7 +21,6 @@ import { Badge } from "@/components/ui/badge";
 export default function ZakatPage() {
   const [year, setYear] = useState("2024");
   
-  // Simulated data for demonstration
   const zakatAssets = {
     realEstate: 35000000,
     fleet: 12000000,
@@ -38,21 +38,21 @@ export default function ZakatPage() {
         <header className="flex h-16 shrink-0 items-center justify-between gap-2 px-6 border-b">
           <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1" />
-            <h1 className="font-headline text-xl font-bold text-primary">Zakat & Tax Reporting</h1>
+            <h1 className="font-headline text-xl font-bold text-primary">تقارير الزكاة والضريبة</h1>
           </div>
           <div className="flex gap-2">
             <Select value={year} onValueChange={setYear}>
-              <SelectTrigger className="w-[120px]">
-                <SelectValue placeholder="Year" />
+              <SelectTrigger className="w-[140px]">
+                <SelectValue placeholder="السنة" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="2024">Hijri 1445</SelectItem>
-                <SelectItem value="2023">Hijri 1444</SelectItem>
+                <SelectItem value="2024">هجري 1445</SelectItem>
+                <SelectItem value="2023">هجري 1444</SelectItem>
               </SelectContent>
             </Select>
             <Button variant="outline" className="gap-2">
               <Download className="h-4 w-4" />
-              Export GAZT Report
+              تصدير تقرير هيئة الزكاة
             </Button>
           </div>
         </header>
@@ -60,9 +60,9 @@ export default function ZakatPage() {
         <div className="flex flex-1 flex-col gap-6 p-6 overflow-auto">
           <Alert className="bg-primary/5 border-primary/20">
             <Info className="h-4 w-4 text-primary" />
-            <AlertTitle className="text-primary font-bold">GAZT Compliance Notice</AlertTitle>
+            <AlertTitle className="text-primary font-bold">تنبيه الامتثال للزكاة والضريبة</AlertTitle>
             <AlertDescription className="text-primary/80">
-              The calculations below are based on the standard 2.5% Zakat rate for net wealth as per ZATCA (Saudi Zakat, Tax and Customs Authority) guidelines.
+              تستند الحسابات أدناه إلى النسبة القياسية للزكاة وهي 2.5% من صافي الثروة وفقاً لإرشادات هيئة الزكاة والضريبة والجمارك (ZATCA).
             </AlertDescription>
           </Alert>
 
@@ -71,22 +71,22 @@ export default function ZakatPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Calculator className="h-5 w-5 text-primary" />
-                  Asset Valuation Summary
+                  ملخص تقييم الأصول
                 </CardTitle>
-                <CardDescription>Breakdown of assets subject to Zakat for the current period</CardDescription>
+                <CardDescription>تفاصيل الأصول الخاضعة للزكاة للفترة الحالية</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="space-y-4">
                   {[
-                    { label: "Owned Real Estate Portfolio", value: zakatAssets.realEstate, percentage: 60 },
-                    { label: "Fleet & Heavy Equipment", value: zakatAssets.fleet, percentage: 20 },
-                    { label: "Liquidity (Bank Balances)", value: zakatAssets.cash, percentage: 15 },
-                    { label: "Outstanding Invoices (Receivables)", value: zakatAssets.accountsReceivable, percentage: 5 },
+                    { label: "محفظة العقارات المملوكة", value: zakatAssets.realEstate, percentage: 60 },
+                    { label: "الأسطول والمعدات الثقيلة", value: zakatAssets.fleet, percentage: 20 },
+                    { label: "السيولة (أرصدة البنوك)", value: zakatAssets.cash, percentage: 15 },
+                    { label: "الفواتير المستحقة (المدينون)", value: zakatAssets.accountsReceivable, percentage: 5 },
                   ].map((item) => (
                     <div key={item.label} className="space-y-1.5">
                       <div className="flex justify-between text-sm">
                         <span className="font-medium">{item.label}</span>
-                        <span className="font-mono">SAR {item.value.toLocaleString()}</span>
+                        <span className="font-mono">{item.value.toLocaleString()} ر.س</span>
                       </div>
                       <Progress value={item.percentage} className="h-2" />
                     </div>
@@ -95,12 +95,12 @@ export default function ZakatPage() {
                 
                 <div className="pt-4 border-t flex justify-between items-end">
                   <div>
-                    <p className="text-sm text-muted-foreground uppercase tracking-wider">Total Zakatable Wealth</p>
-                    <p className="text-3xl font-bold">SAR {totalWealth.toLocaleString()}</p>
+                    <p className="text-sm text-muted-foreground uppercase tracking-wider">إجمالي الثروة الخاضعة للزكاة</p>
+                    <p className="text-3xl font-bold">{totalWealth.toLocaleString()} ر.س</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm text-emerald-600 font-bold uppercase tracking-wider">Net Zakat Due (2.5%)</p>
-                    <p className="text-3xl font-bold text-emerald-600">SAR {zakatAmount.toLocaleString()}</p>
+                    <p className="text-sm text-emerald-600 font-bold uppercase tracking-wider">صافي الزكاة المستحقة (2.5%)</p>
+                    <p className="text-3xl font-bold text-emerald-600">{zakatAmount.toLocaleString()} ر.س</p>
                   </div>
                 </div>
               </CardContent>
@@ -111,32 +111,32 @@ export default function ZakatPage() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <ShieldCheck className="h-5 w-5" />
-                    Filing Status
+                    حالة الإقرار
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="p-3 bg-white/10 rounded-lg">
-                    <p className="text-xs uppercase opacity-70">Current Phase</p>
-                    <p className="text-lg font-bold">Data Reconciliation</p>
+                    <p className="text-xs uppercase opacity-70">المرحلة الحالية</p>
+                    <p className="text-lg font-bold">تسوية البيانات</p>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="h-2 w-2 rounded-full bg-yellow-400 animate-pulse" />
-                    <span className="text-sm">Pending External Audit</span>
+                    <span className="text-sm">في انتظار التدقيق الخارجي</span>
                   </div>
                   <Button className="w-full bg-white text-primary hover:bg-white/90 font-bold mt-2">
-                    Submit Filing
+                    تقديم الإقرار
                   </Button>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-sm">Zakat History</CardTitle>
+                  <CardTitle className="text-sm">سجل الزكاة</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {[
-                    { year: "1444 H", amount: "SAR 1,240,000", status: "Paid" },
-                    { year: "1443 H", amount: "SAR 1,180,000", status: "Paid" },
+                    { year: "1444 هـ", amount: "1,240,000 ر.س", status: "مدفوع" },
+                    { year: "1443 هـ", amount: "1,180,000 ر.س", status: "مدفوع" },
                   ].map((h) => (
                     <div key={h.year} className="flex justify-between items-center text-sm border-b pb-2 last:border-0 last:pb-0">
                       <div>
