@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Building2, Plus, Search, MapPin, MoreVertical, Edit, Trash2, Eye, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,11 +22,12 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Property } from "@/types/erp";
 import { SaudiRiyalIcon } from "@/components/icons/saudi-riyal";
 import { toArabicDigits, formatCurrencyValue } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 
 const mockProperties: Property[] = [
   { id: "1", name: "ساحة السلام التجارية", type: "Commercial", location: "الرياض، العليا", status: "Occupied", monthlyIncome: 45000, value: 5500000 },
@@ -37,6 +39,7 @@ const mockProperties: Property[] = [
 
 export default function PropertiesPage() {
   const { toast } = useToast();
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
 
   const handleAction = (action: string, name: string) => {
     toast({
@@ -48,45 +51,45 @@ export default function PropertiesPage() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset className="bg-[#F2F2F7]">
-        <header className="flex h-16 shrink-0 items-center justify-between gap-2 px-6 border-b bg-white/60 backdrop-blur-xl sticky top-0 z-30">
+      <SidebarInset className="bg-[#F8F9FA]">
+        <header className="m3-header">
           <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1 text-primary" />
-            <h1 className="text-sm font-black text-primary">إدارة العقارات</h1>
+            <h1 className="text-sm font-medium text-primary">إدارة العقارات</h1>
           </div>
-          <Button size="sm" className="gap-2 rounded-xl shadow-sm font-bold h-9" onClick={() => handleAction("إضافة", "جديد")}>
+          <Button size="sm" className="gap-2 rounded-full shadow-sm font-medium h-9 px-5" onClick={() => handleAction("إضافة", "جديد")}>
             <Plus className="h-4 w-4" />
             إضافة عقار
           </Button>
         </header>
         
-        <div className="flex flex-1 flex-col gap-6 p-6">
+        <div className="flex flex-1 flex-col gap-6 p-6" dir="rtl">
           <div className="grid gap-4 md:grid-cols-3">
-            <Card className="border-none shadow-sm rounded-3xl bg-white/80">
-              <CardHeader className="pb-2 text-right">
-                <CardTitle className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">إجمالي الوحدات</CardTitle>
+            <Card className="m3-card border-none">
+              <CardHeader className="pb-2 text-right p-0">
+                <CardTitle className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">إجمالي الوحدات</CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="text-xl font-black text-right">{toArabicDigits(mockProperties.length)} عقارات</div>
+              <CardContent className="p-0 pt-2">
+                <div className="text-xl font-medium text-right">{toArabicDigits(mockProperties.length)} عقارات</div>
               </CardContent>
             </Card>
-            <Card className="border-none shadow-sm rounded-3xl bg-white/80">
-              <CardHeader className="pb-2 text-right">
-                <CardTitle className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">العائد الشهري</CardTitle>
+            <Card className="m3-card border-none">
+              <CardHeader className="pb-2 text-right p-0">
+                <CardTitle className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">العائد الشهري</CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="flex items-center gap-1 justify-end">
-                  <span className="text-xl font-black">{formatCurrencyValue(132000)}</span>
+              <CardContent className="p-0 pt-2">
+                <div className="flex items-center gap-1 justify-start flex-row-reverse">
+                  <span className="text-xl font-medium">{formatCurrencyValue(132000)}</span>
                   <SaudiRiyalIcon className="h-4 w-4 text-primary opacity-80" />
                 </div>
               </CardContent>
             </Card>
-            <Card className="border-none shadow-sm rounded-3xl bg-white/80">
-              <CardHeader className="pb-2 text-right">
-                <CardTitle className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">نسبة الإشغال</CardTitle>
+            <Card className="m3-card border-none">
+              <CardHeader className="pb-2 text-right p-0">
+                <CardTitle className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">نسبة الإشغال</CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="text-xl font-black text-emerald-600 text-right">{toArabicDigits(85)}%</div>
+              <CardContent className="p-0 pt-2">
+                <div className="text-xl font-medium text-emerald-600 text-right">{toArabicDigits(85)}%</div>
               </CardContent>
             </Card>
           </div>
@@ -94,66 +97,70 @@ export default function PropertiesPage() {
           <div className="flex items-center justify-between gap-4">
             <div className="relative flex-1 max-w-sm">
               <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="بحث عن عقار..." className="pr-10 h-10 rounded-2xl border-none bg-white/80 text-xs" dir="rtl" />
+              <Input placeholder="بحث عن عقار..." className="pr-10 h-10 rounded-full border-none bg-white shadow-sm text-xs" dir="rtl" />
             </div>
-            <Button variant="outline" size="sm" className="gap-2 rounded-xl bg-white/80 border-none h-10 px-4 text-xs font-bold">
+            <Button variant="outline" size="sm" className="gap-2 rounded-full bg-white border-none h-10 px-4 text-xs font-medium shadow-sm">
               <Filter className="h-4 w-4" />
               تصفية
             </Button>
           </div>
 
-          <Card className="rounded-3xl border-none bg-white/80 overflow-hidden shadow-sm">
+          <div className="m3-table-container">
             <Table>
-              <TableHeader className="bg-slate-50/50">
-                <TableRow>
-                  <TableHead className="text-right font-bold text-[11px] uppercase tracking-wider">العقار والنوع</TableHead>
-                  <TableHead className="text-right font-bold text-[11px] uppercase tracking-wider">الموقع</TableHead>
-                  <TableHead className="text-right font-bold text-[11px] uppercase tracking-wider">الحالة</TableHead>
-                  <TableHead className="text-right font-bold text-[11px] uppercase tracking-wider">الدخل الشهري</TableHead>
+              <TableHeader className="m3-table-header">
+                <TableRow className="border-none hover:bg-transparent">
+                  <TableHead className="text-right font-medium py-4 px-6">العقار والنوع</TableHead>
+                  <TableHead className="text-right font-medium py-4 px-6">الموقع</TableHead>
+                  <TableHead className="text-right font-medium py-4 px-6">الحالة</TableHead>
+                  <TableHead className="text-right font-medium py-4 px-6">الدخل الشهري</TableHead>
                   <TableHead className="w-[50px]"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {mockProperties.map((prop) => (
-                  <TableRow key={prop.id} className="hover:bg-muted/30 transition-colors border-b border-slate-100/50 last:border-0">
-                    <TableCell className="text-right">
+                  <TableRow 
+                    key={prop.id} 
+                    className="m3-table-row cursor-pointer"
+                    onClick={() => setSelectedProperty(prop)}
+                  >
+                    <TableCell className="text-right py-4 px-6">
                       <div className="flex flex-col">
-                        <span className="font-bold text-xs">{prop.name}</span>
+                        <span className="font-medium text-xs">{prop.name}</span>
                         <span className="text-[9px] text-muted-foreground">{prop.type === 'Commercial' ? 'تجاري' : 'سكني'}</span>
                       </div>
                     </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex items-center gap-1 text-[11px] text-muted-foreground justify-end">
+                    <TableCell className="text-right py-4 px-6">
+                      <div className="flex items-center gap-1 text-[11px] text-muted-foreground justify-start flex-row-reverse">
                         {prop.location}
                         <MapPin className="h-3 w-3" />
                       </div>
                     </TableCell>
-                    <TableCell className="text-right">
+                    <TableCell className="text-right py-4 px-6">
                       <Badge 
                         variant="secondary" 
-                        className={`rounded-lg px-3 py-0.5 text-[9px] font-bold border-none ${
-                          prop.status === "Occupied" ? "bg-emerald-100 text-emerald-700" : 
-                          prop.status === "Vacant" ? "bg-slate-100 text-slate-600" : "bg-rose-100 text-rose-700"
+                        className={`rounded-full px-3 py-0.5 text-[9px] font-medium border-none ${
+                          prop.status === "Occupied" ? "bg-emerald-50 text-emerald-700" : 
+                          prop.status === "Vacant" ? "bg-slate-50 text-slate-600" : "bg-rose-50 text-rose-700"
                         }`}
                       >
                         {prop.status === "Occupied" ? "مؤجر" : prop.status === "Vacant" ? "شاغر" : "صيانة"}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex items-center gap-1 font-black justify-end text-xs">
+                    <TableCell className="text-right py-4 px-6">
+                      <div className="flex items-center gap-1 font-medium justify-start flex-row-reverse text-xs">
                         {formatCurrencyValue(prop.monthlyIncome)}
                         <SaudiRiyalIcon className="h-3.5 w-3.5 opacity-60" />
                       </div>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="py-4 px-6">
                       <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-8 w-8 rounded-xl">
+                        <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                          <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full">
                             <MoreVertical className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-40 rounded-2xl">
-                          <DropdownMenuItem className="flex justify-end gap-2 text-right text-xs" onClick={() => handleAction("عرض", prop.name)}>
+                        <DropdownMenuContent align="end" className="w-40 rounded-2xl border-none shadow-lg">
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right text-xs" onClick={() => setSelectedProperty(prop)}>
                             <span>عرض التفاصيل</span>
                             <Eye className="h-4 w-4" />
                           </DropdownMenuItem>
@@ -173,8 +180,45 @@ export default function PropertiesPage() {
                 ))}
               </TableBody>
             </Table>
-          </Card>
+          </div>
         </div>
+
+        <Sheet open={!!selectedProperty} onOpenChange={() => setSelectedProperty(null)}>
+          <SheetContent side="right" className="rounded-l-3xl border-none p-8" dir="rtl">
+            <SheetHeader className="text-right mb-8">
+              <SheetTitle className="text-lg font-medium text-primary">تفاصيل العقار</SheetTitle>
+              <SheetDescription className="text-xs">معلومات السجل والبيانات المالية</SheetDescription>
+            </SheetHeader>
+            {selectedProperty && (
+              <div className="space-y-6 text-right">
+                <div className="grid gap-4">
+                  <div className="p-4 bg-slate-50 rounded-2xl">
+                    <p className="text-[10px] text-muted-foreground uppercase mb-1">اسم العقار</p>
+                    <p className="text-sm font-medium">{selectedProperty.name}</p>
+                  </div>
+                  <div className="p-4 bg-slate-50 rounded-2xl">
+                    <p className="text-[10px] text-muted-foreground uppercase mb-1">الموقع</p>
+                    <p className="text-sm font-medium">{selectedProperty.location}</p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="p-4 bg-slate-50 rounded-2xl">
+                      <p className="text-[10px] text-muted-foreground uppercase mb-1">القيمة الإجمالية</p>
+                      <div className="flex items-center gap-1 justify-start flex-row-reverse text-sm font-medium">
+                        {formatCurrencyValue(selectedProperty.value)}
+                        <SaudiRiyalIcon className="h-3 w-3" />
+                      </div>
+                    </div>
+                    <div className="p-4 bg-slate-50 rounded-2xl">
+                      <p className="text-[10px] text-muted-foreground uppercase mb-1">الحالة</p>
+                      <Badge className="rounded-full bg-emerald-50 text-emerald-700 border-none mt-1">{selectedProperty.status}</Badge>
+                    </div>
+                  </div>
+                </div>
+                <Button className="w-full rounded-full h-11" onClick={() => setSelectedProperty(null)}>إغلاق</Button>
+              </div>
+            )}
+          </SheetContent>
+        </Sheet>
       </SidebarInset>
     </SidebarProvider>
   );

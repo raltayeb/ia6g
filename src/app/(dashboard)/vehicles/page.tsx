@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Car, Plus, Search, MoreVertical, Fuel, Wrench, User, Edit, Trash2, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,6 +27,7 @@ import { SaudiRiyalIcon } from "@/components/icons/saudi-riyal";
 import { toArabicDigits, formatCurrencyValue } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { Vehicle } from "@/types/erp";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 
 const mockVehicles: Vehicle[] = [
   { id: "1", plateNumber: "أ ب ج 1234", model: "تويوتا هايلكس 2023", type: "Truck", driverName: "أحمد علي", lastServiceDate: "2024-03-10", status: "Active", purchaseValue: 120000 },
@@ -37,6 +39,7 @@ const mockVehicles: Vehicle[] = [
 
 export default function VehiclesPage() {
   const { toast } = useToast();
+  const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
 
   const handleAction = (action: string, plate: string) => {
     toast({
@@ -60,9 +63,9 @@ export default function VehiclesPage() {
           </Button>
         </header>
         
-        <div className="flex flex-1 flex-col gap-6 p-6">
+        <div className="flex flex-1 flex-col gap-6 p-6" dir="rtl">
           <div className="grid gap-4 md:grid-cols-4">
-            <Card className="m3-card">
+            <Card className="m3-card border-none">
               <CardHeader className="pb-2 text-right p-0">
                 <CardTitle className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">إجمالي الوحدات</CardTitle>
               </CardHeader>
@@ -70,7 +73,7 @@ export default function VehiclesPage() {
                 <p className="text-xl font-medium text-right">{toArabicDigits(58)}</p>
               </CardContent>
             </Card>
-            <Card className="m3-card">
+            <Card className="m3-card border-none">
               <CardHeader className="pb-2 text-right p-0">
                 <CardTitle className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">السائقين النشطين</CardTitle>
               </CardHeader>
@@ -78,7 +81,7 @@ export default function VehiclesPage() {
                 <p className="text-xl font-medium text-right">{toArabicDigits(42)}</p>
               </CardContent>
             </Card>
-            <Card className="m3-card">
+            <Card className="m3-card border-none">
               <CardHeader className="pb-2 text-right p-0">
                 <CardTitle className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">في الصيانة</CardTitle>
               </CardHeader>
@@ -86,12 +89,12 @@ export default function VehiclesPage() {
                 <p className="text-xl font-medium text-right">{toArabicDigits(6)}</p>
               </CardContent>
             </Card>
-            <Card className="m3-card">
+            <Card className="m3-card border-none">
               <CardHeader className="pb-2 text-right p-0">
                 <CardTitle className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">تكاليف الوقود</CardTitle>
               </CardHeader>
               <CardContent className="p-0 pt-2">
-                <div className="flex items-center gap-1 justify-end">
+                <div className="flex items-center gap-1 justify-start flex-row-reverse">
                   <span className="text-xl font-medium">{toArabicDigits(12.4)}ألف</span>
                   <SaudiRiyalIcon className="h-4 w-4 text-primary opacity-70" />
                 </div>
@@ -120,7 +123,11 @@ export default function VehiclesPage() {
               </TableHeader>
               <TableBody>
                 {mockVehicles.map((vehicle) => (
-                  <TableRow key={vehicle.id} className="m3-table-row">
+                  <TableRow 
+                    key={vehicle.id} 
+                    className="m3-table-row cursor-pointer"
+                    onClick={() => setSelectedVehicle(vehicle)}
+                  >
                     <TableCell className="text-right font-medium text-xs py-4 px-6">
                       {toArabicDigits(vehicle.plateNumber)}
                     </TableCell>
@@ -138,7 +145,7 @@ export default function VehiclesPage() {
                         variant="secondary"
                         className={`rounded-full px-3 py-0.5 text-[9px] font-medium border-none ${
                           vehicle.status === 'Active' ? "bg-emerald-50 text-emerald-700" : 
-                          vehicle.status === 'Maintenance' ? "bg-amber-50 text-amber-700" : "bg-slate-100 text-slate-600"
+                          vehicle.status === 'Maintenance' ? "bg-amber-50 text-amber-700" : "bg-slate-50 text-slate-600"
                         }`}
                       >
                         {vehicle.status === 'Active' ? 'نشط' : vehicle.status === 'Maintenance' ? 'صيانة' : 'خارج الخدمة'}
@@ -147,13 +154,13 @@ export default function VehiclesPage() {
                     <TableCell className="text-right text-[11px] text-muted-foreground font-normal py-4 px-6">{toArabicDigits(vehicle.lastServiceDate)}</TableCell>
                     <TableCell className="text-center py-4 px-6">
                       <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
+                        <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
                           <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full hover:bg-slate-100">
                             <MoreVertical className="h-4 w-4 text-slate-400" />
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-44 rounded-2xl p-1 border-none shadow-lg">
-                          <DropdownMenuItem className="flex items-center gap-2 text-right justify-end text-xs rounded-xl py-2 cursor-pointer" onClick={() => handleAction("عرض", vehicle.plateNumber)}>
+                          <DropdownMenuItem className="flex items-center gap-2 text-right justify-end text-xs rounded-xl py-2 cursor-pointer" onClick={() => setSelectedVehicle(vehicle)}>
                             <span>عرض التفاصيل</span>
                             <Eye className="h-4 w-4 text-slate-400" />
                           </DropdownMenuItem>
@@ -175,6 +182,47 @@ export default function VehiclesPage() {
             </Table>
           </div>
         </div>
+
+        <Sheet open={!!selectedVehicle} onOpenChange={() => setSelectedVehicle(null)}>
+          <SheetContent side="right" className="rounded-l-3xl border-none p-8" dir="rtl">
+            <SheetHeader className="text-right mb-8">
+              <SheetTitle className="text-lg font-medium text-primary">تفاصيل المركبة</SheetTitle>
+              <SheetDescription className="text-xs">بيانات الأسطول والتشغيل</SheetDescription>
+            </SheetHeader>
+            {selectedVehicle && (
+              <div className="space-y-6 text-right">
+                <div className="grid gap-4">
+                  <div className="p-4 bg-slate-50 rounded-2xl">
+                    <p className="text-[10px] text-muted-foreground uppercase mb-1">رقم اللوحة</p>
+                    <p className="text-sm font-medium">{toArabicDigits(selectedVehicle.plateNumber)}</p>
+                  </div>
+                  <div className="p-4 bg-slate-50 rounded-2xl">
+                    <p className="text-[10px] text-muted-foreground uppercase mb-1">الموديل</p>
+                    <p className="text-sm font-medium">{selectedVehicle.model}</p>
+                  </div>
+                  <div className="p-4 bg-slate-50 rounded-2xl">
+                    <p className="text-[10px] text-muted-foreground uppercase mb-1">السائق المعين</p>
+                    <p className="text-sm font-medium">{selectedVehicle.driverName || "غير محدد"}</p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="p-4 bg-slate-50 rounded-2xl">
+                      <p className="text-[10px] text-muted-foreground uppercase mb-1">قيمة الشراء</p>
+                      <div className="flex items-center gap-1 justify-start flex-row-reverse text-sm font-medium">
+                        {formatCurrencyValue(selectedVehicle.purchaseValue)}
+                        <SaudiRiyalIcon className="h-3 w-3" />
+                      </div>
+                    </div>
+                    <div className="p-4 bg-slate-50 rounded-2xl">
+                      <p className="text-[10px] text-muted-foreground uppercase mb-1">تاريخ الصيانة</p>
+                      <p className="text-sm font-medium">{toArabicDigits(selectedVehicle.lastServiceDate)}</p>
+                    </div>
+                  </div>
+                </div>
+                <Button className="w-full rounded-full h-11" onClick={() => setSelectedVehicle(null)}>إغلاق</Button>
+              </div>
+            )}
+          </SheetContent>
+        </Sheet>
       </SidebarInset>
     </SidebarProvider>
   );
