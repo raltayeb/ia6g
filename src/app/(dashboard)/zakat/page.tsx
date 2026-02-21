@@ -35,30 +35,30 @@ export default function ZakatPage() {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset className="bg-[#F2F2F7]">
-        <header className="flex h-16 shrink-0 items-center justify-between gap-2 px-6 border-b bg-white/60 backdrop-blur-xl sticky top-0 z-30">
+        <header className="m3-header">
           <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1 text-primary" />
-            <h1 className="font-headline text-lg font-bold text-primary">الزكاة والضريبة</h1>
+            <h1 className="text-sm font-medium text-primary">الزكاة والضريبة</h1>
           </div>
           <div className="flex gap-2">
             <Select value={year} onValueChange={setYear}>
-              <SelectTrigger className="w-[130px] rounded-xl text-xs bg-white/80">
+              <SelectTrigger className="w-[130px] rounded-xl text-xs bg-white/80 border-none shadow-sm h-9">
                 <SelectValue placeholder="السنة" />
               </SelectTrigger>
-              <SelectContent className="rounded-xl font-headline">
+              <SelectContent className="rounded-xl border-none shadow-xl">
                 <SelectItem value="2024" className="text-xs">١٤٤٥ هـ</SelectItem>
                 <SelectItem value="2023" className="text-xs">١٤٤٤ هـ</SelectItem>
               </SelectContent>
             </Select>
-            <Button variant="outline" className="gap-2 rounded-xl border-slate-200 bg-white/80 text-xs">
+            <Button variant="outline" size="sm" className="gap-2 rounded-full border-none bg-white shadow-sm text-xs h-9">
               <Download className="h-4 w-4" />
               تقرير ZATCA
             </Button>
           </div>
         </header>
 
-        <div className="flex flex-1 flex-col gap-6 p-6">
-          <Alert className="bg-primary/5 border-primary/10 rounded-2xl">
+        <div className="flex flex-1 flex-col gap-6 p-6" dir="rtl">
+          <Alert className="bg-emerald-50/50 border-emerald-100 rounded-3xl">
             <Info className="h-4 w-4 text-primary" />
             <AlertTitle className="text-primary font-bold text-xs text-right">تنبيه الامتثال للزكاة والضريبة</AlertTitle>
             <AlertDescription className="text-primary/70 text-[10px] text-right">
@@ -67,15 +67,15 @@ export default function ZakatPage() {
           </Alert>
 
           <div className="grid gap-6 md:grid-cols-3">
-            <Card className="md:col-span-2 border-none shadow-sm rounded-3xl bg-white/80 overflow-hidden">
-              <CardHeader className="p-6 text-right">
-                <CardTitle className="flex flex-row-reverse items-center gap-2 text-sm font-bold">
+            <Card className="md:col-span-2 m3-card border-none">
+              <CardHeader className="p-0 mb-6 text-right">
+                <CardTitle className="flex flex-row-reverse items-center justify-end gap-2 text-sm font-medium">
                   <Calculator className="h-4 w-4 text-primary" />
                   ملخص تقييم الأصول
                 </CardTitle>
                 <CardDescription className="text-[10px]">تفاصيل الأصول الخاضعة للزكاة للفترة الحالية</CardDescription>
               </CardHeader>
-              <CardContent className="p-6 pt-0 space-y-6">
+              <CardContent className="p-0 space-y-6">
                 <div className="space-y-5">
                   {[
                     { label: "محفظة العقارات المملوكة", value: zakatAssets.realEstate, percentage: 60 },
@@ -85,7 +85,7 @@ export default function ZakatPage() {
                   ].map((item) => (
                     <div key={item.label} className="space-y-2">
                       <div className="flex flex-row-reverse justify-between text-xs">
-                        <span className="font-bold">{item.label}</span>
+                        <span className="font-medium">{item.label}</span>
                         <span className="font-mono text-[11px]">{toArabicDigits(item.value.toLocaleString())} ر.س</span>
                       </div>
                       <Progress value={item.percentage} className="h-1.5" />
@@ -93,23 +93,23 @@ export default function ZakatPage() {
                   ))}
                 </div>
                 
-                <div className="pt-6 border-t border-slate-100 flex flex-row-reverse justify-between items-end">
+                <div className="pt-6 border-t border-slate-50 flex flex-row-reverse justify-between items-end">
                   <div className="text-right">
-                    <p className="text-[10px] text-muted-foreground uppercase font-black">إجمالي الثروة</p>
-                    <p className="text-2xl font-black">{toArabicDigits(totalWealth.toLocaleString())} ر.س</p>
+                    <p className="text-[10px] text-muted-foreground uppercase font-bold">إجمالي الثروة</p>
+                    <p className="text-2xl font-medium">{toArabicDigits(totalWealth.toLocaleString())} ر.س</p>
                   </div>
                   <div className="text-left">
                     <p className="text-[10px] text-emerald-600 font-bold uppercase">الزكاة المستحقة</p>
-                    <p className="text-2xl font-black text-emerald-600">{toArabicDigits(zakatAmount.toLocaleString())} ر.س</p>
+                    <p className="text-2xl font-medium text-emerald-600">{toArabicDigits(zakatAmount.toLocaleString())} ر.س</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
             <div className="space-y-6">
-              <Card className="bg-primary text-primary-foreground border-none shadow-sm rounded-3xl overflow-hidden">
+              <Card className="bg-primary text-primary-foreground border-none shadow-sm rounded-[28px] overflow-hidden">
                 <CardHeader className="p-6 text-right">
-                  <CardTitle className="flex flex-row-reverse items-center gap-2 text-sm font-bold">
+                  <CardTitle className="flex flex-row-reverse items-center justify-end gap-2 text-sm font-medium">
                     <ShieldCheck className="h-4 w-4" />
                     حالة الإقرار
                   </CardTitle>
@@ -117,33 +117,33 @@ export default function ZakatPage() {
                 <CardContent className="p-6 pt-0 space-y-4 text-right">
                   <div className="p-3 bg-white/10 rounded-2xl">
                     <p className="text-[9px] uppercase opacity-70">المرحلة الحالية</p>
-                    <p className="text-base font-bold">تسوية البيانات</p>
+                    <p className="text-base font-medium">تسوية البيانات</p>
                   </div>
-                  <div className="flex flex-row-reverse items-center gap-2">
+                  <div className="flex flex-row-reverse items-center justify-start gap-2">
                     <div className="h-2 w-2 rounded-full bg-yellow-400 animate-pulse" />
                     <span className="text-[10px] font-medium">في انتظار التدقيق الخارجي</span>
                   </div>
-                  <Button className="w-full bg-white text-primary hover:bg-white/90 font-bold text-xs rounded-xl h-10 mt-2">
+                  <Button className="w-full bg-white text-primary hover:bg-white/90 font-medium text-xs rounded-full h-11 mt-2">
                     تقديم الإقرار
                   </Button>
                 </CardContent>
               </Card>
 
-              <Card className="border-none shadow-sm rounded-3xl bg-white/80 overflow-hidden">
-                <CardHeader className="p-4 text-right">
-                  <CardTitle className="text-xs font-bold">سجل الزكاة التاريخي</CardTitle>
+              <Card className="m3-card border-none">
+                <CardHeader className="p-0 mb-4 text-right">
+                  <CardTitle className="text-xs font-medium">سجل الزكاة التاريخي</CardTitle>
                 </CardHeader>
-                <CardContent className="p-4 pt-0 space-y-4">
+                <CardContent className="p-0 space-y-4">
                   {[
                     { year: "١٤٤٤ هـ", amount: "١,٢٤٠,٠٠٠ ر.س", status: "مدفوع" },
                     { year: "١٤٤٣ هـ", amount: "١,١٨٠,٠٠٠ ر.س", status: "مدفوع" },
                   ].map((h) => (
                     <div key={h.year} className="flex flex-row-reverse justify-between items-center text-xs border-b border-slate-50 pb-3 last:border-0 last:pb-0">
                       <div className="text-right">
-                        <p className="font-bold text-[11px]">{h.year}</p>
+                        <p className="font-medium text-[11px]">{h.year}</p>
                         <p className="text-[9px] text-muted-foreground">{h.amount}</p>
                       </div>
-                      <Badge variant="outline" className="text-emerald-600 bg-emerald-50 border-emerald-100 text-[9px] font-bold rounded-lg">
+                      <Badge variant="outline" className="text-emerald-600 bg-emerald-50 border-none text-[9px] font-medium rounded-lg px-3">
                         {h.status}
                       </Badge>
                     </div>

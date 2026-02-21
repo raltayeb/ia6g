@@ -1,4 +1,3 @@
-
 import type { Metadata } from "next";
 import { Noto_Kufi_Arabic, Nunito_Sans } from "next/font/google";
 import "./globals.css";
@@ -17,7 +16,7 @@ const nunitoSans = Nunito_Sans({
 
 export const metadata: Metadata = {
   title: "شركة طارق الجعفرى | إدارة موارد المؤسسات",
-  description: "نظام متطور لإدارة العقارات، الأسطول، والموارد البشرية بنمط Nova",
+  description: "نظام متطور لإدارة العقارات، الأسطول، والموارد البشرية بنمط MD3",
 };
 
 export default function RootLayout({
