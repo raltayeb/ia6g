@@ -1,4 +1,3 @@
-
 "use client";
 
 import {
@@ -36,7 +35,7 @@ const mainNav = [
 ];
 
 const operationsNav = [
-  { title: "العقارات", icon: Building2, url: "/properties" },
+  { title: "إدارة العقارات", icon: Building2, url: "/properties" },
   { title: "الأسطول", icon: Car, url: "/vehicles" },
   { title: "الموارد البشرية", icon: Users, url: "/employees" },
   { title: "السكن", icon: Home, url: "/accommodations" },
