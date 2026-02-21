@@ -5,7 +5,7 @@ import {
   Car, 
   Users, 
   ArrowUpRight,
-  TrendingUp,
+  LayoutDashboard,
 } from "lucide-react";
 import { SaudiRiyalIcon } from "@/components/icons/saudi-riyal";
 import { 
@@ -62,17 +62,17 @@ export default function Dashboard() {
         <div className="flex flex-1 flex-col gap-4 p-4">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {stats.map((stat) => (
-              <Card key={stat.title}>
+              <Card key={stat.title} className="rounded-xl border shadow-sm">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-xs font-medium text-right w-full">{stat.title}</CardTitle>
                   <stat.icon className={`h-4 w-4 ${stat.color}`} />
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center gap-1 justify-end">
-                    <div className="text-xl font-bold">
+                    <div className="text-lg font-bold">
                       {stat.isCurrency ? formatCurrencyValue(stat.value as number) : toArabicDigits(stat.value)}
                     </div>
-                    {stat.isCurrency && <stat.icon className="h-4 w-4 opacity-70" />}
+                    {stat.isCurrency && <SaudiRiyalIcon className="h-4 w-4 opacity-70" />}
                   </div>
                   <p className="text-[10px] text-emerald-600 flex items-center justify-end gap-1 font-medium mt-1">
                     <ArrowUpRight className="h-3 w-3" />
@@ -84,10 +84,10 @@ export default function Dashboard() {
           </div>
 
           <div className="grid gap-4 lg:grid-cols-7">
-            <Card className="lg:col-span-4">
+            <Card className="lg:col-span-4 rounded-xl border shadow-sm">
               <CardHeader>
-                <CardTitle className="text-right">الأداء المالي</CardTitle>
-                <CardDescription className="text-right">مقارنة الإيرادات والمصروفات</CardDescription>
+                <CardTitle className="text-right text-sm">الأداء المالي</CardTitle>
+                <CardDescription className="text-right text-xs">مقارنة الإيرادات والمصروفات</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="h-[300px]" dir="ltr">
@@ -97,13 +97,13 @@ export default function Dashboard() {
                       <XAxis 
                         dataKey="month" 
                         stroke="#888888" 
-                        fontSize={12} 
+                        fontSize={10} 
                         tickLine={false} 
                         axisLine={false} 
                       />
                       <YAxis 
                         stroke="#888888" 
-                        fontSize={12} 
+                        fontSize={10} 
                         tickLine={false} 
                         axisLine={false} 
                         tickFormatter={(value) => toArabicDigits(`${value/1000}ألف`)}
@@ -124,18 +124,18 @@ export default function Dashboard() {
                           return null;
                         }}
                       />
-                      <Bar dataKey="revenue" fill="currentColor" radius={[4, 4, 0, 0]} className="fill-primary" />
-                      <Bar dataKey="expense" fill="currentColor" radius={[4, 4, 0, 0]} className="fill-muted" />
+                      <Bar dataKey="revenue" fill="currentColor" radius={[2, 2, 0, 0]} className="fill-primary" />
+                      <Bar dataKey="expense" fill="currentColor" radius={[2, 2, 0, 0]} className="fill-muted" />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="lg:col-span-3">
+            <Card className="lg:col-span-3 rounded-xl border shadow-sm">
               <CardHeader>
-                <CardTitle className="text-right">آخر العمليات</CardTitle>
-                <CardDescription className="text-right">تحديثات الأنشطة الميدانية</CardDescription>
+                <CardTitle className="text-right text-sm">آخر العمليات</CardTitle>
+                <CardDescription className="text-right text-xs">تحديثات الأنشطة الميدانية</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -147,8 +147,8 @@ export default function Dashboard() {
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-4 text-right">
                       <div className="flex-1 space-y-1">
-                        <p className="text-sm font-medium leading-none">{item.title}</p>
-                        <p className="text-xs text-muted-foreground">{item.sub}</p>
+                        <p className="text-xs font-medium leading-none">{item.title}</p>
+                        <p className="text-[10px] text-muted-foreground">{item.sub}</p>
                       </div>
                       <div className="text-[10px] text-muted-foreground font-mono">{toArabicDigits(item.time)}</div>
                     </div>
