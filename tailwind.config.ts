@@ -11,19 +11,11 @@ export default {
     extend: {
       fontFamily: {
         sans: [
-          '-apple-system',
-          'BlinkMacSystemFont',
-          '"SF Arabic"',
-          '"Segoe UI"',
-          'Roboto',
-          'Helvetica',
-          'Arial',
+          '"Noto Kufi Arabic"',
           'sans-serif',
         ],
         headline: [
-          '-apple-system',
-          'BlinkMacSystemFont',
-          '"SF Arabic"',
+          '"Noto Kufi Arabic"',
           'sans-serif',
         ],
         mono: [
@@ -90,9 +82,9 @@ export default {
       },
       borderRadius: {
         lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
-        '4xl': '2rem',
+        md: 'calc(var(--radius) - 4px)',
+        sm: 'calc(var(--radius) - 8px)',
+        '4xl': '2.5rem',
       },
       ringWidth: {
         '3': '3px',

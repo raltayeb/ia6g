@@ -17,9 +17,9 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@100..900&display=swap" rel="stylesheet" />
       </head>
-      <body className="font-sans bg-[#F8F9FB] text-[#1C1C1E]">
+      <body className="font-sans bg-[#F7F9F2] text-[#1C1C1E]">
         {children}
         <Toaster />
       </body>
