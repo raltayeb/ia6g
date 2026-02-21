@@ -9,7 +9,6 @@ import {
   Wallet,
   Settings,
   ShieldCheck,
-  Plus,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -26,7 +25,6 @@ import {
   SidebarFooter,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { Button } from "@/components/ui/button";
 
 const mainNav = [
   { title: "لوحة التحكم", icon: LayoutDashboard, url: "/" },
@@ -59,13 +57,6 @@ export function AppSidebar() {
       </SidebarHeader>
       
       <SidebarContent className="px-3">
-        <div className="mb-6 px-3 group-data-[collapsible=icon]:hidden">
-          <Button className="w-full justify-start gap-3 rounded-[20px] h-12 bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm border-none transition-transform active:scale-95">
-            <Plus className="h-5 w-5" />
-            <span className="font-medium text-xs">إضافة سريعة</span>
-          </Button>
-        </div>
-
         <SidebarGroup>
           <SidebarGroupLabel className="px-4 text-[10px] font-medium text-muted-foreground uppercase tracking-widest mb-2 text-right w-full">الرئيسية</SidebarGroupLabel>
           <SidebarGroupContent>
