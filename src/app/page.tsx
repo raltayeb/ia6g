@@ -37,8 +37,6 @@ import {
   Cell,
   PieChart,
   Pie,
-  LineChart,
-  Line,
   AreaChart,
   Area
 } from "recharts";
@@ -174,7 +172,7 @@ export default function Dashboard() {
                           itemStyle={{ fontSize: '10px', fontWeight: '500' }}
                         />
                         <Bar dataKey="revenue" fill="oklch(var(--primary))" radius={[6, 6, 0, 0]} barSize={24} />
-                        <Bar dataKey="expense" fill="oklch(var(--primary) / 0.2)" radius={[6, 6, 0, 0]} barSize={24} />
+                        <Bar dataKey="expense" fill="oklch(var(--primary) / 0.3)" radius={[6, 6, 0, 0]} barSize={24} />
                       </BarChart>
                     </ResponsiveContainer>
                   </div>
@@ -195,7 +193,7 @@ export default function Dashboard() {
                       <AreaChart data={growthData}>
                         <defs>
                           <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="oklch(var(--primary))" stopOpacity={0.3}/>
+                            <stop offset="5%" stopColor="oklch(var(--primary))" stopOpacity={0.4}/>
                             <stop offset="95%" stopColor="oklch(var(--primary))" stopOpacity={0}/>
                           </linearGradient>
                         </defs>
@@ -245,16 +243,32 @@ export default function Dashboard() {
                         dataKey="value"
                       >
                         {distributionData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={index === 0 ? "oklch(var(--primary))" : index === 1 ? "oklch(var(--primary) / 0.6)" : "oklch(var(--primary) / 0.2)"} />
+                          <Cell 
+                            key={`cell-${index}`} 
+                            fill={
+                              index === 0 ? "oklch(var(--primary))" : 
+                              index === 1 ? "oklch(var(--primary) / 0.6)" : 
+                              "oklch(var(--primary) / 0.3)"
+                            } 
+                          />
                         ))}
                       </Pie>
-                      <Tooltip />
+                      <Tooltip 
+                        contentStyle={{ borderRadius: '24px', border: 'none', textAlign: 'right' }}
+                      />
                     </PieChart>
                   </ResponsiveContainer>
                   <div className="flex justify-center gap-4 mt-2">
                     {distributionData.map((item, i) => (
                       <div key={i} className="flex items-center gap-1 text-[9px] font-medium">
-                        <div className="w-2 h-2 rounded-full" style={{ backgroundColor: i === 0 ? "oklch(var(--primary))" : i === 1 ? "oklch(var(--primary) / 0.6)" : "oklch(var(--primary) / 0.2)" }} />
+                        <div 
+                          className="w-2 h-2 rounded-full" 
+                          style={{ 
+                            backgroundColor: i === 0 ? "oklch(var(--primary))" : 
+                                            i === 1 ? "oklch(var(--primary) / 0.6)" : 
+                                            "oklch(var(--primary) / 0.3)" 
+                          }} 
+                        />
                         {item.name}
                       </div>
                     ))}
@@ -266,7 +280,7 @@ export default function Dashboard() {
                 <CardHeader className="p-0 mb-4 text-right">
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-sm font-medium">المهام العاجلة</CardTitle>
-                    <Clock className="h-4 w-4 opacity-60" />
+                    <Clock className="h-4 w-4 opacity-60 text-primary" />
                   </div>
                 </CardHeader>
                 <CardContent className="p-0 space-y-3">
@@ -278,7 +292,7 @@ export default function Dashboard() {
                     >
                       <div className="text-right">
                         <p className="text-[11px] font-medium">{task.title}</p>
-                        <Badge variant="outline" className="text-[8px] mt-1 border-none bg-white px-2">
+                        <Badge variant="outline" className="text-[8px] mt-1 border-none bg-white px-2 text-primary">
                           أولوية {task.priority}
                         </Badge>
                       </div>
