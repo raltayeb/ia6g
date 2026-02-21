@@ -1,7 +1,6 @@
-
 "use client";
 
-import { Users, Plus, Search, MoreVertical, Mail, Phone, MapPin, Home } from "lucide-react";
+import { Users, Plus, Search, MoreVertical, Edit, Trash2, Eye, UserCheck, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
@@ -14,9 +13,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { Employee } from "@/types/erp";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { SaudiRiyalIcon } from "@/components/icons/saudi-riyal";
 import { toArabicDigits, formatCurrencyValue } from "@/lib/utils";
 
@@ -47,7 +53,7 @@ export default function EmployeesPage() {
           <div className="flex items-center justify-between gap-4">
             <div className="relative flex-1 max-w-sm">
               <Search className="absolute right-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="بحث بالاسم، الهوية أو المسمى..." className="pr-9 rounded-xl border-slate-200" />
+              <Input placeholder="بحث بالاسم، الهوية أو المسمى..." className="pr-9 rounded-xl border-slate-200 text-right" dir="rtl" />
             </div>
             <div className="flex items-center gap-2">
               <Badge variant="outline" className="px-3 py-1 rounded-lg">نشط: {toArabicDigits(128)}</Badge>
@@ -66,7 +72,7 @@ export default function EmployeesPage() {
                   <TableHead className="text-right font-bold">الحالة</TableHead>
                   <TableHead className="text-right font-bold">السكن</TableHead>
                   <TableHead className="text-right font-bold">الراتب</TableHead>
-                  <TableHead className="w-[50px]"></TableHead>
+                  <TableHead className="w-[80px] text-center font-bold">إجراءات</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -104,7 +110,7 @@ export default function EmployeesPage() {
                       {emp.housingId ? (
                         <div className="flex items-center gap-1.5 text-xs text-emerald-700 font-bold justify-end">
                           <span>مخصص له</span>
-                          <Home className="h-3 w-3" />
+                          <Users className="h-3 w-3" />
                         </div>
                       ) : (
                         <span className="text-xs text-muted-foreground italic">سكن خاص</span>
@@ -117,9 +123,36 @@ export default function EmployeesPage() {
                       </div>
                     </TableCell>
                     <TableCell className="text-center">
-                      <Button variant="ghost" size="icon" className="rounded-lg">
-                        <MoreVertical className="h-4 w-4" />
-                      </Button>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="icon" className="rounded-lg h-8 w-8">
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-48 font-headline">
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right">
+                            <span>ملف الموظف</span>
+                            <Eye className="h-4 w-4" />
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right">
+                            <span>تعديل البيانات</span>
+                            <Edit className="h-4 w-4" />
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right">
+                            <span>تغيير الحالة</span>
+                            <UserCheck className="h-4 w-4" />
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right text-amber-600">
+                            <span>تعليق العمل</span>
+                            <ShieldAlert className="h-4 w-4" />
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right text-rose-600 focus:text-rose-600 focus:bg-rose-50">
+                            <span>إنهاء الخدمات</span>
+                            <Trash2 className="h-4 w-4" />
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </TableCell>
                   </TableRow>
                 ))}

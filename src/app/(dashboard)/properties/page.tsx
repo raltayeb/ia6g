@@ -1,6 +1,6 @@
 "use client";
 
-import { Building2, Plus, Search, MapPin, MoreVertical } from "lucide-react";
+import { Building2, Plus, Search, MapPin, MoreVertical, Edit, Trash2, Eye, ClipboardList } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
@@ -13,6 +13,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { Property } from "@/types/erp";
 import { SaudiRiyalIcon } from "@/components/icons/saudi-riyal";
@@ -36,7 +43,7 @@ export default function PropertiesPage() {
             <SidebarTrigger className="-ml-1" />
             <h1 className="font-headline text-xl font-bold text-primary">إدارة العقارات</h1>
           </div>
-          <Button className="gap-2 rounded-xl">
+          <Button className="gap-2 rounded-xl shadow-lg shadow-primary/20">
             <Plus className="h-4 w-4" />
             إضافة عقار
           </Button>
@@ -45,7 +52,7 @@ export default function PropertiesPage() {
           <div className="flex items-center justify-between gap-4">
             <div className="relative flex-1 max-w-sm">
               <Search className="absolute right-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="بحث عن عقارات..." className="pr-9 rounded-xl border-slate-200" />
+              <Input placeholder="بحث عن عقارات..." className="pr-9 rounded-xl border-slate-200 text-right" dir="rtl" />
             </div>
             <div className="flex items-center gap-2">
               <Badge variant="outline" className="px-3 py-1 rounded-lg">الإجمالي: {toArabicDigits(mockProperties.length)}</Badge>
@@ -67,27 +74,27 @@ export default function PropertiesPage() {
                   <TableHead className="text-right font-bold">الحالة</TableHead>
                   <TableHead className="text-right font-bold">الدخل الشهري</TableHead>
                   <TableHead className="text-right font-bold">التقييم</TableHead>
-                  <TableHead className="w-[50px]"></TableHead>
+                  <TableHead className="w-[80px] text-center font-bold">إجراءات</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {mockProperties.map((prop) => (
                   <TableRow key={prop.id} className="hover:bg-muted/50 transition-colors">
                     <TableCell className="font-medium text-right">
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-3 justify-end">
+                        {prop.name}
                         <div className="p-2 bg-primary/10 rounded-lg shrink-0">
                           <Building2 className="h-4 w-4 text-primary" />
                         </div>
-                        {prop.name}
                       </div>
                     </TableCell>
                     <TableCell className="text-right">
                       {prop.type === 'Commercial' ? 'تجاري' : prop.type === 'Residential' ? 'سكني' : 'صناعي'}
                     </TableCell>
                     <TableCell className="text-right">
-                      <div className="flex items-center gap-1 text-muted-foreground">
-                        <MapPin className="h-3 w-3" />
+                      <div className="flex items-center gap-1 text-muted-foreground justify-end">
                         {prop.location}
+                        <MapPin className="h-3 w-3" />
                       </div>
                     </TableCell>
                     <TableCell className="text-right">
@@ -113,9 +120,32 @@ export default function PropertiesPage() {
                       </div>
                     </TableCell>
                     <TableCell className="text-center">
-                      <Button variant="ghost" size="icon" className="rounded-lg">
-                        <MoreVertical className="h-4 w-4" />
-                      </Button>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="icon" className="rounded-lg h-8 w-8">
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-48 font-headline">
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right">
+                            <span>عرض البطاقة</span>
+                            <Eye className="h-4 w-4" />
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right">
+                            <span>تعديل العقار</span>
+                            <Edit className="h-4 w-4" />
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right">
+                            <span>سجل الصيانة</span>
+                            <ClipboardList className="h-4 w-4" />
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right text-rose-600 focus:text-rose-600 focus:bg-rose-50">
+                            <span>حذف العقار</span>
+                            <Trash2 className="h-4 w-4" />
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </TableCell>
                   </TableRow>
                 ))}

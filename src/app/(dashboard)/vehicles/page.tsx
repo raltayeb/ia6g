@@ -1,7 +1,6 @@
-
 "use client";
 
-import { Car, Plus, Search, MapPin, MoreVertical, Fuel, Wrench, User } from "lucide-react";
+import { Car, Plus, Search, MoreVertical, Fuel, Wrench, User, Edit, Trash2, Eye, History } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
@@ -14,6 +13,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Vehicle } from "@/types/erp";
@@ -97,7 +103,7 @@ export default function VehiclesPage() {
           <div className="flex items-center justify-between gap-4">
             <div className="relative flex-1 max-w-sm">
               <Search className="absolute right-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="بحث برقم اللوحة أو الموديل..." className="pr-9 rounded-xl border-slate-200" />
+              <Input placeholder="بحث برقم اللوحة أو الموديل..." className="pr-9 rounded-xl border-slate-200 text-right" dir="rtl" />
             </div>
           </div>
 
@@ -111,7 +117,7 @@ export default function VehiclesPage() {
                   <TableHead className="text-right font-bold">الحالة</TableHead>
                   <TableHead className="text-right font-bold">آخر صيانة</TableHead>
                   <TableHead className="text-right font-bold">التقييم</TableHead>
-                  <TableHead className="w-[50px]"></TableHead>
+                  <TableHead className="w-[80px] text-center font-bold">إجراءات</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -119,7 +125,7 @@ export default function VehiclesPage() {
                   <TableRow key={vehicle.id} className="hover:bg-muted/50 transition-colors">
                     <TableCell className="text-right font-black text-primary">{toArabicDigits(vehicle.plateNumber)}</TableCell>
                     <TableCell className="text-right">
-                      <div className="flex flex-col">
+                      <div className="flex flex-col text-right">
                         <span className="font-bold">{vehicle.model}</span>
                         <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">
                           {vehicle.type === 'Truck' ? 'شاحنة' : vehicle.type === 'Sedan' ? 'سيدان' : vehicle.type === 'Van' ? 'فان' : 'حافلة'}
@@ -150,9 +156,36 @@ export default function VehiclesPage() {
                       </div>
                     </TableCell>
                     <TableCell className="text-center">
-                      <Button variant="ghost" size="icon" className="rounded-lg">
-                        <MoreVertical className="h-4 w-4" />
-                      </Button>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="icon" className="rounded-lg h-8 w-8">
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-48 font-headline">
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right">
+                            <span>عرض المركبة</span>
+                            <Eye className="h-4 w-4" />
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right">
+                            <span>تعديل البيانات</span>
+                            <Edit className="h-4 w-4" />
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right">
+                            <span>سجل العمليات</span>
+                            <History className="h-4 w-4" />
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right">
+                            <span>جدولة صيانة</span>
+                            <Wrench className="h-4 w-4" />
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right text-rose-600 focus:text-rose-600 focus:bg-rose-50">
+                            <span>شطب المركبة</span>
+                            <Trash2 className="h-4 w-4" />
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </TableCell>
                   </TableRow>
                 ))}

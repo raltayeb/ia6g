@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, Plus, Search, MapPin, MoreVertical } from "lucide-react";
+import { Home, Plus, Search, MapPin, MoreVertical, Edit, Trash2, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
@@ -13,6 +13,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -46,8 +53,8 @@ export default function AccommodationsPage() {
         <div className="flex flex-1 flex-col gap-6 p-6">
           <div className="grid gap-4 md:grid-cols-3">
             <Card className="border-none shadow-sm rounded-3xl bg-white/80">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-[10px] font-black text-muted-foreground uppercase tracking-widest text-right">إجمالي السعة</CardTitle>
+              <CardHeader className="pb-2 text-right">
+                <CardTitle className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">إجمالي السعة</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-black text-right">{toArabicDigits(212)} وحدة</div>
@@ -58,8 +65,8 @@ export default function AccommodationsPage() {
               </CardContent>
             </Card>
             <Card className="border-none shadow-sm rounded-3xl bg-white/80">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-[10px] font-black text-muted-foreground uppercase tracking-widest text-right">التكلفة الشهرية</CardTitle>
+              <CardHeader className="pb-2 text-right">
+                <CardTitle className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">التكلفة الشهرية</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center gap-1 justify-end">
@@ -70,8 +77,8 @@ export default function AccommodationsPage() {
               </CardContent>
             </Card>
             <Card className="border-none shadow-sm rounded-3xl bg-white/80 border-r-4 border-r-emerald-500">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-[10px] font-black text-muted-foreground uppercase tracking-widest text-right">الوحدات الشاغرة</CardTitle>
+              <CardHeader className="pb-2 text-right">
+                <CardTitle className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">الوحدات الشاغرة</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-black text-emerald-600 text-right">{toArabicDigits(35)} وحدة</div>
@@ -83,7 +90,7 @@ export default function AccommodationsPage() {
           <div className="flex items-center justify-between gap-4">
             <div className="relative flex-1 max-w-sm">
               <Search className="absolute right-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="بحث عن السكن..." className="pr-9 rounded-xl border-slate-200" />
+              <Input placeholder="بحث عن السكن..." className="pr-9 rounded-xl border-slate-200 text-right" dir="rtl" />
             </div>
           </div>
 
@@ -96,7 +103,7 @@ export default function AccommodationsPage() {
                   <TableHead className="text-right font-bold">الإشغال</TableHead>
                   <TableHead className="text-right font-bold">الحالة</TableHead>
                   <TableHead className="text-right font-bold">الإيجار</TableHead>
-                  <TableHead className="w-[50px]"></TableHead>
+                  <TableHead className="w-[80px] text-center font-bold">إجراءات</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -105,13 +112,13 @@ export default function AccommodationsPage() {
                   return (
                     <TableRow key={acc.id} className="hover:bg-muted/50 transition-colors">
                       <TableCell className="font-medium text-right">
-                        <div className="flex items-center gap-3">
-                          <div className="p-2 bg-primary/10 rounded-lg shrink-0">
-                            <Home className="h-4 w-4 text-primary" />
-                          </div>
+                        <div className="flex items-center gap-3 justify-end">
                           <div className="flex flex-col text-right">
                             <span className="font-bold">{acc.name}</span>
                             <span className="text-[10px] text-muted-foreground font-mono">{acc.id}</span>
+                          </div>
+                          <div className="p-2 bg-primary/10 rounded-lg shrink-0">
+                            <Home className="h-4 w-4 text-primary" />
                           </div>
                         </div>
                       </TableCell>
@@ -148,9 +155,28 @@ export default function AccommodationsPage() {
                         </div>
                       </TableCell>
                       <TableCell className="text-center">
-                        <Button variant="ghost" size="icon" className="rounded-lg">
-                          <MoreVertical className="h-4 w-4" />
-                        </Button>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon" className="rounded-lg h-8 w-8">
+                              <MoreVertical className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="w-40 font-headline">
+                            <DropdownMenuItem className="flex justify-end gap-2 text-right">
+                              <span>عرض التفاصيل</span>
+                              <Eye className="h-4 w-4" />
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="flex justify-end gap-2 text-right">
+                              <span>تعديل المبنى</span>
+                              <Edit className="h-4 w-4" />
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem className="flex justify-end gap-2 text-right text-rose-600 focus:text-rose-600 focus:bg-rose-50">
+                              <span>حذف السجل</span>
+                              <Trash2 className="h-4 w-4" />
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </TableCell>
                     </TableRow>
                   );
