@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Car, Plus, Search, MoreVertical, Fuel, Wrench, User, Edit, Trash2, Eye } from "lucide-react";
+import { Car, Plus, Search, MoreVertical, Fuel, Wrench, User, Edit, Trash2, Eye, Loader2, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
@@ -27,7 +27,23 @@ import { SaudiRiyalIcon } from "@/components/icons/saudi-riyal";
 import { toArabicDigits, formatCurrencyValue } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { Vehicle } from "@/types/erp";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter } from "@/components/ui/sheet";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+const vehicleSchema = z.object({
+  plateNumber: z.string().min(1, "رقم اللوحة مطلوب"),
+  model: z.string().min(2, "الموديل مطلوب"),
+  type: z.enum(["Truck", "Sedan", "Van", "Bus"]),
+  driverName: z.string().optional(),
+  status: z.enum(["Active", "Maintenance", "Out of Service"]),
+  purchaseValue: z.coerce.number().min(0, "القيمة لا يمكن أن تكون سالبة"),
+});
+
+type VehicleFormValues = z.infer<typeof vehicleSchema>;
 
 const mockVehicles: Vehicle[] = [
   { id: "1", plateNumber: "أ ب ج 1234", model: "تويوتا هايلكس 2023", type: "Truck", driverName: "أحمد علي", lastServiceDate: "2024-03-10", status: "Active", purchaseValue: 120000 },
@@ -40,6 +56,35 @@ const mockVehicles: Vehicle[] = [
 export default function VehiclesPage() {
   const { toast } = useToast();
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
+  const [isAddSheetOpen, setIsAddSheetOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const form = useForm<VehicleFormValues>({
+    resolver: zodResolver(vehicleSchema),
+    defaultValues: {
+      plateNumber: "",
+      model: "",
+      type: "Sedan",
+      driverName: "",
+      status: "Active",
+      purchaseValue: 0,
+    },
+  });
+
+  const onSubmit = (values: VehicleFormValues) => {
+    setIsSubmitting(true);
+    // محاكاة عملية الحفظ في قاعدة البيانات
+    setTimeout(() => {
+      console.log("Saving vehicle:", values);
+      setIsSubmitting(false);
+      setIsAddSheetOpen(false);
+      form.reset();
+      toast({
+        title: "تم تسجيل المركبة",
+        description: `تمت إضافة المركبة ذات اللوحة "${values.plateNumber}" إلى الأسطول بنجاح.`,
+      });
+    }, 1000);
+  };
 
   const handleAction = (action: string, plate: string) => {
     toast({
@@ -57,7 +102,11 @@ export default function VehiclesPage() {
             <SidebarTrigger className="-ml-1 text-primary" />
             <h1 className="text-sm font-medium text-primary">إدارة الأسطول</h1>
           </div>
-          <Button size="sm" className="gap-2 rounded-full shadow-sm font-medium h-9 px-5 transition-transform active:scale-95" onClick={() => handleAction("تسجيل", "جديدة")}>
+          <Button 
+            size="sm" 
+            className="gap-2 rounded-full shadow-sm font-medium h-9 px-5 transition-all hover:scale-105 active:scale-95" 
+            onClick={() => setIsAddSheetOpen(true)}
+          >
             <Plus className="h-4 w-4" />
             إضافة مركبة
           </Button>
@@ -105,8 +154,12 @@ export default function VehiclesPage() {
           <div className="flex items-center justify-between gap-4">
             <div className="relative flex-1 max-w-sm">
               <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="بحث برقم اللوحة..." className="pr-10 h-10 rounded-full border-none bg-white shadow-sm text-xs" dir="rtl" />
+              <Input placeholder="بحث برقم اللوحة أو السائق..." className="pr-10 h-10 rounded-full border-none bg-white shadow-sm text-xs" dir="rtl" />
             </div>
+            <Button variant="outline" size="sm" className="gap-2 rounded-full bg-white border-none h-10 px-4 text-xs font-medium shadow-sm">
+              <Filter className="h-4 w-4" />
+              تصفية
+            </Button>
           </div>
 
           <div className="m3-table-container">
@@ -118,7 +171,7 @@ export default function VehiclesPage() {
                   <TableHead className="text-right font-medium py-4 px-6">السائق</TableHead>
                   <TableHead className="text-right font-medium py-4 px-6">الحالة</TableHead>
                   <TableHead className="text-right font-medium py-4 px-6">آخر صيانة</TableHead>
-                  <TableHead className="w-[80px] py-4 px-6"></TableHead>
+                  <TableHead className="w-[50px] py-4 px-6"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -152,7 +205,7 @@ export default function VehiclesPage() {
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right text-[11px] text-muted-foreground font-normal py-4 px-6">{toArabicDigits(vehicle.lastServiceDate)}</TableCell>
-                    <TableCell className="text-center py-4 px-6">
+                    <TableCell className="py-4 px-6">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
                           <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full hover:bg-slate-100">
@@ -169,7 +222,7 @@ export default function VehiclesPage() {
                             <Edit className="h-4 w-4 text-slate-400" />
                           </DropdownMenuItem>
                           <DropdownMenuSeparator className="bg-slate-50" />
-                          <DropdownMenuItem className="flex items-center gap-2 text-right justify-end text-xs rounded-xl py-2 cursor-pointer text-rose-600 hover:bg-rose-50!" onClick={() => handleAction("شطب", vehicle.plateNumber)}>
+                          <DropdownMenuItem className="flex items-center gap-2 text-right justify-end text-xs rounded-xl py-2 cursor-pointer text-rose-600" onClick={() => handleAction("شطب", vehicle.plateNumber)}>
                             <span>شطب المركبة</span>
                             <Trash2 className="h-4 w-4" />
                           </DropdownMenuItem>
@@ -183,6 +236,140 @@ export default function VehiclesPage() {
           </div>
         </div>
 
+        {/* نافذة إضافة مركبة جديدة */}
+        <Sheet open={isAddSheetOpen} onOpenChange={setIsAddSheetOpen}>
+          <SheetContent side="right" className="rounded-l-3xl border-none p-8 w-full max-w-md sm:max-w-lg" dir="rtl">
+            <SheetHeader className="text-right mb-8">
+              <SheetTitle className="text-lg font-medium text-primary">إضافة مركبة للأسطول</SheetTitle>
+              <SheetDescription className="text-xs">أدخل تفاصيل المركبة الجديدة لتحديث سجلات التشغيل</SheetDescription>
+            </SheetHeader>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 text-right">
+                <div className="grid grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="plateNumber"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-xs font-medium">رقم اللوحة</FormLabel>
+                        <FormControl>
+                          <Input placeholder="أ ب ج 1234" {...field} className="rounded-xl bg-slate-50 border-none h-11 text-center font-bold" />
+                        </FormControl>
+                        <FormMessage className="text-[10px]" />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="type"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-xs font-medium">نوع المركبة</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger className="rounded-xl bg-slate-50 border-none h-11 text-xs">
+                              <SelectValue placeholder="اختر النوع" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent className="rounded-xl border-none shadow-xl">
+                            <SelectItem value="Sedan" className="text-xs">سيدان</SelectItem>
+                            <SelectItem value="Truck" className="text-xs">شاحنة</SelectItem>
+                            <SelectItem value="Van" className="text-xs">فان / حافلة</SelectItem>
+                            <SelectItem value="Bus" className="text-xs">حافلة كبيرة</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage className="text-[10px]" />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <FormField
+                  control={form.control}
+                  name="model"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs font-medium">الموديل والمواصفات</FormLabel>
+                      <FormControl>
+                        <Input placeholder="مثال: تويوتا هايلكس 2024" {...field} className="rounded-xl bg-slate-50 border-none h-11" />
+                      </FormControl>
+                      <FormMessage className="text-[10px]" />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="driverName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs font-medium">السائق المعين</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input placeholder="اسم السائق (اختياري)" {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10" />
+                          <User className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground opacity-50" />
+                        </div>
+                      </FormControl>
+                      <FormMessage className="text-[10px]" />
+                    </FormItem>
+                  )}
+                />
+
+                <div className="grid grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="purchaseValue"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-xs font-medium">قيمة الشراء</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Input type="number" placeholder="0" {...field} className="rounded-xl bg-slate-50 border-none h-11 pl-10" />
+                            <SaudiRiyalIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary opacity-50" />
+                          </div>
+                        </FormControl>
+                        <FormMessage className="text-[10px]" />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="status"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-xs font-medium">الحالة التشغيلية</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger className="rounded-xl bg-slate-50 border-none h-11 text-xs">
+                              <SelectValue placeholder="الحالة" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent className="rounded-xl border-none shadow-xl">
+                            <SelectItem value="Active" className="text-xs">نشط</SelectItem>
+                            <SelectItem value="Maintenance" className="text-xs">في الصيانة</SelectItem>
+                            <SelectItem value="Out of Service" className="text-xs">خارج الخدمة</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage className="text-[10px]" />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <SheetFooter className="pt-8 gap-3 flex-row-reverse sm:justify-start">
+                  <Button type="submit" className="rounded-full h-11 flex-1 font-medium" disabled={isSubmitting}>
+                    {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin ml-2" /> : "تسجيل المركبة"}
+                  </Button>
+                  <Button type="button" variant="ghost" className="rounded-full h-11 flex-1 font-medium" onClick={() => setIsAddSheetOpen(false)}>
+                    إلغاء
+                  </Button>
+                </SheetFooter>
+              </form>
+            </Form>
+          </SheetContent>
+        </Sheet>
+
+        {/* نافذة عرض تفاصيل المركبة */}
         <Sheet open={!!selectedVehicle} onOpenChange={() => setSelectedVehicle(null)}>
           <SheetContent side="right" className="rounded-l-3xl border-none p-8" dir="rtl">
             <SheetHeader className="text-right mb-8">
