@@ -61,6 +61,7 @@ export default function Dashboard() {
         </header>
 
         <div className="flex flex-1 flex-col gap-8 p-8 max-w-7xl mx-auto w-full">
+          {/* Stats Grid - M3 Style Cards */}
           <div className="relative grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {stats.map((stat) => (
               <Card key={stat.title} className="bg-white border-none shadow-sm rounded-[2rem] p-2 hover:shadow-md transition-shadow duration-300">
@@ -87,6 +88,7 @@ export default function Dashboard() {
           </div>
 
           <div className="grid gap-8 lg:grid-cols-7">
+            {/* Chart - M3 Surface */}
             <Card className="lg:col-span-4 bg-white border-none shadow-sm rounded-[2.5rem] overflow-hidden">
               <CardHeader className="p-8 pb-0">
                 <div className="flex items-center justify-between">
@@ -158,6 +160,7 @@ export default function Dashboard() {
               </CardContent>
             </Card>
 
+            {/* Recent Activity - M3 List */}
             <Card className="lg:col-span-3 bg-white border-none shadow-sm rounded-[2.5rem]">
               <CardHeader className="p-8">
                 <CardTitle className="text-lg font-bold text-slate-800">النشاط الأخير</CardTitle>

@@ -67,6 +67,7 @@
     font-family: 'Noto Kufi Arabic', sans-serif;
     font-feature-settings: "rlig" 1, "calt" 1;
     -webkit-font-smoothing: antialiased;
+    font-size: 0.875rem; /* Smaller base font (14px) */
   }
 }
 
