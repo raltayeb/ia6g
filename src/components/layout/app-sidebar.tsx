@@ -22,6 +22,7 @@ import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarGroupContent,
+  SidebarFooter,
 } from "@/components/ui/sidebar";
 
 const mainNav = [
@@ -45,29 +46,29 @@ export function AppSidebar() {
   const pathname = usePathname();
 
   return (
-    <Sidebar side="right" className="border-l">
-      <SidebarHeader className="p-4 border-b">
-        <div className="flex items-center gap-3 text-right flex-row-reverse">
-          <div className="flex h-8 w-8 items-center justify-center rounded bg-primary text-primary-foreground">
+    <Sidebar side="right">
+      <SidebarHeader className="h-16 flex items-center px-6 border-b">
+        <div className="flex items-center gap-3 w-full">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shrink-0">
             <Building2 className="h-5 w-5" />
           </div>
-          <div className="flex flex-col">
-            <span className="text-sm font-bold text-primary">نظام السلام</span>
-            <span className="text-[10px] text-muted-foreground">إدارة الموارد ERP</span>
+          <div className="flex flex-col overflow-hidden">
+            <span className="text-sm font-bold text-primary truncate leading-none">نظام السلام</span>
+            <span className="text-[10px] text-muted-foreground truncate mt-1">إدارة موارد المؤسسات</span>
           </div>
         </div>
       </SidebarHeader>
       
-      <SidebarContent className="p-2">
+      <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-[10px] uppercase font-bold text-muted-foreground px-2">العمليات</SidebarGroupLabel>
+          <SidebarGroupLabel className="px-4 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">العمليات</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {mainNav.map((item) => (
                 <SidebarMenuItem key={item.url}>
-                  <SidebarMenuButton asChild isActive={pathname === item.url}>
-                    <Link href={item.url} className="flex flex-row-reverse gap-3 items-center w-full justify-start text-right">
-                      <item.icon className="h-4 w-4" />
+                  <SidebarMenuButton asChild isActive={pathname === item.url} tooltip={item.title}>
+                    <Link href={item.url} className="flex items-center gap-3 px-4">
+                      <item.icon className="h-4 w-4 shrink-0" />
                       <span className="text-xs font-medium">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -78,14 +79,14 @@ export function AppSidebar() {
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel className="text-[10px] uppercase font-bold text-muted-foreground px-2">المالية</SidebarGroupLabel>
+          <SidebarGroupLabel className="px-4 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">المالية</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {financialNav.map((item) => (
                 <SidebarMenuItem key={item.url}>
-                  <SidebarMenuButton asChild isActive={pathname === item.url}>
-                    <Link href={item.url} className="flex flex-row-reverse gap-3 items-center w-full justify-start text-right">
-                      <item.icon className="h-4 w-4" />
+                  <SidebarMenuButton asChild isActive={pathname === item.url} tooltip={item.title}>
+                    <Link href={item.url} className="flex items-center gap-3 px-4">
+                      <item.icon className="h-4 w-4 shrink-0" />
                       <span className="text-xs font-medium">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -95,6 +96,21 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+
+      <SidebarFooter className="border-t p-2">
+        <SidebarMenu>
+          {adminNav.map((item) => (
+            <SidebarMenuItem key={item.url}>
+              <SidebarMenuButton asChild isActive={pathname === item.url} tooltip={item.title}>
+                <Link href={item.url} className="flex items-center gap-3 px-4">
+                  <item.icon className="h-4 w-4 shrink-0" />
+                  <span className="text-xs font-medium">{item.title}</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }

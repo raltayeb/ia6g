@@ -5,7 +5,9 @@ import {
   Car, 
   Users, 
   ArrowUpRight,
-  LayoutDashboard,
+  Wallet,
+  TrendingUp,
+  Activity
 } from "lucide-react";
 import { SaudiRiyalIcon } from "@/components/icons/saudi-riyal";
 import { 
@@ -38,10 +40,10 @@ const financialData = [
 ];
 
 const stats = [
-  { title: "إجمالي العقارات", value: 24, icon: Building2, trend: "+٢", color: "text-blue-600" },
-  { title: "حجم الأسطول", value: 58, icon: Car, trend: "+٥", color: "text-indigo-600" },
-  { title: "إجمالي الموظفين", value: 142, icon: Users, trend: "+١٢", color: "text-emerald-600" },
-  { title: "الإيرادات الشهرية", value: 1200000, isCurrency: true, icon: SaudiRiyalIcon, trend: "+١٢.٥٪", color: "text-primary" },
+  { title: "إجمالي العقارات", value: 24, icon: Building2, trend: "+٢", color: "text-blue-600", bg: "bg-blue-50" },
+  { title: "حجم الأسطول", value: 58, icon: Car, trend: "+٥", color: "text-indigo-600", bg: "bg-indigo-50" },
+  { title: "إجمالي الموظفين", value: 142, icon: Users, trend: "+١٢", color: "text-emerald-600", bg: "bg-emerald-50" },
+  { title: "الإيرادات الشهرية", value: 1200000, isCurrency: true, icon: Wallet, trend: "+١٢.٥٪", color: "text-primary", bg: "bg-primary/5" },
 ];
 
 export default function Dashboard() {
@@ -49,74 +51,92 @@ export default function Dashboard() {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-14 shrink-0 items-center justify-between px-4 border-b">
+        <header className="flex h-16 shrink-0 items-center justify-between gap-2 px-6 border-b sticky top-0 bg-background/95 backdrop-blur z-30">
           <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1" />
             <div className="flex flex-col text-right">
-              <h1 className="text-sm font-semibold">لوحة التحكم</h1>
+              <h1 className="text-sm font-bold tracking-tight">لوحة التحكم</h1>
               <p className="text-[10px] text-muted-foreground">{toHijriDate()}</p>
             </div>
           </div>
         </header>
 
-        <div className="flex flex-1 flex-col gap-4 p-4">
+        <div className="flex flex-1 flex-col gap-6 p-6">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {stats.map((stat) => (
               <Card key={stat.title} className="rounded-xl border shadow-sm">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-xs font-medium text-right w-full">{stat.title}</CardTitle>
-                  <stat.icon className={`h-4 w-4 ${stat.color}`} />
+                  <CardTitle className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">{stat.title}</CardTitle>
+                  <div className={`p-2 rounded-lg ${stat.bg}`}>
+                    <stat.icon className={`h-4 w-4 ${stat.color}`} />
+                  </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex items-center gap-1 justify-end">
-                    <div className="text-lg font-bold">
+                  <div className="flex items-center gap-1">
+                    <div className="text-xl font-black">
                       {stat.isCurrency ? formatCurrencyValue(stat.value as number) : toArabicDigits(stat.value)}
                     </div>
                     {stat.isCurrency && <SaudiRiyalIcon className="h-4 w-4 opacity-70" />}
                   </div>
-                  <p className="text-[10px] text-emerald-600 flex items-center justify-end gap-1 font-medium mt-1">
-                    <ArrowUpRight className="h-3 w-3" />
-                    {toArabicDigits(stat.trend)} منذ الشهر الماضي
-                  </p>
+                  <div className="flex items-center gap-1.5 mt-2">
+                    <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded flex items-center gap-0.5">
+                      <ArrowUpRight className="h-3 w-3" />
+                      {toArabicDigits(stat.trend)}
+                    </span>
+                    <span className="text-[10px] text-muted-foreground">منذ الشهر الماضي</span>
+                  </div>
                 </CardContent>
               </Card>
             ))}
           </div>
 
-          <div className="grid gap-4 lg:grid-cols-7">
-            <Card className="lg:col-span-4 rounded-xl border shadow-sm">
-              <CardHeader>
-                <CardTitle className="text-right text-sm">الأداء المالي</CardTitle>
-                <CardDescription className="text-right text-xs">مقارنة الإيرادات والمصروفات</CardDescription>
+          <div className="grid gap-6 lg:grid-cols-12">
+            <Card className="lg:col-span-8 rounded-xl border shadow-sm overflow-hidden">
+              <CardHeader className="border-b bg-muted/30 px-6 py-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-sm font-bold">الأداء المالي</CardTitle>
+                    <CardDescription className="text-[10px]">مقارنة الإيرادات والمصروفات خلال النصف الأول</CardDescription>
+                  </div>
+                  <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                </div>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-6">
                 <div className="h-[300px]" dir="ltr">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={financialData}>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
                       <XAxis 
                         dataKey="month" 
-                        stroke="#888888" 
+                        stroke="#a0a0a0" 
                         fontSize={10} 
                         tickLine={false} 
                         axisLine={false} 
+                        tick={{dy: 10}}
                       />
                       <YAxis 
-                        stroke="#888888" 
+                        stroke="#a0a0a0" 
                         fontSize={10} 
                         tickLine={false} 
                         axisLine={false} 
                         tickFormatter={(value) => toArabicDigits(`${value/1000}ألف`)}
                       />
                       <Tooltip 
+                        cursor={{fill: '#f9fafb'}}
                         content={({ active, payload }) => {
                           if (active && payload && payload.length) {
                             return (
-                              <div className="rounded-lg border bg-background p-2 shadow-sm text-right">
-                                <p className="text-[10px] font-bold mb-1">{payload[0].payload.month}</p>
-                                <div className="space-y-1">
-                                  <p className="text-[10px] text-primary">الإيرادات: {formatCurrencyValue(payload[0].value as number)}</p>
-                                  <p className="text-[10px] text-rose-500">المصروفات: {formatCurrencyValue(payload[1].value as number)}</p>
+                              <div className="rounded-lg border bg-background p-3 shadow-md text-right min-w-[120px]">
+                                <p className="text-xs font-bold mb-2 border-b pb-1">{payload[0].payload.month}</p>
+                                <div className="space-y-1.5">
+                                  <div className="flex justify-between items-center gap-4">
+                                    <span className="text-[10px] text-muted-foreground">الإيرادات:</span>
+                                    <span className="text-[10px] font-bold text-primary">{formatCurrencyValue(payload[0].value as number)}</span>
+                                  </div>
+                                  <div className="flex justify-between items-center gap-4">
+                                    <span className="text-[10px] text-muted-foreground">المصروفات:</span>
+                                    <span className="text-[10px] font-bold text-rose-500">{formatCurrencyValue(payload[1].value as number)}</span>
+                                  </div>
                                 </div>
                               </div>
                             );
@@ -124,33 +144,35 @@ export default function Dashboard() {
                           return null;
                         }}
                       />
-                      <Bar dataKey="revenue" fill="currentColor" radius={[2, 2, 0, 0]} className="fill-primary" />
-                      <Bar dataKey="expense" fill="currentColor" radius={[2, 2, 0, 0]} className="fill-muted" />
+                      <Bar dataKey="revenue" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} barSize={32} />
+                      <Bar dataKey="expense" fill="hsl(var(--muted-foreground)/0.2)" radius={[4, 4, 0, 0]} barSize={32} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="lg:col-span-3 rounded-xl border shadow-sm">
-              <CardHeader>
-                <CardTitle className="text-right text-sm">آخر العمليات</CardTitle>
-                <CardDescription className="text-right text-xs">تحديثات الأنشطة الميدانية</CardDescription>
+            <Card className="lg:col-span-4 rounded-xl border shadow-sm">
+              <CardHeader className="border-b bg-muted/30 px-6 py-4">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-sm font-bold">آخر العمليات</CardTitle>
+                  <Activity className="h-4 w-4 text-muted-foreground" />
+                </div>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
+              <CardContent className="p-0">
+                <div className="divide-y">
                   {[
-                    { title: "تجديد عقد إيجار", sub: "مبنى الجوهرة - وحدة ٠٤", time: "قبل ساعتين" },
-                    { title: "صيانة أسطول", sub: "شاحنة نقل رقم ٤٥٢", time: "قبل ٥ ساعات" },
-                    { title: "تعيين موظف", sub: "سارة محمد - محاسبة", time: "أمس" },
-                    { title: "سداد زكاة", sub: "دفعة الربع الأول ١٤٤٥", time: "منذ يومين" },
+                    { title: "تجديد عقد إيجار", sub: "مبنى الجوهرة - وحدة ٠٤", time: "قبل ساعتين", type: "property" },
+                    { title: "صيانة أسطول", sub: "شاحنة نقل رقم ٤٥٢", time: "قبل ٥ ساعات", type: "fleet" },
+                    { title: "تعيين موظف", sub: "سارة محمد - محاسبة", time: "أمس", type: "hr" },
+                    { title: "سداد زكاة", sub: "دفعة الربع الأول ١٤٤٥", time: "منذ يومين", type: "finance" },
                   ].map((item, i) => (
-                    <div key={i} className="flex items-center gap-4 text-right">
+                    <div key={i} className="flex items-center gap-4 px-6 py-4 hover:bg-muted/50 transition-colors">
                       <div className="flex-1 space-y-1">
-                        <p className="text-xs font-medium leading-none">{item.title}</p>
+                        <p className="text-xs font-bold leading-none">{item.title}</p>
                         <p className="text-[10px] text-muted-foreground">{item.sub}</p>
                       </div>
-                      <div className="text-[10px] text-muted-foreground font-mono">{toArabicDigits(item.time)}</div>
+                      <div className="text-[9px] font-bold text-muted-foreground bg-muted px-2 py-1 rounded">{toArabicDigits(item.time)}</div>
                     </div>
                   ))}
                 </div>
