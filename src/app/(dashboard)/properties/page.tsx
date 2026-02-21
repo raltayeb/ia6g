@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Building2, Plus, Search, MapPin, MoreVertical, Edit, Trash2, Eye, Filter } from "lucide-react";
+import { Building2, Plus, Search, MapPin, MoreVertical, Edit, Trash2, Eye, Filter, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
@@ -27,7 +27,23 @@ import { Property } from "@/types/erp";
 import { SaudiRiyalIcon } from "@/components/icons/saudi-riyal";
 import { toArabicDigits, formatCurrencyValue } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter } from "@/components/ui/sheet";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+const propertySchema = z.object({
+  name: z.string().min(3, "اسم العقار يجب أن يكون أكثر من ٣ أحرف"),
+  type: z.enum(["Residential", "Commercial", "Industrial", "Land"]),
+  location: z.string().min(5, "يرجى تحديد الموقع بدقة"),
+  status: z.enum(["Occupied", "Vacant", "Maintenance"]),
+  monthlyIncome: z.coerce.number().min(0, "الدخل لا يمكن أن يكون سالباً"),
+  value: z.coerce.number().min(1000, "القيمة الإجمالية غير منطقية"),
+});
+
+type PropertyFormValues = z.infer<typeof propertySchema>;
 
 const mockProperties: Property[] = [
   { id: "1", name: "ساحة السلام التجارية", type: "Commercial", location: "الرياض، العليا", status: "Occupied", monthlyIncome: 45000, value: 5500000 },
@@ -40,6 +56,35 @@ const mockProperties: Property[] = [
 export default function PropertiesPage() {
   const { toast } = useToast();
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
+  const [isAddSheetOpen, setIsAddSheetOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const form = useForm<PropertyFormValues>({
+    resolver: zodResolver(propertySchema),
+    defaultValues: {
+      name: "",
+      type: "Residential",
+      location: "",
+      status: "Vacant",
+      monthlyIncome: 0,
+      value: 0,
+    },
+  });
+
+  const onSubmit = (values: PropertyFormValues) => {
+    setIsSubmitting(true);
+    // محاكاة عملية الحفظ في قاعدة البيانات
+    setTimeout(() => {
+      console.log("Saving property:", values);
+      setIsSubmitting(false);
+      setIsAddSheetOpen(false);
+      form.reset();
+      toast({
+        title: "تمت إضافة العقار",
+        description: `تم تسجيل "${values.name}" في النظام بنجاح.`,
+      });
+    }, 1000);
+  };
 
   const handleAction = (action: string, name: string) => {
     toast({
@@ -57,7 +102,11 @@ export default function PropertiesPage() {
             <SidebarTrigger className="-ml-1 text-primary" />
             <h1 className="text-sm font-medium text-primary">إدارة العقارات</h1>
           </div>
-          <Button size="sm" className="gap-2 rounded-full shadow-sm font-medium h-9 px-5" onClick={() => handleAction("إضافة", "جديد")}>
+          <Button 
+            size="sm" 
+            className="gap-2 rounded-full shadow-sm font-medium h-9 px-5 transition-all hover:scale-105 active:scale-95" 
+            onClick={() => setIsAddSheetOpen(true)}
+          >
             <Plus className="h-4 w-4" />
             إضافة عقار
           </Button>
@@ -126,7 +175,9 @@ export default function PropertiesPage() {
                     <TableCell className="text-right py-4 px-6">
                       <div className="flex flex-col">
                         <span className="font-medium text-xs">{prop.name}</span>
-                        <span className="text-[9px] text-muted-foreground">{prop.type === 'Commercial' ? 'تجاري' : 'سكني'}</span>
+                        <span className="text-[9px] text-muted-foreground">
+                          {prop.type === 'Commercial' ? 'تجاري' : prop.type === 'Residential' ? 'سكني' : prop.type === 'Industrial' ? 'صناعي' : 'أرض'}
+                        </span>
                       </div>
                     </TableCell>
                     <TableCell className="text-right py-4 px-6">
@@ -183,6 +234,143 @@ export default function PropertiesPage() {
           </div>
         </div>
 
+        {/* نافذة إضافة عقار جديد */}
+        <Sheet open={isAddSheetOpen} onOpenChange={setIsAddSheetOpen}>
+          <SheetContent side="right" className="rounded-l-3xl border-none p-8 w-full max-w-md sm:max-w-lg" dir="rtl">
+            <SheetHeader className="text-right mb-8">
+              <SheetTitle className="text-lg font-medium text-primary">إضافة عقار جديد</SheetTitle>
+              <SheetDescription className="text-xs">يرجى إدخال بيانات العقار بدقة لتحديث المحفظة العقارية</SheetDescription>
+            </SheetHeader>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 text-right">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs font-medium">اسم العقار</FormLabel>
+                      <FormControl>
+                        <Input placeholder="مثال: برج السلام المكتبي" {...field} className="rounded-xl bg-slate-50 border-none h-11" />
+                      </FormControl>
+                      <FormMessage className="text-[10px]" />
+                    </FormItem>
+                  )}
+                />
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="type"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-xs font-medium">نوع العقار</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger className="rounded-xl bg-slate-50 border-none h-11 text-xs">
+                              <SelectValue placeholder="اختر النوع" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent className="rounded-xl border-none shadow-xl">
+                            <SelectItem value="Residential" className="text-xs">سكني</SelectItem>
+                            <SelectItem value="Commercial" className="text-xs">تجاري</SelectItem>
+                            <SelectItem value="Industrial" className="text-xs">صناعي</SelectItem>
+                            <SelectItem value="Land" className="text-xs">أرض</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage className="text-[10px]" />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="status"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-xs font-medium">الحالة التشغيلية</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger className="rounded-xl bg-slate-50 border-none h-11 text-xs">
+                              <SelectValue placeholder="اختر الحالة" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent className="rounded-xl border-none shadow-xl">
+                            <SelectItem value="Vacant" className="text-xs">شاغر</SelectItem>
+                            <SelectItem value="Occupied" className="text-xs">مؤجر</SelectItem>
+                            <SelectItem value="Maintenance" className="text-xs">صيانة</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage className="text-[10px]" />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <FormField
+                  control={form.control}
+                  name="location"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs font-medium">الموقع الجغرافي</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input placeholder="المدينة، الحي، الشارع..." {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10" />
+                          <MapPin className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground opacity-50" />
+                        </div>
+                      </FormControl>
+                      <FormMessage className="text-[10px]" />
+                    </FormItem>
+                  )}
+                />
+
+                <div className="grid grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="value"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-xs font-medium">القيمة الإجمالية</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Input type="number" placeholder="0" {...field} className="rounded-xl bg-slate-50 border-none h-11 pl-10" />
+                            <SaudiRiyalIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary opacity-50" />
+                          </div>
+                        </FormControl>
+                        <FormMessage className="text-[10px]" />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="monthlyIncome"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-xs font-medium">الدخل الشهري المتوقع</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Input type="number" placeholder="0" {...field} className="rounded-xl bg-slate-50 border-none h-11 pl-10" />
+                            <SaudiRiyalIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-emerald-600 opacity-50" />
+                          </div>
+                        </FormControl>
+                        <FormMessage className="text-[10px]" />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <SheetFooter className="pt-8 gap-3 flex-row-reverse sm:justify-start">
+                  <Button type="submit" className="rounded-full h-11 flex-1 font-medium" disabled={isSubmitting}>
+                    {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin ml-2" /> : "حفظ العقار"}
+                  </Button>
+                  <Button type="button" variant="ghost" className="rounded-full h-11 flex-1 font-medium" onClick={() => setIsAddSheetOpen(false)}>
+                    إلغاء
+                  </Button>
+                </SheetFooter>
+              </form>
+            </Form>
+          </SheetContent>
+        </Sheet>
+
+        {/* نافذة عرض تفاصيل العقار */}
         <Sheet open={!!selectedProperty} onOpenChange={() => setSelectedProperty(null)}>
           <SheetContent side="right" className="rounded-l-3xl border-none p-8" dir="rtl">
             <SheetHeader className="text-right mb-8">
