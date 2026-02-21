@@ -13,7 +13,8 @@ import {
   ChevronRight,
   CheckCircle2,
   Clock,
-  AlertCircle
+  AlertCircle,
+  TrendingUp
 } from "lucide-react";
 import { SaudiRiyalIcon } from "@/components/icons/saudi-riyal";
 import { 
@@ -35,7 +36,11 @@ import {
   Tooltip,
   Cell,
   PieChart,
-  Pie
+  Pie,
+  LineChart,
+  Line,
+  AreaChart,
+  Area
 } from "recharts";
 import { toArabicDigits, formatCurrencyValue, toHijriDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -52,6 +57,15 @@ const financialData = [
   { month: "جمادى ٢", revenue: 67000, expense: 40000 },
 ];
 
+const growthData = [
+  { month: "محرم", value: 3000000 },
+  { month: "صفر", value: 3200000 },
+  { month: "ربيع ١", value: 3150000 },
+  { month: "ربيع ٢", value: 3500000 },
+  { month: "جمادى ١", value: 3800000 },
+  { month: "جمادى ٢", value: 4200000 },
+];
+
 const distributionData = [
   { name: "سكني", value: 45 },
   { name: "تجاري", value: 30 },
@@ -66,9 +80,9 @@ const stats = [
 ];
 
 const tasks = [
-  { id: 1, title: "تجديد رخص السير - أسطول جدة", status: "Pending", priority: "High" },
-  { id: 2, title: "تحصيل إيجارات مجمع السلام", status: "In Progress", priority: "Medium" },
-  { id: 3, title: "صيانة دورية للمصاعد - برج العليا", status: "Completed", priority: "Low" },
+  { id: 1, title: "تجديد رخص السير - أسطول جدة", status: "معلق", priority: "عالية" },
+  { id: 2, title: "تحصيل إيجارات مجمع السلام", status: "قيد التنفيذ", priority: "متوسطة" },
+  { id: 3, title: "صيانة دورية للمصاعد - برج العليا", status: "مكتمل", priority: "منخفضة" },
 ];
 
 export default function Dashboard() {
@@ -124,47 +138,93 @@ export default function Dashboard() {
           </div>
 
           <div className="grid gap-6 lg:grid-cols-12">
-            <Card className="lg:col-span-8 m3-card overflow-hidden border-none">
-              <CardHeader className="px-0 py-0 flex flex-row items-center justify-between mb-6">
-                <div className="text-right">
-                  <CardTitle className="text-sm font-medium">الأداء المالي</CardTitle>
-                  <CardDescription className="text-[10px]">مقارنة الإيرادات بالمصروفات التشغيلية</CardDescription>
-                </div>
-                <Button variant="ghost" size="sm" className="text-[10px] font-medium gap-1 rounded-full hover:bg-slate-50">
-                  تصدير التقرير
-                  <ArrowUpRight className="h-3 w-3" />
-                </Button>
-              </CardHeader>
-              <CardContent className="p-0">
-                <div className="h-[280px]" dir="ltr">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={financialData}>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F1F5F9" />
-                      <XAxis 
-                        dataKey="month" 
-                        stroke="#94A3B8" 
-                        fontSize={10} 
-                        tickLine={false} 
-                        axisLine={false} 
-                      />
-                      <YAxis 
-                        stroke="#94A3B8" 
-                        fontSize={10} 
-                        tickLine={false} 
-                        axisLine={false} 
-                        tickFormatter={(value) => toArabicDigits(`${value/1000}ك`)}
-                      />
-                      <Tooltip 
-                        contentStyle={{ borderRadius: '24px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', textAlign: 'right' }}
-                        itemStyle={{ fontSize: '10px', fontWeight: '500' }}
-                      />
-                      <Bar dataKey="revenue" fill="oklch(var(--primary))" radius={[6, 6, 0, 0]} barSize={24} />
-                      <Bar dataKey="expense" fill="#CBD5E1" radius={[6, 6, 0, 0]} barSize={24} />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-              </CardContent>
-            </Card>
+            <div className="lg:col-span-8 flex flex-col gap-6">
+              <Card className="m3-card overflow-hidden border-none">
+                <CardHeader className="px-0 py-0 flex flex-row items-center justify-between mb-6">
+                  <div className="text-right">
+                    <CardTitle className="text-sm font-medium">الأداء المالي</CardTitle>
+                    <CardDescription className="text-[10px]">مقارنة الإيرادات بالمصروفات التشغيلية</CardDescription>
+                  </div>
+                  <Button variant="ghost" size="sm" className="text-[10px] font-medium gap-1 rounded-full hover:bg-slate-50">
+                    تصدير التقرير
+                    <ArrowUpRight className="h-3 w-3" />
+                  </Button>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="h-[220px]" dir="ltr">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={financialData}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F1F5F9" />
+                        <XAxis 
+                          dataKey="month" 
+                          stroke="#94A3B8" 
+                          fontSize={10} 
+                          tickLine={false} 
+                          axisLine={false} 
+                        />
+                        <YAxis 
+                          stroke="#94A3B8" 
+                          fontSize={10} 
+                          tickLine={false} 
+                          axisLine={false} 
+                          tickFormatter={(value) => toArabicDigits(`${value/1000}ك`)}
+                        />
+                        <Tooltip 
+                          contentStyle={{ borderRadius: '24px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', textAlign: 'right' }}
+                          itemStyle={{ fontSize: '10px', fontWeight: '500' }}
+                        />
+                        <Bar dataKey="revenue" fill="oklch(var(--primary))" radius={[6, 6, 0, 0]} barSize={24} />
+                        <Bar dataKey="expense" fill="oklch(var(--primary) / 0.2)" radius={[6, 6, 0, 0]} barSize={24} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="m3-card overflow-hidden border-none bg-white">
+                <CardHeader className="px-0 py-0 flex flex-row items-center justify-between mb-6">
+                  <div className="text-right">
+                    <CardTitle className="text-sm font-medium">نمو قيمة الأصول</CardTitle>
+                    <CardDescription className="text-[10px]">تقدير القيمة السوقية للمحفظة العقارية</CardDescription>
+                  </div>
+                  <TrendingUp className="h-4 w-4 text-emerald-600" />
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="h-[220px]" dir="ltr">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart data={growthData}>
+                        <defs>
+                          <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="oklch(var(--primary))" stopOpacity={0.3}/>
+                            <stop offset="95%" stopColor="oklch(var(--primary))" stopOpacity={0}/>
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F1F5F9" />
+                        <XAxis 
+                          dataKey="month" 
+                          stroke="#94A3B8" 
+                          fontSize={10} 
+                          tickLine={false} 
+                          axisLine={false} 
+                        />
+                        <YAxis 
+                          stroke="#94A3B8" 
+                          fontSize={10} 
+                          tickLine={false} 
+                          axisLine={false} 
+                          tickFormatter={(value) => toArabicDigits(`${(value/1000000).toFixed(1)}م`)}
+                        />
+                        <Tooltip 
+                          contentStyle={{ borderRadius: '24px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', textAlign: 'right' }}
+                          itemStyle={{ fontSize: '10px', fontWeight: '500' }}
+                        />
+                        <Area type="monotone" dataKey="value" stroke="oklch(var(--primary))" fillOpacity={1} fill="url(#colorValue)" strokeWidth={3} />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
 
             <div className="lg:col-span-4 flex flex-col gap-6">
               <Card className="m3-card border-none">
@@ -185,7 +245,7 @@ export default function Dashboard() {
                         dataKey="value"
                       >
                         {distributionData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={index === 0 ? "oklch(var(--primary))" : index === 1 ? "#94A3B8" : "#E2E8F0"} />
+                          <Cell key={`cell-${index}`} fill={index === 0 ? "oklch(var(--primary))" : index === 1 ? "oklch(var(--primary) / 0.6)" : "oklch(var(--primary) / 0.2)"} />
                         ))}
                       </Pie>
                       <Tooltip />
@@ -194,7 +254,7 @@ export default function Dashboard() {
                   <div className="flex justify-center gap-4 mt-2">
                     {distributionData.map((item, i) => (
                       <div key={i} className="flex items-center gap-1 text-[9px] font-medium">
-                        <div className="w-2 h-2 rounded-full" style={{ backgroundColor: i === 0 ? "oklch(var(--primary))" : i === 1 ? "#94A3B8" : "#E2E8F0" }} />
+                        <div className="w-2 h-2 rounded-full" style={{ backgroundColor: i === 0 ? "oklch(var(--primary))" : i === 1 ? "oklch(var(--primary) / 0.6)" : "oklch(var(--primary) / 0.2)" }} />
                         {item.name}
                       </div>
                     ))}
@@ -219,10 +279,10 @@ export default function Dashboard() {
                       <div className="text-right">
                         <p className="text-[11px] font-medium">{task.title}</p>
                         <Badge variant="outline" className="text-[8px] mt-1 border-none bg-white px-2">
-                          {task.priority === 'High' ? 'أولوية قصوى' : 'أولوية عادية'}
+                          أولوية {task.priority}
                         </Badge>
                       </div>
-                      {task.status === 'Completed' ? <CheckCircle2 className="h-4 w-4 text-emerald-500" /> : <AlertCircle className="h-4 w-4 text-amber-500" />}
+                      {task.status === 'مكتمل' ? <CheckCircle2 className="h-4 w-4 text-emerald-500" /> : <AlertCircle className="h-4 w-4 text-amber-500" />}
                     </div>
                   ))}
                 </CardContent>
