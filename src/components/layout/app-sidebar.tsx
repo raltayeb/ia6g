@@ -84,7 +84,7 @@ export function AppSidebar() {
         </SidebarGroup>
 
         <SidebarGroup className="mt-4">
-          <SidebarGroupLabel className="px-4 text-[10px] font-medium text-muted-foreground uppercase tracking-widest mb-2 text-right w-full">العمليات</SidebarGroupLabel>
+          <SidebarGroupLabel className="px-4 text-[10px] font-medium text-muted-foreground uppercase tracking-widest mb-2 text-right w-full">الإدارة</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {operationsNav.map((item) => (
