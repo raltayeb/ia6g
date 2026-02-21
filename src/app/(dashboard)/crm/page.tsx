@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -21,7 +20,15 @@ import { SaudiRiyalIcon } from "@/components/icons/saudi-riyal";
 import { toArabicDigits, formatCurrencyValue } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { Lead } from "@/types/erp";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -49,7 +56,7 @@ const mockLeads: Lead[] = [
 export default function CRMPage() {
   const { toast } = useToast();
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
-  const [isAddSheetOpen, setIsAddSheetOpen] = useState(false);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<LeadFormValues>({
@@ -67,7 +74,7 @@ export default function CRMPage() {
     setIsSubmitting(true);
     setTimeout(() => {
       setIsSubmitting(false);
-      setIsAddSheetOpen(false);
+      setIsAddDialogOpen(false);
       form.reset();
       toast({
         title: "تمت إضافة العميل المحتمل",
@@ -100,7 +107,7 @@ export default function CRMPage() {
           <Button 
             size="sm" 
             className="gap-2 rounded-full shadow-sm font-medium h-9 px-5 transition-all hover:scale-105" 
-            onClick={() => setIsAddSheetOpen(true)}
+            onClick={() => setIsAddDialogOpen(true)}
           >
             <Plus className="h-4 w-4" />
             عميل محتمل جديد
@@ -169,8 +176,8 @@ export default function CRMPage() {
                   >
                     <TableCell className="text-right py-4 px-6">
                       <div className="flex flex-col text-right">
-                        <span className="font-medium text-xs">{lead.companyName}</span>
-                        <span className="text-[9px] text-muted-foreground flex items-center gap-1">
+                        <span className="font-medium text-xs text-right">{lead.companyName}</span>
+                        <span className="text-[9px] text-muted-foreground flex items-center gap-1 justify-start">
                           <User className="h-2.5 w-2.5" />
                           {lead.contactPerson}
                         </span>
@@ -182,12 +189,12 @@ export default function CRMPage() {
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right py-4 px-6">
-                      <div className="flex items-center gap-1 font-medium justify-start text-xs">
+                      <div className="flex items-center gap-1 font-medium justify-start text-xs text-right">
                         {formatCurrencyValue(lead.value)}
                         <SaudiRiyalIcon className="h-3.5 w-3.5 opacity-60" />
                       </div>
                     </TableCell>
-                    <TableCell className="text-right text-[11px] text-muted-foreground font-mono py-4 px-6">
+                    <TableCell className="text-right text-[11px] text-muted-foreground font-mono py-4 px-6 text-right">
                       {toArabicDigits(lead.lastContact)}
                     </TableCell>
                     <TableCell className="py-4 px-6">
@@ -202,12 +209,12 @@ export default function CRMPage() {
           </div>
         </div>
 
-        <Sheet open={isAddSheetOpen} onOpenChange={setIsAddSheetOpen}>
-          <SheetContent side="right" className="rounded-l-3xl border-none p-8" dir="rtl">
-            <SheetHeader className="text-right mb-8">
-              <SheetTitle className="text-lg font-medium text-primary">إضافة فرصة بيعية جديدة</SheetTitle>
-              <SheetDescription className="text-xs">سجل بيانات العميل المحتمل لبدء رحلة المبيعات</SheetDescription>
-            </SheetHeader>
+        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+          <DialogContent className="rounded-[28px] border-none p-8 max-w-md w-[95%] sm:w-full" dir="rtl">
+            <DialogHeader className="text-right mb-6">
+              <DialogTitle className="text-lg font-medium text-primary">إضافة فرصة بيعية جديدة</DialogTitle>
+              <DialogDescription className="text-xs">سجل بيانات العميل المحتمل لبدء رحلة المبيعات</DialogDescription>
+            </DialogHeader>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 text-right">
                 <FormField
@@ -217,7 +224,7 @@ export default function CRMPage() {
                     <FormItem>
                       <FormLabel className="text-xs font-medium">اسم المنشأة / الشركة</FormLabel>
                       <FormControl>
-                        <Input placeholder="مثال: شركة التطوير العقاري" {...field} className="rounded-xl bg-slate-50 border-none h-11" />
+                        <Input placeholder="مثال: شركة التطوير العقاري" {...field} className="rounded-xl bg-slate-50 border-none h-11 text-right" />
                       </FormControl>
                       <FormMessage className="text-[10px]" />
                     </FormItem>
@@ -232,7 +239,7 @@ export default function CRMPage() {
                       <FormLabel className="text-xs font-medium">الشخص المسؤول / جهة الاتصال</FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <Input placeholder="مثال: م. أحمد علي" {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10" />
+                          <Input placeholder="مثال: م. أحمد علي" {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10 text-right" />
                           <User className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground opacity-50" />
                         </div>
                       </FormControl>
@@ -250,7 +257,7 @@ export default function CRMPage() {
                         <FormLabel className="text-xs font-medium">القيمة المتوقعة</FormLabel>
                         <FormControl>
                           <div className="relative">
-                            <Input type="number" placeholder="0" {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10" />
+                            <Input type="number" placeholder="0" {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10 text-right" />
                             <SaudiRiyalIcon className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary opacity-50" />
                           </div>
                         </FormControl>
@@ -266,7 +273,7 @@ export default function CRMPage() {
                         <FormLabel className="text-xs font-medium">مرحلة البيع</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
-                            <SelectTrigger className="rounded-xl bg-slate-50 border-none h-11 text-xs">
+                            <SelectTrigger className="rounded-xl bg-slate-50 border-none h-11 text-xs text-right">
                               <SelectValue placeholder="اختر المرحلة" />
                             </SelectTrigger>
                           </FormControl>
@@ -292,25 +299,25 @@ export default function CRMPage() {
                     <FormItem>
                       <FormLabel className="text-xs font-medium">مصدر العميل</FormLabel>
                       <FormControl>
-                        <Input placeholder="مثال: منصة لينكدان، إعلان سناب، إحالة..." {...field} className="rounded-xl bg-slate-50 border-none h-11" />
+                        <Input placeholder="مثال: منصة لينكدان، إعلان سناب، إحالة..." {...field} className="rounded-xl bg-slate-50 border-none h-11 text-right" />
                       </FormControl>
                       <FormMessage className="text-[10px]" />
                     </FormItem>
                   )}
                 />
 
-                <SheetFooter className="pt-8 gap-3 flex-row-reverse sm:justify-start">
+                <DialogFooter className="pt-8 gap-3 flex-row-reverse sm:justify-start">
                   <Button type="submit" className="rounded-full h-11 flex-1 font-medium" disabled={isSubmitting}>
                     {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin ml-2" /> : "حفظ الفرصة"}
                   </Button>
-                  <Button type="button" variant="ghost" className="rounded-full h-11 flex-1 font-medium" onClick={() => setIsAddSheetOpen(false)}>
+                  <Button type="button" variant="ghost" className="rounded-full h-11 flex-1 font-medium" onClick={() => setIsAddDialogOpen(false)}>
                     إلغاء
                   </Button>
-                </SheetFooter>
+                </DialogFooter>
               </form>
             </Form>
-          </SheetContent>
-        </Sheet>
+          </DialogContent>
+        </Dialog>
 
         <Sheet open={!!selectedLead} onOpenChange={() => setSelectedLead(null)}>
           <SheetContent side="right" className="rounded-l-3xl border-none p-8" dir="rtl">

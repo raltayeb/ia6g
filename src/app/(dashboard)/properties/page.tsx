@@ -27,7 +27,15 @@ import { Property } from "@/types/erp";
 import { SaudiRiyalIcon } from "@/components/icons/saudi-riyal";
 import { toArabicDigits, formatCurrencyValue } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogDescription, 
+  DialogFooter, 
+  DialogHeader, 
+  DialogTitle 
+} from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -56,7 +64,7 @@ const mockProperties: Property[] = [
 export default function PropertiesPage() {
   const { toast } = useToast();
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
-  const [isAddSheetOpen, setIsAddSheetOpen] = useState(false);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<PropertyFormValues>({
@@ -73,11 +81,9 @@ export default function PropertiesPage() {
 
   const onSubmit = (values: PropertyFormValues) => {
     setIsSubmitting(true);
-    // محاكاة عملية الحفظ في قاعدة البيانات
     setTimeout(() => {
-      console.log("Saving property:", values);
       setIsSubmitting(false);
-      setIsAddSheetOpen(false);
+      setIsAddDialogOpen(false);
       form.reset();
       toast({
         title: "تمت إضافة العقار",
@@ -105,7 +111,7 @@ export default function PropertiesPage() {
           <Button 
             size="sm" 
             className="gap-2 rounded-full shadow-sm font-medium h-9 px-5 transition-all hover:scale-105 active:scale-95" 
-            onClick={() => setIsAddSheetOpen(true)}
+            onClick={() => setIsAddDialogOpen(true)}
           >
             <Plus className="h-4 w-4" />
             إضافة عقار
@@ -234,13 +240,12 @@ export default function PropertiesPage() {
           </div>
         </div>
 
-        {/* نافذة إضافة عقار جديد */}
-        <Sheet open={isAddSheetOpen} onOpenChange={setIsAddSheetOpen}>
-          <SheetContent side="right" className="rounded-l-3xl border-none p-8 w-full max-w-md sm:max-w-lg" dir="rtl">
-            <SheetHeader className="text-right mb-8">
-              <SheetTitle className="text-lg font-medium text-primary">إضافة عقار جديد</SheetTitle>
-              <SheetDescription className="text-xs">يرجى إدخال بيانات العقار بدقة لتحديث المحفظة العقارية</SheetDescription>
-            </SheetHeader>
+        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+          <DialogContent className="rounded-[28px] border-none p-8 max-w-md w-[95%] sm:w-full" dir="rtl">
+            <DialogHeader className="text-right mb-6">
+              <DialogTitle className="text-lg font-medium text-primary">إضافة عقار جديد</DialogTitle>
+              <DialogDescription className="text-xs">يرجى إدخال بيانات العقار بدقة لتحديث المحفظة العقارية</DialogDescription>
+            </DialogHeader>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 text-right">
                 <FormField
@@ -250,7 +255,7 @@ export default function PropertiesPage() {
                     <FormItem>
                       <FormLabel className="text-xs font-medium">اسم العقار</FormLabel>
                       <FormControl>
-                        <Input placeholder="مثال: برج السلام المكتبي" {...field} className="rounded-xl bg-slate-50 border-none h-11" />
+                        <Input placeholder="مثال: برج السلام المكتبي" {...field} className="rounded-xl bg-slate-50 border-none h-11 text-right" />
                       </FormControl>
                       <FormMessage className="text-[10px]" />
                     </FormItem>
@@ -266,11 +271,11 @@ export default function PropertiesPage() {
                         <FormLabel className="text-xs font-medium">نوع العقار</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
-                            <SelectTrigger className="rounded-xl bg-slate-50 border-none h-11 text-xs">
+                            <SelectTrigger className="rounded-xl bg-slate-50 border-none h-11 text-xs text-right">
                               <SelectValue placeholder="اختر النوع" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="rounded-xl border-none shadow-xl">
+                          <SelectContent className="rounded-xl border-none shadow-xl text-right">
                             <SelectItem value="Residential" className="text-xs">سكني</SelectItem>
                             <SelectItem value="Commercial" className="text-xs">تجاري</SelectItem>
                             <SelectItem value="Industrial" className="text-xs">صناعي</SelectItem>
@@ -289,11 +294,11 @@ export default function PropertiesPage() {
                         <FormLabel className="text-xs font-medium">الحالة التشغيلية</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
-                            <SelectTrigger className="rounded-xl bg-slate-50 border-none h-11 text-xs">
+                            <SelectTrigger className="rounded-xl bg-slate-50 border-none h-11 text-xs text-right">
                               <SelectValue placeholder="اختر الحالة" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="rounded-xl border-none shadow-xl">
+                          <SelectContent className="rounded-xl border-none shadow-xl text-right">
                             <SelectItem value="Vacant" className="text-xs">شاغر</SelectItem>
                             <SelectItem value="Occupied" className="text-xs">مؤجر</SelectItem>
                             <SelectItem value="Maintenance" className="text-xs">صيانة</SelectItem>
@@ -313,7 +318,7 @@ export default function PropertiesPage() {
                       <FormLabel className="text-xs font-medium">الموقع الجغرافي</FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <Input placeholder="المدينة، الحي، الشارع..." {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10" />
+                          <Input placeholder="المدينة، الحي، الشارع..." {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10 text-right" />
                           <MapPin className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground opacity-50" />
                         </div>
                       </FormControl>
@@ -331,8 +336,8 @@ export default function PropertiesPage() {
                         <FormLabel className="text-xs font-medium">القيمة الإجمالية</FormLabel>
                         <FormControl>
                           <div className="relative">
-                            <Input type="number" placeholder="0" {...field} className="rounded-xl bg-slate-50 border-none h-11 pl-10" />
-                            <SaudiRiyalIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary opacity-50" />
+                            <Input type="number" placeholder="0" {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10 text-right" />
+                            <SaudiRiyalIcon className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary opacity-50" />
                           </div>
                         </FormControl>
                         <FormMessage className="text-[10px]" />
@@ -347,8 +352,8 @@ export default function PropertiesPage() {
                         <FormLabel className="text-xs font-medium">الدخل الشهري المتوقع</FormLabel>
                         <FormControl>
                           <div className="relative">
-                            <Input type="number" placeholder="0" {...field} className="rounded-xl bg-slate-50 border-none h-11 pl-10" />
-                            <SaudiRiyalIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-emerald-600 opacity-50" />
+                            <Input type="number" placeholder="0" {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10 text-right" />
+                            <SaudiRiyalIcon className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-emerald-600 opacity-50" />
                           </div>
                         </FormControl>
                         <FormMessage className="text-[10px]" />
@@ -357,20 +362,19 @@ export default function PropertiesPage() {
                   />
                 </div>
 
-                <SheetFooter className="pt-8 gap-3 flex-row-reverse sm:justify-start">
+                <DialogFooter className="pt-8 gap-3 flex-row-reverse sm:justify-start">
                   <Button type="submit" className="rounded-full h-11 flex-1 font-medium" disabled={isSubmitting}>
                     {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin ml-2" /> : "حفظ العقار"}
                   </Button>
-                  <Button type="button" variant="ghost" className="rounded-full h-11 flex-1 font-medium" onClick={() => setIsAddSheetOpen(false)}>
+                  <Button type="button" variant="ghost" className="rounded-full h-11 flex-1 font-medium" onClick={() => setIsAddDialogOpen(false)}>
                     إلغاء
                   </Button>
-                </SheetFooter>
+                </DialogFooter>
               </form>
             </Form>
-          </SheetContent>
-        </Sheet>
+          </DialogContent>
+        </Dialog>
 
-        {/* نافذة عرض تفاصيل العقار */}
         <Sheet open={!!selectedProperty} onOpenChange={() => setSelectedProperty(null)}>
           <SheetContent side="right" className="rounded-l-3xl border-none p-8" dir="rtl">
             <SheetHeader className="text-right mb-8">
@@ -380,23 +384,23 @@ export default function PropertiesPage() {
             {selectedProperty && (
               <div className="space-y-6 text-right">
                 <div className="grid gap-4">
-                  <div className="p-4 bg-slate-50 rounded-2xl">
+                  <div className="p-4 bg-slate-50 rounded-2xl text-right">
                     <p className="text-[10px] text-muted-foreground uppercase mb-1">اسم العقار</p>
                     <p className="text-sm font-medium">{selectedProperty.name}</p>
                   </div>
-                  <div className="p-4 bg-slate-50 rounded-2xl">
+                  <div className="p-4 bg-slate-50 rounded-2xl text-right">
                     <p className="text-[10px] text-muted-foreground uppercase mb-1">الموقع</p>
                     <p className="text-sm font-medium">{selectedProperty.location}</p>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="p-4 bg-slate-50 rounded-2xl">
+                    <div className="p-4 bg-slate-50 rounded-2xl text-right">
                       <p className="text-[10px] text-muted-foreground uppercase mb-1">القيمة الإجمالية</p>
                       <div className="flex items-center gap-1 justify-start flex-row-reverse text-sm font-medium">
                         {formatCurrencyValue(selectedProperty.value)}
                         <SaudiRiyalIcon className="h-3 w-3" />
                       </div>
                     </div>
-                    <div className="p-4 bg-slate-50 rounded-2xl">
+                    <div className="p-4 bg-slate-50 rounded-2xl text-right">
                       <p className="text-[10px] text-muted-foreground uppercase mb-1">الحالة</p>
                       <Badge className="rounded-full bg-emerald-50 text-emerald-700 border-none mt-1">{selectedProperty.status}</Badge>
                     </div>

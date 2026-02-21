@@ -27,7 +27,15 @@ import { SaudiRiyalIcon } from "@/components/icons/saudi-riyal";
 import { toArabicDigits, formatCurrencyValue } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { Vehicle } from "@/types/erp";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -56,7 +64,7 @@ const mockVehicles: Vehicle[] = [
 export default function VehiclesPage() {
   const { toast } = useToast();
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
-  const [isAddSheetOpen, setIsAddSheetOpen] = useState(false);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<VehicleFormValues>({
@@ -73,11 +81,9 @@ export default function VehiclesPage() {
 
   const onSubmit = (values: VehicleFormValues) => {
     setIsSubmitting(true);
-    // محاكاة عملية الحفظ في قاعدة البيانات
     setTimeout(() => {
-      console.log("Saving vehicle:", values);
       setIsSubmitting(false);
-      setIsAddSheetOpen(false);
+      setIsAddDialogOpen(false);
       form.reset();
       toast({
         title: "تم تسجيل المركبة",
@@ -105,7 +111,7 @@ export default function VehiclesPage() {
           <Button 
             size="sm" 
             className="gap-2 rounded-full shadow-sm font-medium h-9 px-5 transition-all hover:scale-105 active:scale-95" 
-            onClick={() => setIsAddSheetOpen(true)}
+            onClick={() => setIsAddDialogOpen(true)}
           >
             <Plus className="h-4 w-4" />
             إضافة مركبة
@@ -118,31 +124,31 @@ export default function VehiclesPage() {
               <CardHeader className="pb-2 text-right p-0">
                 <CardTitle className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">إجمالي الوحدات</CardTitle>
               </CardHeader>
-              <CardContent className="p-0 pt-2">
-                <p className="text-xl font-medium text-right">{toArabicDigits(58)}</p>
+              <CardContent className="p-0 pt-2 text-right">
+                <p className="text-xl font-medium">{toArabicDigits(58)}</p>
               </CardContent>
             </Card>
             <Card className="m3-card border-none">
               <CardHeader className="pb-2 text-right p-0">
                 <CardTitle className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">السائقين النشطين</CardTitle>
               </CardHeader>
-              <CardContent className="p-0 pt-2 text-emerald-600">
-                <p className="text-xl font-medium text-right">{toArabicDigits(42)}</p>
+              <CardContent className="p-0 pt-2 text-emerald-600 text-right">
+                <p className="text-xl font-medium">{toArabicDigits(42)}</p>
               </CardContent>
             </Card>
             <Card className="m3-card border-none">
               <CardHeader className="pb-2 text-right p-0">
                 <CardTitle className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">في الصيانة</CardTitle>
               </CardHeader>
-              <CardContent className="p-0 pt-2 text-rose-600">
-                <p className="text-xl font-medium text-right">{toArabicDigits(6)}</p>
+              <CardContent className="p-0 pt-2 text-rose-600 text-right">
+                <p className="text-xl font-medium">{toArabicDigits(6)}</p>
               </CardContent>
             </Card>
             <Card className="m3-card border-none">
               <CardHeader className="pb-2 text-right p-0">
                 <CardTitle className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">تكاليف الوقود</CardTitle>
               </CardHeader>
-              <CardContent className="p-0 pt-2">
+              <CardContent className="p-0 pt-2 text-right">
                 <div className="flex items-center gap-1 justify-start flex-row-reverse">
                   <span className="text-xl font-medium">{toArabicDigits(12.4)}ألف</span>
                   <SaudiRiyalIcon className="h-4 w-4 text-primary opacity-70" />
@@ -192,7 +198,7 @@ export default function VehiclesPage() {
                         </span>
                       </div>
                     </TableCell>
-                    <TableCell className="text-right text-xs font-normal py-4 px-6">{vehicle.driverName || "غير محدد"}</TableCell>
+                    <TableCell className="text-right text-xs font-normal py-4 px-6 text-right">{vehicle.driverName || "غير محدد"}</TableCell>
                     <TableCell className="text-right py-4 px-6">
                       <Badge 
                         variant="secondary"
@@ -204,7 +210,7 @@ export default function VehiclesPage() {
                         {vehicle.status === 'Active' ? 'نشط' : vehicle.status === 'Maintenance' ? 'صيانة' : 'خارج الخدمة'}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-right text-[11px] text-muted-foreground font-normal py-4 px-6">{toArabicDigits(vehicle.lastServiceDate)}</TableCell>
+                    <TableCell className="text-right text-[11px] text-muted-foreground font-normal py-4 px-6 text-right">{toArabicDigits(vehicle.lastServiceDate)}</TableCell>
                     <TableCell className="py-4 px-6">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
@@ -212,7 +218,7 @@ export default function VehiclesPage() {
                             <MoreVertical className="h-4 w-4 text-slate-400" />
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-44 rounded-2xl p-1 border-none shadow-lg">
+                        <DropdownMenuContent align="end" className="w-44 rounded-2xl p-1 border-none shadow-lg text-right">
                           <DropdownMenuItem className="flex items-center gap-2 text-right justify-end text-xs rounded-xl py-2 cursor-pointer" onClick={() => setSelectedVehicle(vehicle)}>
                             <span>عرض التفاصيل</span>
                             <Eye className="h-4 w-4 text-slate-400" />
@@ -236,13 +242,12 @@ export default function VehiclesPage() {
           </div>
         </div>
 
-        {/* نافذة إضافة مركبة جديدة */}
-        <Sheet open={isAddSheetOpen} onOpenChange={setIsAddSheetOpen}>
-          <SheetContent side="right" className="rounded-l-3xl border-none p-8 w-full max-w-md sm:max-w-lg" dir="rtl">
-            <SheetHeader className="text-right mb-8">
-              <SheetTitle className="text-lg font-medium text-primary">إضافة مركبة للأسطول</SheetTitle>
-              <SheetDescription className="text-xs">أدخل تفاصيل المركبة الجديدة لتحديث سجلات التشغيل</SheetDescription>
-            </SheetHeader>
+        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+          <DialogContent className="rounded-[28px] border-none p-8 max-w-md w-[95%] sm:w-full" dir="rtl">
+            <DialogHeader className="text-right mb-6">
+              <DialogTitle className="text-lg font-medium text-primary">إضافة مركبة للأسطول</DialogTitle>
+              <DialogDescription className="text-xs">أدخل تفاصيل المركبة الجديدة لتحديث سجلات التشغيل</DialogDescription>
+            </DialogHeader>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 text-right">
                 <div className="grid grid-cols-2 gap-4">
@@ -267,11 +272,11 @@ export default function VehiclesPage() {
                         <FormLabel className="text-xs font-medium">نوع المركبة</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
-                            <SelectTrigger className="rounded-xl bg-slate-50 border-none h-11 text-xs">
+                            <SelectTrigger className="rounded-xl bg-slate-50 border-none h-11 text-xs text-right">
                               <SelectValue placeholder="اختر النوع" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="rounded-xl border-none shadow-xl">
+                          <SelectContent className="rounded-xl border-none shadow-xl text-right">
                             <SelectItem value="Sedan" className="text-xs">سيدان</SelectItem>
                             <SelectItem value="Truck" className="text-xs">شاحنة</SelectItem>
                             <SelectItem value="Van" className="text-xs">فان / حافلة</SelectItem>
@@ -291,7 +296,7 @@ export default function VehiclesPage() {
                     <FormItem>
                       <FormLabel className="text-xs font-medium">الموديل والمواصفات</FormLabel>
                       <FormControl>
-                        <Input placeholder="مثال: تويوتا هايلكس 2024" {...field} className="rounded-xl bg-slate-50 border-none h-11" />
+                        <Input placeholder="مثال: تويوتا هايلكس 2024" {...field} className="rounded-xl bg-slate-50 border-none h-11 text-right" />
                       </FormControl>
                       <FormMessage className="text-[10px]" />
                     </FormItem>
@@ -306,7 +311,7 @@ export default function VehiclesPage() {
                       <FormLabel className="text-xs font-medium">السائق المعين</FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <Input placeholder="اسم السائق (اختياري)" {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10" />
+                          <Input placeholder="اسم السائق (اختياري)" {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10 text-right" />
                           <User className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground opacity-50" />
                         </div>
                       </FormControl>
@@ -324,8 +329,8 @@ export default function VehiclesPage() {
                         <FormLabel className="text-xs font-medium">قيمة الشراء</FormLabel>
                         <FormControl>
                           <div className="relative">
-                            <Input type="number" placeholder="0" {...field} className="rounded-xl bg-slate-50 border-none h-11 pl-10" />
-                            <SaudiRiyalIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary opacity-50" />
+                            <Input type="number" placeholder="0" {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10 text-right" />
+                            <SaudiRiyalIcon className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary opacity-50" />
                           </div>
                         </FormControl>
                         <FormMessage className="text-[10px]" />
@@ -340,11 +345,11 @@ export default function VehiclesPage() {
                         <FormLabel className="text-xs font-medium">الحالة التشغيلية</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
-                            <SelectTrigger className="rounded-xl bg-slate-50 border-none h-11 text-xs">
+                            <SelectTrigger className="rounded-xl bg-slate-50 border-none h-11 text-xs text-right">
                               <SelectValue placeholder="الحالة" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="rounded-xl border-none shadow-xl">
+                          <SelectContent className="rounded-xl border-none shadow-xl text-right">
                             <SelectItem value="Active" className="text-xs">نشط</SelectItem>
                             <SelectItem value="Maintenance" className="text-xs">في الصيانة</SelectItem>
                             <SelectItem value="Out of Service" className="text-xs">خارج الخدمة</SelectItem>
@@ -356,20 +361,19 @@ export default function VehiclesPage() {
                   />
                 </div>
 
-                <SheetFooter className="pt-8 gap-3 flex-row-reverse sm:justify-start">
+                <DialogFooter className="pt-8 gap-3 flex-row-reverse sm:justify-start">
                   <Button type="submit" className="rounded-full h-11 flex-1 font-medium" disabled={isSubmitting}>
                     {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin ml-2" /> : "تسجيل المركبة"}
                   </Button>
-                  <Button type="button" variant="ghost" className="rounded-full h-11 flex-1 font-medium" onClick={() => setIsAddSheetOpen(false)}>
+                  <Button type="button" variant="ghost" className="rounded-full h-11 flex-1 font-medium" onClick={() => setIsAddDialogOpen(false)}>
                     إلغاء
                   </Button>
-                </SheetFooter>
+                </DialogFooter>
               </form>
             </Form>
-          </SheetContent>
-        </Sheet>
+          </DialogContent>
+        </Dialog>
 
-        {/* نافذة عرض تفاصيل المركبة */}
         <Sheet open={!!selectedVehicle} onOpenChange={() => setSelectedVehicle(null)}>
           <SheetContent side="right" className="rounded-l-3xl border-none p-8" dir="rtl">
             <SheetHeader className="text-right mb-8">
@@ -379,27 +383,27 @@ export default function VehiclesPage() {
             {selectedVehicle && (
               <div className="space-y-6 text-right">
                 <div className="grid gap-4">
-                  <div className="p-4 bg-slate-50 rounded-2xl">
+                  <div className="p-4 bg-slate-50 rounded-2xl text-right">
                     <p className="text-[10px] text-muted-foreground uppercase mb-1">رقم اللوحة</p>
                     <p className="text-sm font-medium">{toArabicDigits(selectedVehicle.plateNumber)}</p>
                   </div>
-                  <div className="p-4 bg-slate-50 rounded-2xl">
+                  <div className="p-4 bg-slate-50 rounded-2xl text-right">
                     <p className="text-[10px] text-muted-foreground uppercase mb-1">الموديل</p>
                     <p className="text-sm font-medium">{selectedVehicle.model}</p>
                   </div>
-                  <div className="p-4 bg-slate-50 rounded-2xl">
+                  <div className="p-4 bg-slate-50 rounded-2xl text-right">
                     <p className="text-[10px] text-muted-foreground uppercase mb-1">السائق المعين</p>
                     <p className="text-sm font-medium">{selectedVehicle.driverName || "غير محدد"}</p>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="p-4 bg-slate-50 rounded-2xl">
+                    <div className="p-4 bg-slate-50 rounded-2xl text-right">
                       <p className="text-[10px] text-muted-foreground uppercase mb-1">قيمة الشراء</p>
                       <div className="flex items-center gap-1 justify-start flex-row-reverse text-sm font-medium">
                         {formatCurrencyValue(selectedVehicle.purchaseValue)}
                         <SaudiRiyalIcon className="h-3 w-3" />
                       </div>
                     </div>
-                    <div className="p-4 bg-slate-50 rounded-2xl">
+                    <div className="p-4 bg-slate-50 rounded-2xl text-right">
                       <p className="text-[10px] text-muted-foreground uppercase mb-1">تاريخ الصيانة</p>
                       <p className="text-sm font-medium">{toArabicDigits(selectedVehicle.lastServiceDate)}</p>
                     </div>

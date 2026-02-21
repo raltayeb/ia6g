@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -19,7 +18,15 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useForm } from "react-hook-form";
@@ -49,7 +56,7 @@ const mockTransactions: Transaction[] = [
 
 export default function FinancePage() {
   const { toast } = useToast();
-  const [isAddSheetOpen, setIsAddSheetOpen] = useState(false);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedTx, setSelectedTx] = useState<Transaction | null>(null);
 
@@ -66,11 +73,9 @@ export default function FinancePage() {
 
   const onSubmit = (values: TransactionFormValues) => {
     setIsSubmitting(true);
-    // محاكاة عملية الحفظ
     setTimeout(() => {
-      console.log("Saving transaction:", values);
       setIsSubmitting(false);
-      setIsAddSheetOpen(false);
+      setIsAddDialogOpen(false);
       form.reset();
       toast({
         title: "تم تسجيل العملية",
@@ -108,7 +113,7 @@ export default function FinancePage() {
             <Button 
               size="sm" 
               className="gap-2 rounded-full shadow-sm font-medium h-9 px-5 transition-all hover:scale-105 active:scale-95" 
-              onClick={() => setIsAddSheetOpen(true)}
+              onClick={() => setIsAddDialogOpen(true)}
             >
               <Plus className="h-4 w-4" />
               عملية جديدة
@@ -122,8 +127,8 @@ export default function FinancePage() {
               <CardHeader className="pb-2 text-right p-0">
                 <CardTitle className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">الرصيد الإجمالي</CardTitle>
               </CardHeader>
-              <CardContent className="p-0 pt-2">
-                <div className="flex items-center gap-1 justify-start flex-row-reverse">
+              <CardContent className="p-0 pt-2 text-right">
+                <div className="flex items-center gap-1 justify-start">
                   <span className="text-xl font-medium">{formatCurrencyValue(2450000)}</span>
                   <SaudiRiyalIcon className="h-4 w-4 text-primary opacity-60" />
                 </div>
@@ -133,8 +138,8 @@ export default function FinancePage() {
               <CardHeader className="pb-2 text-right p-0">
                 <CardTitle className="text-[10px] font-medium text-emerald-600 uppercase tracking-widest">الدخل الشهري</CardTitle>
               </CardHeader>
-              <CardContent className="p-0 pt-2">
-                <div className="flex items-center gap-1 justify-start flex-row-reverse text-emerald-600">
+              <CardContent className="p-0 pt-2 text-emerald-600 text-right">
+                <div className="flex items-center gap-1 justify-start">
                   <span className="text-xl font-medium">+{formatCurrencyValue(85200)}</span>
                   <SaudiRiyalIcon className="h-4 w-4 opacity-70" />
                 </div>
@@ -144,8 +149,8 @@ export default function FinancePage() {
               <CardHeader className="pb-2 text-right p-0">
                 <CardTitle className="text-[10px] font-medium text-rose-600 uppercase tracking-widest">المصروفات</CardTitle>
               </CardHeader>
-              <CardContent className="p-0 pt-2">
-                <div className="flex items-center gap-1 justify-start flex-row-reverse text-rose-600">
+              <CardContent className="p-0 pt-2 text-rose-600 text-right">
+                <div className="flex items-center gap-1 justify-start">
                   <span className="text-xl font-medium">-{formatCurrencyValue(32400)}</span>
                   <SaudiRiyalIcon className="h-4 w-4 opacity-70" />
                 </div>
@@ -155,8 +160,8 @@ export default function FinancePage() {
               <CardHeader className="pb-2 text-right p-0">
                 <CardTitle className="text-[10px] font-medium opacity-80 uppercase tracking-widest">صافي الربح</CardTitle>
               </CardHeader>
-              <CardContent className="p-0 pt-2">
-                <div className="flex items-center gap-1 justify-start flex-row-reverse">
+              <CardContent className="p-0 pt-2 text-right">
+                <div className="flex items-center gap-1 justify-start">
                   <span className="text-xl font-medium">{formatCurrencyValue(52800)}</span>
                   <SaudiRiyalIcon className="h-4 w-4 opacity-80" />
                 </div>
@@ -200,7 +205,7 @@ export default function FinancePage() {
                         className="m3-table-row cursor-pointer"
                         onClick={() => setSelectedTx(tx)}
                       >
-                        <TableCell className="text-right text-[11px] font-mono text-muted-foreground py-4 px-6">{toArabicDigits(tx.date)}</TableCell>
+                        <TableCell className="text-right text-[11px] font-mono text-muted-foreground py-4 px-6 text-right">{toArabicDigits(tx.date)}</TableCell>
                         <TableCell className="text-right font-medium text-xs py-4 px-6">{tx.description}</TableCell>
                         <TableCell className="text-right py-4 px-6">
                           <Badge variant="secondary" className="rounded-full font-medium text-[9px] px-3 py-0.5 border-none bg-slate-50 text-slate-600">
@@ -208,7 +213,7 @@ export default function FinancePage() {
                           </Badge>
                         </TableCell>
                         <TableCell className={`text-right py-4 px-6 ${tx.type === "Income" ? "text-emerald-600" : "text-rose-600"}`}>
-                          <div className="flex items-center gap-1 font-medium justify-start flex-row-reverse text-xs">
+                          <div className="flex items-center gap-1 font-medium justify-start text-xs">
                             {tx.type === "Income" ? "+" : "-"} {formatCurrencyValue(tx.amount)}
                             <SaudiRiyalIcon className="h-3.5 w-3.5 opacity-60" />
                           </div>
@@ -234,13 +239,12 @@ export default function FinancePage() {
           </Tabs>
         </div>
 
-        {/* نافذة إضافة عملية مالية جديدة */}
-        <Sheet open={isAddSheetOpen} onOpenChange={setIsAddSheetOpen}>
-          <SheetContent side="right" className="rounded-l-3xl border-none p-8 w-full max-w-md sm:max-w-lg" dir="rtl">
-            <SheetHeader className="text-right mb-8">
-              <SheetTitle className="text-lg font-medium text-primary">تسجيل عملية مالية</SheetTitle>
-              <SheetDescription className="text-xs">أدخل تفاصيل الإيرادات أو المصروفات لتحديث السجل المالي</SheetDescription>
-            </SheetHeader>
+        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+          <DialogContent className="rounded-[28px] border-none p-8 max-w-md w-[95%] sm:w-full" dir="rtl">
+            <DialogHeader className="text-right mb-6">
+              <DialogTitle className="text-lg font-medium text-primary">تسجيل عملية مالية</DialogTitle>
+              <DialogDescription className="text-xs">أدخل تفاصيل الإيرادات أو المصروفات لتحديث السجل المالي</DialogDescription>
+            </DialogHeader>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 text-right">
                 <FormField
@@ -251,7 +255,7 @@ export default function FinancePage() {
                       <FormLabel className="text-xs font-medium">وصف العملية</FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <Input placeholder="مثال: فاتورة صيانة دورية" {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10" />
+                          <Input placeholder="مثال: فاتورة صيانة دورية" {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10 text-right" />
                           <FileText className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground opacity-50" />
                         </div>
                       </FormControl>
@@ -269,7 +273,7 @@ export default function FinancePage() {
                         <FormLabel className="text-xs font-medium">المبلغ</FormLabel>
                         <FormControl>
                           <div className="relative">
-                            <Input type="number" placeholder="0" {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10" />
+                            <Input type="number" placeholder="0" {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10 text-right" />
                             <SaudiRiyalIcon className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary opacity-50" />
                           </div>
                         </FormControl>
@@ -285,7 +289,7 @@ export default function FinancePage() {
                         <FormLabel className="text-xs font-medium">التاريخ</FormLabel>
                         <FormControl>
                           <div className="relative">
-                            <Input type="date" {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10" />
+                            <Input type="date" {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10 text-right" />
                             <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground opacity-50" />
                           </div>
                         </FormControl>
@@ -304,11 +308,11 @@ export default function FinancePage() {
                         <FormLabel className="text-xs font-medium">نوع العملية</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
-                            <SelectTrigger className="rounded-xl bg-slate-50 border-none h-11 text-xs">
+                            <SelectTrigger className="rounded-xl bg-slate-50 border-none h-11 text-xs text-right">
                               <SelectValue placeholder="اختر النوع" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="rounded-xl border-none shadow-xl">
+                          <SelectContent className="rounded-xl border-none shadow-xl text-right">
                             <SelectItem value="Income" className="text-xs">دخل (إيداع)</SelectItem>
                             <SelectItem value="Expense" className="text-xs">مصروف (سحب)</SelectItem>
                           </SelectContent>
@@ -325,11 +329,11 @@ export default function FinancePage() {
                         <FormLabel className="text-xs font-medium">التصنيف</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
-                            <SelectTrigger className="rounded-xl bg-slate-50 border-none h-11 text-xs">
+                            <SelectTrigger className="rounded-xl bg-slate-50 border-none h-11 text-xs text-right">
                               <SelectValue placeholder="اختر التصنيف" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="rounded-xl border-none shadow-xl">
+                          <SelectContent className="rounded-xl border-none shadow-xl text-right">
                             <SelectItem value="Property" className="text-xs">عقارات</SelectItem>
                             <SelectItem value="Fleet" className="text-xs">أسطول</SelectItem>
                             <SelectItem value="HR" className="text-xs">موارد بشرية</SelectItem>
@@ -342,20 +346,19 @@ export default function FinancePage() {
                   />
                 </div>
 
-                <SheetFooter className="pt-8 gap-3 flex-row-reverse sm:justify-start">
+                <DialogFooter className="pt-8 gap-3 flex-row-reverse sm:justify-start">
                   <Button type="submit" className="rounded-full h-11 flex-1 font-medium" disabled={isSubmitting}>
                     {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin ml-2" /> : "تسجيل العملية"}
                   </Button>
-                  <Button type="button" variant="ghost" className="rounded-full h-11 flex-1 font-medium" onClick={() => setIsAddSheetOpen(false)}>
+                  <Button type="button" variant="ghost" className="rounded-full h-11 flex-1 font-medium" onClick={() => setIsAddDialogOpen(false)}>
                     إلغاء
                   </Button>
-                </SheetFooter>
+                </DialogFooter>
               </form>
             </Form>
-          </SheetContent>
-        </Sheet>
+          </DialogContent>
+        </Dialog>
 
-        {/* نافذة تفاصيل العملية */}
         <Sheet open={!!selectedTx} onOpenChange={() => setSelectedTx(null)}>
           <SheetContent side="right" className="rounded-l-3xl border-none p-8" dir="rtl">
             <SheetHeader className="text-right mb-8">
@@ -365,24 +368,24 @@ export default function FinancePage() {
             {selectedTx && (
               <div className="space-y-6 text-right">
                 <div className="grid gap-4">
-                  <div className="p-4 bg-slate-50 rounded-2xl">
+                  <div className="p-4 bg-slate-50 rounded-2xl text-right">
                     <p className="text-[10px] text-muted-foreground uppercase mb-1">الوصف</p>
                     <p className="text-sm font-medium">{selectedTx.description}</p>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="p-4 bg-slate-50 rounded-2xl">
+                    <div className="p-4 bg-slate-50 rounded-2xl text-right">
                       <p className="text-[10px] text-muted-foreground uppercase mb-1">المبلغ</p>
                       <div className="flex items-center gap-1 justify-start flex-row-reverse text-sm font-medium">
                         {formatCurrencyValue(selectedTx.amount)}
                         <SaudiRiyalIcon className="h-3 w-3" />
                       </div>
                     </div>
-                    <div className="p-4 bg-slate-50 rounded-2xl">
+                    <div className="p-4 bg-slate-50 rounded-2xl text-right">
                       <p className="text-[10px] text-muted-foreground uppercase mb-1">التاريخ</p>
                       <p className="text-sm font-medium font-mono">{toArabicDigits(selectedTx.date)}</p>
                     </div>
                   </div>
-                  <div className="p-4 bg-slate-50 rounded-2xl">
+                  <div className="p-4 bg-slate-50 rounded-2xl text-right">
                     <p className="text-[10px] text-muted-foreground uppercase mb-1">التصنيف</p>
                     <Badge className="rounded-full bg-emerald-50 text-emerald-700 border-none mt-1">
                       {selectedTx.category === 'Property' ? 'عقارات' : selectedTx.category === 'Fleet' ? 'أسطول' : selectedTx.category === 'HR' ? 'موارد بشرية' : 'أخرى'}

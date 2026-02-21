@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -29,7 +28,15 @@ import { Accommodation } from "@/types/erp";
 import { SaudiRiyalIcon } from "@/components/icons/saudi-riyal";
 import { toArabicDigits, formatCurrencyValue } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -54,7 +61,7 @@ const mockAccommodations: Accommodation[] = [
 export default function AccommodationsPage() {
   const { toast } = useToast();
   const [selectedAcc, setSelectedAcc] = useState<Accommodation | null>(null);
-  const [isAddSheetOpen, setIsAddSheetOpen] = useState(false);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<AccommodationFormValues>({
@@ -71,7 +78,7 @@ export default function AccommodationsPage() {
     setIsSubmitting(true);
     setTimeout(() => {
       setIsSubmitting(false);
-      setIsAddSheetOpen(false);
+      setIsAddDialogOpen(false);
       form.reset();
       toast({
         title: "تمت إضافة السكن",
@@ -99,7 +106,7 @@ export default function AccommodationsPage() {
           <Button 
             size="sm" 
             className="gap-2 rounded-full shadow-sm font-medium h-9 px-5 transition-all hover:scale-105 active:scale-95" 
-            onClick={() => setIsAddSheetOpen(true)}
+            onClick={() => setIsAddDialogOpen(true)}
           >
             <Plus className="h-4 w-4" />
             مبنى جديد
@@ -170,7 +177,7 @@ export default function AccommodationsPage() {
                       onClick={() => setSelectedAcc(acc)}
                     >
                       <TableCell className="text-right py-4 px-6">
-                        <div className="flex items-center gap-3 justify-start">
+                        <div className="flex items-center gap-3 justify-start text-right">
                           <div className="p-2 bg-emerald-50 rounded-xl shrink-0">
                             <Home className="h-4 w-4 text-primary" />
                           </div>
@@ -181,7 +188,7 @@ export default function AccommodationsPage() {
                         </div>
                       </TableCell>
                       <TableCell className="text-right py-4 px-6">
-                        <div className="flex items-center gap-1 text-[11px] text-muted-foreground justify-start">
+                        <div className="flex items-center gap-1 text-[11px] text-muted-foreground justify-start text-right">
                           <MapPin className="h-3 w-3" />
                           {acc.location}
                         </div>
@@ -204,7 +211,7 @@ export default function AccommodationsPage() {
                         </Badge>
                       </TableCell>
                       <TableCell className="text-right py-4 px-6">
-                        <div className="flex items-center gap-1 font-medium justify-start text-xs">
+                        <div className="flex items-center gap-1 font-medium justify-start text-xs text-right">
                           {formatCurrencyValue(acc.monthlyCost)}
                           <SaudiRiyalIcon className="h-3.5 w-3.5 opacity-60" />
                         </div>
@@ -241,12 +248,12 @@ export default function AccommodationsPage() {
           </div>
         </div>
 
-        <Sheet open={isAddSheetOpen} onOpenChange={setIsAddSheetOpen}>
-          <SheetContent side="right" className="rounded-l-3xl border-none p-8 w-full max-w-md sm:max-w-lg" dir="rtl">
-            <SheetHeader className="text-right mb-8">
-              <SheetTitle className="text-lg font-medium text-primary">إضافة مبنى سكن جديد</SheetTitle>
-              <SheetDescription className="text-xs">أدخل تفاصيل المبنى الجديد لتحديث سجلات الإسكان</SheetDescription>
-            </SheetHeader>
+        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+          <DialogContent className="rounded-[28px] border-none p-8 max-w-md w-[95%] sm:w-full" dir="rtl">
+            <DialogHeader className="text-right mb-6">
+              <DialogTitle className="text-lg font-medium text-primary">إضافة مبنى سكن جديد</DialogTitle>
+              <DialogDescription className="text-xs">أدخل تفاصيل المبنى الجديد لتحديث سجلات الإسكان</DialogDescription>
+            </DialogHeader>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 text-right">
                 <FormField
@@ -257,7 +264,7 @@ export default function AccommodationsPage() {
                       <FormLabel className="text-xs font-medium">اسم المبنى / المجمع</FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <Input placeholder="مثال: سكن السلام للموظفين - بلوك ب" {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10" />
+                          <Input placeholder="مثال: سكن السلام للموظفين - بلوك ب" {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10 text-right" />
                           <Building2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground opacity-50" />
                         </div>
                       </FormControl>
@@ -274,7 +281,7 @@ export default function AccommodationsPage() {
                       <FormLabel className="text-xs font-medium">الموقع الجغرافي</FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <Input placeholder="المدينة، الحي، الشارع..." {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10" />
+                          <Input placeholder="المدينة، الحي، الشارع..." {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10 text-right" />
                           <MapPin className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground opacity-50" />
                         </div>
                       </FormControl>
@@ -292,7 +299,7 @@ export default function AccommodationsPage() {
                         <FormLabel className="text-xs font-medium">السعة القصوى (أفراد)</FormLabel>
                         <FormControl>
                           <div className="relative">
-                            <Input type="number" placeholder="0" {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10" />
+                            <Input type="number" placeholder="0" {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10 text-right" />
                             <Users className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground opacity-50" />
                           </div>
                         </FormControl>
@@ -308,7 +315,7 @@ export default function AccommodationsPage() {
                         <FormLabel className="text-xs font-medium">التكلفة الشهرية</FormLabel>
                         <FormControl>
                           <div className="relative">
-                            <Input type="number" placeholder="0" {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10" />
+                            <Input type="number" placeholder="0" {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10 text-right" />
                             <Wallet className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary opacity-50" />
                           </div>
                         </FormControl>
@@ -318,18 +325,18 @@ export default function AccommodationsPage() {
                   />
                 </div>
 
-                <SheetFooter className="pt-8 gap-3 flex-row-reverse sm:justify-start">
+                <DialogFooter className="pt-8 gap-3 flex-row-reverse sm:justify-start">
                   <Button type="submit" className="rounded-full h-11 flex-1 font-medium" disabled={isSubmitting}>
                     {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin ml-2" /> : "حفظ المبنى"}
                   </Button>
-                  <Button type="button" variant="ghost" className="rounded-full h-11 flex-1 font-medium" onClick={() => setIsAddSheetOpen(false)}>
+                  <Button type="button" variant="ghost" className="rounded-full h-11 flex-1 font-medium" onClick={() => setIsAddDialogOpen(false)}>
                     إلغاء
                   </Button>
-                </SheetFooter>
+                </DialogFooter>
               </form>
             </Form>
-          </SheetContent>
-        </Sheet>
+          </DialogContent>
+        </Dialog>
 
         <Sheet open={!!selectedAcc} onOpenChange={() => setSelectedAcc(null)}>
           <SheetContent side="right" className="rounded-l-3xl border-none p-8" dir="rtl">

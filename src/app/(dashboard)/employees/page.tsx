@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -29,7 +28,15 @@ import { SaudiRiyalIcon } from "@/components/icons/saudi-riyal";
 import { toArabicDigits, formatCurrencyValue } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { Employee } from "@/types/erp";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -63,7 +70,7 @@ const mockEmployeeTasks = [
 export default function EmployeesPage() {
   const { toast } = useToast();
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
-  const [isAddSheetOpen, setIsAddSheetOpen] = useState(false);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<EmployeeFormValues>({
@@ -82,7 +89,7 @@ export default function EmployeesPage() {
     setIsSubmitting(true);
     setTimeout(() => {
       setIsSubmitting(false);
-      setIsAddSheetOpen(false);
+      setIsAddDialogOpen(false);
       form.reset();
       toast({
         title: "تمت إضافة الموظف",
@@ -103,7 +110,7 @@ export default function EmployeesPage() {
           <Button 
             size="sm" 
             className="gap-2 rounded-full shadow-sm font-medium h-9 px-5 transition-all hover:scale-105 active:scale-95" 
-            onClick={() => setIsAddSheetOpen(true)}
+            onClick={() => setIsAddDialogOpen(true)}
           >
             <Plus className="h-4 w-4" />
             إضافة موظف
@@ -180,7 +187,7 @@ export default function EmployeesPage() {
                         </div>
                       </div>
                     </TableCell>
-                    <TableCell className="text-right font-mono text-[11px] font-medium py-4 px-6">{toArabicDigits(emp.iqamaNumber)}</TableCell>
+                    <TableCell className="text-right font-mono text-[11px] font-medium py-4 px-6 text-right">{toArabicDigits(emp.iqamaNumber)}</TableCell>
                     <TableCell className="text-right py-4 px-6">
                       <div className="flex flex-col text-right">
                         <span className="text-xs font-medium">{emp.role}</span>
@@ -215,62 +222,12 @@ export default function EmployeesPage() {
           </div>
         </div>
 
-        <Sheet open={!!selectedEmployee} onOpenChange={() => setSelectedEmployee(null)}>
-          <SheetContent side="right" className="rounded-l-3xl border-none p-8" dir="rtl">
-            <SheetHeader className="text-right mb-8">
-              <SheetTitle className="text-lg font-medium text-primary">ملف الموظف والمهام</SheetTitle>
-              <SheetDescription className="text-xs">السجل الوظيفي والعمليات المكلف بها حالياً</SheetDescription>
-            </SheetHeader>
-            {selectedEmployee && (
-              <div className="space-y-6 text-right">
-                <div className="flex items-center gap-4">
-                  <Avatar className="h-16 w-16 rounded-3xl bg-emerald-50 shrink-0">
-                    <AvatarFallback className="text-emerald-700 text-lg font-medium">
-                      {selectedEmployee.name.split(' ').map(n => n[0]).join('')}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1 text-right">
-                    <p className="text-sm font-medium">{selectedEmployee.name}</p>
-                    <p className="text-xs text-muted-foreground">{selectedEmployee.role}</p>
-                  </div>
-                </div>
-                
-                <div className="space-y-4 text-right">
-                   <h3 className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest border-b pb-2">المهام المسندة حالياً</h3>
-                   {mockEmployeeTasks.map(task => (
-                     <div key={task.id} className="p-3 bg-slate-50 rounded-2xl flex items-center justify-between">
-                       <Badge className={`text-[8px] border-none rounded-lg ${task.status === 'Completed' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
-                         {task.status === 'Completed' ? 'مكتمل' : 'جاري'}
-                       </Badge>
-                       <div className="flex items-center gap-2">
-                         <span className="text-[11px] font-medium">{task.title}</span>
-                         {task.status === 'Completed' ? <CheckCircle2 className="h-4 w-4 text-emerald-500" /> : <Clock className="h-4 w-4 text-amber-500 animate-pulse" />}
-                       </div>
-                     </div>
-                   ))}
-                </div>
-
-                <div className="grid gap-4">
-                  <div className="p-4 bg-slate-50 rounded-2xl text-right">
-                    <p className="text-[10px] text-muted-foreground uppercase mb-1">الراتب الأساسي</p>
-                    <div className="flex items-center gap-1 justify-start font-medium text-sm">
-                      {formatCurrencyValue(selectedEmployee.salary)}
-                      <SaudiRiyalIcon className="h-3 w-3 opacity-60" />
-                    </div>
-                  </div>
-                </div>
-                <Button className="w-full rounded-full h-11" onClick={() => setSelectedEmployee(null)}>إغلاق الملف</Button>
-              </div>
-            )}
-          </SheetContent>
-        </Sheet>
-
-        <Sheet open={isAddSheetOpen} onOpenChange={setIsAddSheetOpen}>
-          <SheetContent side="right" className="rounded-l-3xl border-none p-8" dir="rtl">
-            <SheetHeader className="text-right mb-8">
-              <SheetTitle className="text-lg font-medium text-primary">إضافة موظف جديد</SheetTitle>
-              <SheetDescription className="text-xs">أدخل البيانات الأساسية لتسجيل الموظف في النظام</SheetDescription>
-            </SheetHeader>
+        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+          <DialogContent className="rounded-[28px] border-none p-8 max-w-md w-[95%] sm:w-full" dir="rtl">
+            <DialogHeader className="text-right mb-6">
+              <DialogTitle className="text-lg font-medium text-primary">إضافة موظف جديد</DialogTitle>
+              <DialogDescription className="text-xs">أدخل البيانات الأساسية لتسجيل الموظف في النظام</DialogDescription>
+            </DialogHeader>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 text-right">
                 <FormField
@@ -324,16 +281,66 @@ export default function EmployeesPage() {
                     )}
                   />
                 </div>
-                <SheetFooter className="pt-8 gap-3 flex-row-reverse sm:justify-start">
-                  <Button type="submit" className="rounded-full h-11 flex-1" disabled={isSubmitting}>
+                <DialogFooter className="pt-8 gap-3 flex-row-reverse sm:justify-start">
+                  <Button type="submit" className="rounded-full h-11 flex-1 font-medium" disabled={isSubmitting}>
                     {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "حفظ الموظف"}
                   </Button>
-                  <Button type="button" variant="ghost" className="rounded-full h-11 flex-1" onClick={() => setIsAddSheetOpen(false)}>
+                  <Button type="button" variant="ghost" className="rounded-full h-11 flex-1 font-medium" onClick={() => setIsAddDialogOpen(false)}>
                     إلغاء
                   </Button>
-                </SheetFooter>
+                </DialogFooter>
               </form>
             </Form>
+          </DialogContent>
+        </Dialog>
+
+        <Sheet open={!!selectedEmployee} onOpenChange={() => setSelectedEmployee(null)}>
+          <SheetContent side="right" className="rounded-l-3xl border-none p-8" dir="rtl">
+            <SheetHeader className="text-right mb-8">
+              <SheetTitle className="text-lg font-medium text-primary">ملف الموظف والمهام</SheetTitle>
+              <SheetDescription className="text-xs">السجل الوظيفي والعمليات المكلف بها حالياً</SheetDescription>
+            </SheetHeader>
+            {selectedEmployee && (
+              <div className="space-y-6 text-right">
+                <div className="flex items-center gap-4">
+                  <Avatar className="h-16 w-16 rounded-3xl bg-emerald-50 shrink-0">
+                    <AvatarFallback className="text-emerald-700 text-lg font-medium">
+                      {selectedEmployee.name.split(' ').map(n => n[0]).join('')}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1 text-right">
+                    <p className="text-sm font-medium">{selectedEmployee.name}</p>
+                    <p className="text-xs text-muted-foreground">{selectedEmployee.role}</p>
+                  </div>
+                </div>
+                
+                <div className="space-y-4 text-right">
+                   <h3 className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest border-b pb-2">المهام المسندة حالياً</h3>
+                   {mockEmployeeTasks.map(task => (
+                     <div key={task.id} className="p-3 bg-slate-50 rounded-2xl flex items-center justify-between">
+                       <Badge className={`text-[8px] border-none rounded-lg ${task.status === 'Completed' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
+                         {task.status === 'Completed' ? 'مكتمل' : 'جاري'}
+                       </Badge>
+                       <div className="flex items-center gap-2">
+                         <span className="text-[11px] font-medium">{task.title}</span>
+                         {task.status === 'Completed' ? <CheckCircle2 className="h-4 w-4 text-emerald-500" /> : <Clock className="h-4 w-4 text-amber-500 animate-pulse" />}
+                       </div>
+                     </div>
+                   ))}
+                </div>
+
+                <div className="grid gap-4">
+                  <div className="p-4 bg-slate-50 rounded-2xl text-right">
+                    <p className="text-[10px] text-muted-foreground uppercase mb-1">الراتب الأساسي</p>
+                    <div className="flex items-center gap-1 justify-start font-medium text-sm">
+                      {formatCurrencyValue(selectedEmployee.salary)}
+                      <SaudiRiyalIcon className="h-3 w-3 opacity-60" />
+                    </div>
+                  </div>
+                </div>
+                <Button className="w-full rounded-full h-11" onClick={() => setSelectedEmployee(null)}>إغلاق الملف</Button>
+              </div>
+            )}
           </SheetContent>
         </Sheet>
       </SidebarInset>
