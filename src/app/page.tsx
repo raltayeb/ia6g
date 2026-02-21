@@ -4,9 +4,9 @@ import {
   Building2, 
   Car, 
   Users, 
-  DollarSign,
   ArrowUpRight,
 } from "lucide-react";
+import { SaudiRiyalIcon } from "@/components/icons/saudi-riyal";
 import { 
   Card, 
   CardContent, 
@@ -38,9 +38,9 @@ const financialData = [
 
 const stats = [
   { title: "إجمالي العقارات", value: 24, icon: Building2, trend: "+٢", color: "text-blue-500" },
-  { title: "حجم الأسطول", value: 58, icon: Car, trend: "+٥", color: "text-green-500" },
-  { title: "إجمالي الموظفين", value: 142, icon: Users, trend: "+١٢", color: "text-orange-500" },
-  { title: "الإيرادات الشهرية", value: 1200000, isCurrency: true, icon: DollarSign, trend: "+١٢.٥٪", color: "text-pink-500" },
+  { title: "حجم الأسطول", value: 58, icon: Car, trend: "+٥", color: "text-indigo-500" },
+  { title: "إجمالي الموظفين", value: 142, icon: Users, trend: "+١٢", color: "text-sky-500" },
+  { title: "الإيرادات الشهرية", value: 1200000, isCurrency: true, icon: SaudiRiyalIcon, trend: "+١٢.٥٪", color: "text-blue-600" },
 ];
 
 export default function Dashboard() {
@@ -136,8 +136,8 @@ export default function Dashboard() {
                           return null;
                         }}
                       />
-                      <Bar dataKey="revenue" fill="#007AFF" radius={[6, 6, 0, 0]} barSize={24} />
-                      <Bar dataKey="expense" fill="#FF2D55" radius={[6, 6, 0, 0]} barSize={24} />
+                      <Bar dataKey="revenue" fill="#3b82f6" radius={[6, 6, 0, 0]} barSize={24} />
+                      <Bar dataKey="expense" fill="#f43f5e" radius={[6, 6, 0, 0]} barSize={24} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
@@ -153,9 +153,9 @@ export default function Dashboard() {
                 <div className="space-y-6">
                   {[
                     { title: "تجديد عقد إيجار", sub: "مبنى الجوهرة - وحدة ٠٤", time: "قبل ساعتين", dot: "bg-blue-500" },
-                    { title: "صيانة أسطول", sub: "شاحنة نقل رقم ٤٥٢", time: "قبل ٥ ساعات", dot: "bg-green-500" },
-                    { title: "تعيين موظف", sub: "سارة محمد - محاسبة", time: "أمس", dot: "bg-orange-500" },
-                    { title: "سداد زكاة", sub: "دفعة الربع الأول ١٤٤٥", time: "منذ يومين", dot: "bg-pink-500" },
+                    { title: "صيانة أسطول", sub: "شاحنة نقل رقم ٤٥٢", time: "قبل ٥ ساعات", dot: "bg-emerald-500" },
+                    { title: "تعيين موظف", sub: "سارة محمد - محاسبة", time: "أمس", dot: "bg-indigo-500" },
+                    { title: "سداد زكاة", sub: "دفعة الربع الأول ١٤٤٥", time: "منذ يومين", dot: "bg-blue-600" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-4 group cursor-default">
                       <div className={`mt-1.5 h-2 w-2 rounded-full shrink-0 ${item.dot} ring-4 ring-slate-50`} />

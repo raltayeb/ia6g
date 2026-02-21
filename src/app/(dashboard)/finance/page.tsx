@@ -1,7 +1,7 @@
-
 "use client";
 
-import { Wallet, Plus, Download, Search, Filter, ArrowUpRight, ArrowDownRight, FileText, TrendingUp } from "lucide-react";
+import { Plus, Download, Search, Filter, ArrowUpRight, ArrowDownRight, FileText, TrendingUp } from "lucide-react";
+import { SaudiRiyalIcon } from "@/components/icons/saudi-riyal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
@@ -17,6 +17,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { toArabicDigits, formatCurrency } from "@/lib/utils";
 import { Transaction } from "@/types/erp";
 
 const mockTransactions: Transaction[] = [
@@ -55,10 +56,10 @@ export default function FinancePage() {
               <CardContent className="p-4 flex items-center justify-between">
                 <div>
                   <p className="text-xs text-muted-foreground uppercase font-bold">الرصيد الإجمالي</p>
-                  <p className="text-2xl font-bold">2,450,000 ر.س</p>
+                  <p className="text-2xl font-bold">{formatCurrency(2450000)}</p>
                 </div>
-                <div className="p-3 bg-primary/10 rounded-full">
-                  <Wallet className="h-5 w-5 text-primary" />
+                <div className="p-3 bg-blue-100 rounded-full">
+                  <SaudiRiyalIcon className="h-5 w-5 text-blue-600" />
                 </div>
               </CardContent>
             </Card>
@@ -66,7 +67,7 @@ export default function FinancePage() {
               <CardContent className="p-4 flex items-center justify-between">
                 <div>
                   <p className="text-xs text-muted-foreground uppercase font-bold">الدخل الشهري</p>
-                  <p className="text-2xl font-bold text-emerald-600">+ 85,200 ر.س</p>
+                  <p className="text-2xl font-bold text-emerald-600">+ {formatCurrency(85200)}</p>
                 </div>
                 <div className="p-3 bg-emerald-100 rounded-full">
                   <ArrowUpRight className="h-5 w-5 text-emerald-600" />
@@ -77,7 +78,7 @@ export default function FinancePage() {
               <CardContent className="p-4 flex items-center justify-between">
                 <div>
                   <p className="text-xs text-muted-foreground uppercase font-bold">المصروفات الشهرية</p>
-                  <p className="text-2xl font-bold text-red-600">- 32,400 ر.س</p>
+                  <p className="text-2xl font-bold text-red-600">- {formatCurrency(32400)}</p>
                 </div>
                 <div className="p-3 bg-red-100 rounded-full">
                   <ArrowDownRight className="h-5 w-5 text-red-600" />
@@ -88,10 +89,10 @@ export default function FinancePage() {
               <CardContent className="p-4 flex items-center justify-between">
                 <div>
                   <p className="text-xs text-muted-foreground uppercase font-bold">صافي الربح</p>
-                  <p className="text-2xl font-bold">52,800 ر.س</p>
+                  <p className="text-2xl font-bold">{formatCurrency(52800)}</p>
                 </div>
-                <div className="p-3 bg-blue-100 rounded-full">
-                  <TrendingUp className="h-5 w-5 text-blue-600" />
+                <div className="p-3 bg-indigo-100 rounded-full">
+                  <TrendingUp className="h-5 w-5 text-indigo-600" />
                 </div>
               </CardContent>
             </Card>
@@ -130,7 +131,7 @@ export default function FinancePage() {
                   <TableBody>
                     {mockTransactions.map((tx) => (
                       <TableRow key={tx.id}>
-                        <TableCell className="text-sm">{tx.date}</TableCell>
+                        <TableCell className="text-sm">{toArabicDigits(tx.date)}</TableCell>
                         <TableCell className="font-medium">{tx.description}</TableCell>
                         <TableCell>
                           <Badge variant="outline">
@@ -144,7 +145,7 @@ export default function FinancePage() {
                           </div>
                         </TableCell>
                         <TableCell className={`text-left font-mono font-bold ${tx.type === "Income" ? "text-emerald-600" : "text-red-600"}`}>
-                          {tx.type === "Income" ? "+" : "-"} {tx.amount.toLocaleString()} ر.س
+                          {tx.type === "Income" ? "+" : "-"} {formatCurrency(tx.amount)}
                         </TableCell>
                       </TableRow>
                     ))}
