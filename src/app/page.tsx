@@ -25,7 +25,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Cell
 } from "recharts";
 import { toArabicDigits, formatCurrencyValue, toHijriDate } from "@/lib/utils";
 
@@ -49,67 +48,67 @@ export default function Dashboard() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset className="bg-[#F7F9F2]">
-        <header className="flex h-20 shrink-0 items-center justify-between px-8 bg-transparent sticky top-0 z-30">
-          <div className="flex items-center gap-4">
-            <SidebarTrigger className="-ml-1 text-primary scale-110" />
+      <SidebarInset className="bg-[#F2F2F7]">
+        <header className="flex h-16 shrink-0 items-center justify-between px-6 bg-white/60 backdrop-blur-xl border-b sticky top-0 z-30">
+          <div className="flex items-center gap-3">
+            <SidebarTrigger className="-ml-1 text-primary" />
             <div className="text-right">
-              <h1 className="font-headline text-2xl font-bold tracking-tight text-primary">نظرة عامة</h1>
-              <p className="text-xs text-muted-foreground font-medium">{toHijriDate()}</p>
+              <h1 className="font-headline text-lg font-bold text-primary">لوحة التحكم</h1>
+              <p className="text-[10px] text-muted-foreground font-medium">{toHijriDate()}</p>
             </div>
           </div>
         </header>
 
-        <div className="flex flex-1 flex-col gap-8 p-8 max-w-7xl mx-auto w-full">
-          {/* Stats Grid - M3 Style Cards */}
-          <div className="relative grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="flex flex-1 flex-col gap-6 p-6 max-w-7xl mx-auto w-full">
+          {/* Stats Grid - MD3 Style */}
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {stats.map((stat) => (
-              <Card key={stat.title} className="bg-white border-none shadow-sm rounded-[2rem] p-2 hover:shadow-md transition-shadow duration-300">
-                <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                  <div className={`p-3 rounded-2xl ${stat.color}`}>
-                    <stat.icon className="h-5 w-5" />
+              <Card key={stat.title} className="bg-white/80 border-none shadow-sm rounded-3xl overflow-hidden">
+                <CardContent className="p-5">
+                  <div className="flex flex-row-reverse items-center justify-between mb-4">
+                    <div className={`p-3 rounded-2xl ${stat.color}`}>
+                      <stat.icon className="h-5 w-5" />
+                    </div>
+                    <div className="bg-slate-50 px-2 py-1 rounded-full flex items-center gap-1">
+                      <ArrowUpRight className="h-3 w-3 text-emerald-600" />
+                      <span className="text-[10px] font-bold text-emerald-600">{toArabicDigits(stat.trend)}</span>
+                    </div>
                   </div>
-                  <div className="bg-slate-50 px-2 py-1 rounded-full flex items-center gap-1">
-                    <ArrowUpRight className="h-3 w-3 text-emerald-600" />
-                    <span className="text-[10px] font-bold text-emerald-600">{toArabicDigits(stat.trend)}</span>
-                  </div>
-                </CardHeader>
-                <CardContent className="pt-2">
-                  <p className="text-xs font-bold text-muted-foreground uppercase tracking-wide mb-1">{stat.title}</p>
-                  <div className="flex items-center gap-1">
-                    <span className="text-3xl font-black text-slate-900">
+                  <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1 text-right">{stat.title}</p>
+                  <div className="flex items-center gap-1 justify-end">
+                    <span className="text-2xl font-black text-slate-900">
                       {stat.isCurrency ? formatCurrencyValue(stat.value as number) : toArabicDigits(stat.value)}
                     </span>
-                    {stat.isCurrency && <stat.icon className="h-6 w-6 text-primary opacity-80" />}
+                    {stat.isCurrency && <stat.icon className="h-5 w-5 text-primary opacity-80" />}
                   </div>
                 </CardContent>
               </Card>
             ))}
           </div>
 
-          <div className="grid gap-8 lg:grid-cols-7">
-            {/* Chart - M3 Surface */}
-            <Card className="lg:col-span-4 bg-white border-none shadow-sm rounded-[2.5rem] overflow-hidden">
-              <CardHeader className="p-8 pb-0">
-                <div className="flex items-center justify-between">
+          <div className="grid gap-6 lg:grid-cols-7">
+            {/* Chart - MD3 Tonal Surface */}
+            <Card className="lg:col-span-4 bg-white/80 border-none shadow-sm rounded-3xl overflow-hidden">
+              <CardHeader className="p-6 pb-0 text-right">
+                <div className="flex flex-row-reverse items-center justify-between">
                   <div>
-                    <CardTitle className="text-lg font-bold text-slate-800">نمو الإيرادات</CardTitle>
-                    <CardDescription className="text-xs font-medium">تحليل الأداء المالي الربعي - الميزانية التقديرية</CardDescription>
+                    <CardTitle className="text-sm font-bold text-slate-800">تحليل الأداء المالي</CardTitle>
+                    <CardDescription className="text-[10px] font-medium">مقارنة الإيرادات والمصروفات خلال الأشهر الماضية</CardDescription>
                   </div>
-                  <div className="p-3 bg-slate-50 rounded-2xl">
-                    <TrendingUp className="h-5 w-5 text-primary" />
+                  <div className="p-2 bg-primary/10 rounded-xl">
+                    <TrendingUp className="h-4 w-4 text-primary" />
                   </div>
                 </div>
               </CardHeader>
-              <CardContent className="p-8">
-                <div className="h-[320px]" dir="ltr">
+              <CardContent className="p-6">
+                <div className="h-[280px]" dir="ltr">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={financialData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }} barGap={8}>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F1F5F9" />
                       <XAxis 
                         dataKey="month" 
                         stroke="#94A3B8" 
-                        fontSize={12} 
+                        fontSize={10} 
                         tickLine={false} 
                         axisLine={false} 
                         fontFamily="Noto Kufi Arabic"
@@ -117,7 +116,7 @@ export default function Dashboard() {
                       />
                       <YAxis 
                         stroke="#94A3B8" 
-                        fontSize={12} 
+                        fontSize={10} 
                         tickLine={false} 
                         axisLine={false} 
                         tickFormatter={(value) => toArabicDigits(`${value/1000}ألف`)}
@@ -128,21 +127,21 @@ export default function Dashboard() {
                         content={({ active, payload }) => {
                           if (active && payload && payload.length) {
                             return (
-                              <div className="rounded-3xl border-none bg-white p-5 shadow-xl text-right ring-1 ring-black/5">
-                                <p className="text-sm font-black mb-3 text-slate-800">{payload[0].payload.month}</p>
-                                <div className="space-y-2">
-                                  <div className="flex items-center justify-between gap-6">
-                                    <span className="text-xs font-bold text-slate-500">الإيرادات:</span>
+                              <div className="rounded-2xl border-none bg-white p-4 shadow-xl text-right ring-1 ring-black/5">
+                                <p className="text-xs font-black mb-2 text-slate-800">{payload[0].payload.month}</p>
+                                <div className="space-y-1.5">
+                                  <div className="flex items-center justify-between gap-4">
+                                    <span className="text-[10px] font-bold text-slate-500">الإيرادات:</span>
                                     <div className="flex items-center gap-1">
-                                      <span className="text-sm font-black text-primary">{formatCurrencyValue(payload[0].value as number)}</span>
-                                      <SaudiRiyalIcon className="size-4 text-primary" />
+                                      <span className="text-xs font-black text-primary">{formatCurrencyValue(payload[0].value as number)}</span>
+                                      <SaudiRiyalIcon className="size-3 text-primary" />
                                     </div>
                                   </div>
-                                  <div className="flex items-center justify-between gap-6">
-                                    <span className="text-xs font-bold text-slate-500">المصروفات:</span>
+                                  <div className="flex items-center justify-between gap-4">
+                                    <span className="text-[10px] font-bold text-slate-500">المصروفات:</span>
                                     <div className="flex items-center gap-1">
-                                      <span className="text-sm font-black text-rose-500">{formatCurrencyValue(payload[1].value as number)}</span>
-                                      <SaudiRiyalIcon className="size-4 text-rose-500" />
+                                      <span className="text-xs font-black text-rose-500">{formatCurrencyValue(payload[1].value as number)}</span>
+                                      <SaudiRiyalIcon className="size-3 text-rose-500" />
                                     </div>
                                   </div>
                                 </div>
@@ -152,22 +151,22 @@ export default function Dashboard() {
                           return null;
                         }}
                       />
-                      <Bar dataKey="revenue" fill="hsl(var(--primary))" radius={[12, 12, 12, 12]} barSize={32} />
-                      <Bar dataKey="expense" fill="#FDA4AF" radius={[12, 12, 12, 12]} barSize={32} />
+                      <Bar dataKey="revenue" fill="hsl(var(--primary))" radius={[8, 8, 8, 8]} barSize={24} />
+                      <Bar dataKey="expense" fill="#FDA4AF" radius={[8, 8, 8, 8]} barSize={24} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Recent Activity - M3 List */}
-            <Card className="lg:col-span-3 bg-white border-none shadow-sm rounded-[2.5rem]">
-              <CardHeader className="p-8">
-                <CardTitle className="text-lg font-bold text-slate-800">النشاط الأخير</CardTitle>
-                <CardDescription className="text-xs font-medium">تتبع العمليات الحية عبر الأقسام</CardDescription>
+            {/* Recent Activity - MD3 List */}
+            <Card className="lg:col-span-3 bg-white/80 border-none shadow-sm rounded-3xl overflow-hidden">
+              <CardHeader className="p-6 text-right">
+                <CardTitle className="text-sm font-bold text-slate-800">آخر العمليات</CardTitle>
+                <CardDescription className="text-[10px] font-medium">تتبع مباشر للأنشطة التشغيلية</CardDescription>
               </CardHeader>
-              <CardContent className="px-8 pb-8">
-                <div className="space-y-8">
+              <CardContent className="px-6 pb-6">
+                <div className="space-y-6">
                   {[
                     { title: "تجديد عقد إيجار", sub: "مبنى الجوهرة - وحدة ٠٤", time: "قبل ساعتين", iconColor: "bg-blue-500" },
                     { title: "صيانة أسطول", sub: "شاحنة نقل رقم ٤٥٢", time: "قبل ٥ ساعات", iconColor: "bg-amber-500" },
@@ -175,14 +174,14 @@ export default function Dashboard() {
                     { title: "سداد زكاة", sub: "دفعة الربع الأول ١٤٤٥", time: "منذ يومين", iconColor: "bg-primary" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-4">
-                      <div className={`size-10 rounded-2xl ${item.iconColor} flex items-center justify-center text-white shadow-lg shadow-${item.iconColor.split('-')[1]}-200`}>
-                        <div className="size-2 bg-white rounded-full" />
-                      </div>
-                      <div className="flex-1 space-y-0.5 text-right">
-                        <p className="text-sm font-bold text-slate-800">{item.title}</p>
-                        <p className="text-xs text-muted-foreground font-medium line-clamp-1">{item.sub}</p>
-                      </div>
                       <div className="text-[10px] font-black text-slate-400 bg-slate-50 px-2 py-1 rounded-lg">{toArabicDigits(item.time)}</div>
+                      <div className="flex-1 space-y-0.5 text-right">
+                        <p className="text-xs font-bold text-slate-800">{item.title}</p>
+                        <p className="text-[10px] text-muted-foreground font-medium line-clamp-1">{item.sub}</p>
+                      </div>
+                      <div className={`size-8 rounded-xl ${item.iconColor} flex items-center justify-center text-white shrink-0`}>
+                        <div className="size-1.5 bg-white rounded-full" />
+                      </div>
                     </div>
                   ))}
                 </div>

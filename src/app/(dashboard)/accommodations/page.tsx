@@ -51,10 +51,10 @@ export default function AccommodationsPage() {
       <SidebarInset className="bg-[#F2F2F7]">
         <header className="flex h-16 shrink-0 items-center justify-between gap-2 px-6 border-b bg-white/60 backdrop-blur-xl sticky top-0 z-30">
           <div className="flex items-center gap-2">
-            <SidebarTrigger className="-ml-1" />
-            <h1 className="font-headline text-xl font-bold text-primary">إدارة السكن</h1>
+            <SidebarTrigger className="-ml-1 text-primary" />
+            <h1 className="font-headline text-lg font-bold text-primary">إدارة السكن</h1>
           </div>
-          <Button className="gap-2 rounded-xl shadow-lg shadow-primary/20" onClick={() => handleAction("إضافة", "مبنى جديد")}>
+          <Button className="gap-2 rounded-xl shadow-sm" onClick={() => handleAction("إضافة", "مبنى جديد")}>
             <Plus className="h-4 w-4" />
             مبنى جديد
           </Button>
@@ -67,10 +67,10 @@ export default function AccommodationsPage() {
                 <CardTitle className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">إجمالي السعة</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-black text-right">{toArabicDigits(212)} وحدة</div>
+                <div className="text-xl font-black text-right">{toArabicDigits(212)} وحدة</div>
                 <div className="flex flex-row-reverse items-center gap-3 mt-3">
-                  <Progress value={83} className="h-2 flex-1" />
-                  <span className="text-xs font-bold text-blue-600">{toArabicDigits(83)}%</span>
+                  <Progress value={83} className="h-1.5 flex-1" />
+                  <span className="text-[10px] font-bold text-blue-600">{toArabicDigits(83)}%</span>
                 </div>
               </CardContent>
             </Card>
@@ -80,10 +80,10 @@ export default function AccommodationsPage() {
               </CardHeader>
               <CardContent>
                 <div className="flex items-center gap-1 justify-end">
-                  <span className="text-2xl font-black">{formatCurrencyValue(93000)}</span>
-                  <SaudiRiyalIcon className="h-5 w-5 text-primary opacity-80" />
+                  <span className="text-xl font-black">{formatCurrencyValue(93000)}</span>
+                  <SaudiRiyalIcon className="h-4 w-4 text-primary opacity-80" />
                 </div>
-                <p className="text-[10px] text-muted-foreground mt-2 font-bold text-right">بمتوسط {toArabicDigits(438)} ريال لكل ساكن</p>
+                <p className="text-[9px] text-muted-foreground mt-2 font-bold text-right">بمتوسط {toArabicDigits(438)} ريال / ساكن</p>
               </CardContent>
             </Card>
             <Card className="border-none shadow-sm rounded-3xl bg-white/80 border-r-4 border-r-emerald-500">
@@ -91,8 +91,8 @@ export default function AccommodationsPage() {
                 <CardTitle className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">الوحدات الشاغرة</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-black text-emerald-600 text-right">{toArabicDigits(35)} وحدة</div>
-                <p className="text-[10px] text-muted-foreground mt-2 font-bold text-right">جاهزة للتسكين الفوري</p>
+                <div className="text-xl font-black text-emerald-600 text-right">{toArabicDigits(35)} وحدة</div>
+                <p className="text-[9px] text-muted-foreground mt-2 font-bold text-right">جاهزة للتسكين الفوري</p>
               </CardContent>
             </Card>
           </div>
@@ -100,88 +100,88 @@ export default function AccommodationsPage() {
           <div className="flex items-center justify-between gap-4">
             <div className="relative flex-1 max-w-sm">
               <Search className="absolute right-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="بحث عن السكن..." className="pr-9 rounded-xl border-slate-200 text-right" dir="rtl" />
+              <Input placeholder="بحث عن السكن..." className="pr-9 rounded-xl border-slate-200 text-right bg-white/80" dir="rtl" />
             </div>
           </div>
 
-          <div className="rounded-2xl border bg-card overflow-hidden shadow-sm">
+          <div className="rounded-3xl border-none bg-white/80 overflow-hidden shadow-sm">
             <Table>
               <TableHeader>
                 <TableRow className="bg-slate-50/50">
-                  <TableHead className="w-[300px] text-right font-bold">المبنى / المجمع</TableHead>
-                  <TableHead className="text-right font-bold">الموقع</TableHead>
-                  <TableHead className="text-right font-bold">الإشغال</TableHead>
-                  <TableHead className="text-right font-bold">الحالة</TableHead>
-                  <TableHead className="text-right font-bold">الإيجار</TableHead>
-                  <TableHead className="w-[80px] text-center font-bold">إجراءات</TableHead>
+                  <TableHead className="w-[300px] text-right font-bold text-xs">المبنى / المجمع</TableHead>
+                  <TableHead className="text-right font-bold text-xs">الموقع</TableHead>
+                  <TableHead className="text-right font-bold text-xs">الإشغال</TableHead>
+                  <TableHead className="text-right font-bold text-xs">الحالة</TableHead>
+                  <TableHead className="text-right font-bold text-xs">الإيجار</TableHead>
+                  <TableHead className="w-[80px] text-center font-bold text-xs">إجراءات</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {mockAccommodations.map((acc) => {
                   const occupancyRate = (acc.currentOccupants / acc.capacity) * 100;
                   return (
-                    <TableRow key={acc.id} className="hover:bg-muted/50 transition-colors">
+                    <TableRow key={acc.id} className="hover:bg-muted/30 transition-colors border-b border-slate-100/50 last:border-0">
                       <TableCell className="font-medium text-right">
                         <div className="flex items-center gap-3 justify-end">
                           <div className="flex flex-col text-right">
-                            <span className="font-bold">{acc.name}</span>
-                            <span className="text-[10px] text-muted-foreground font-mono">{acc.id}</span>
+                            <span className="font-bold text-[13px]">{acc.name}</span>
+                            <span className="text-[9px] text-muted-foreground font-mono">{acc.id}</span>
                           </div>
-                          <div className="p-2 bg-primary/10 rounded-lg shrink-0">
+                          <div className="p-2 bg-primary/5 rounded-xl shrink-0">
                             <Home className="h-4 w-4 text-primary" />
                           </div>
                         </div>
                       </TableCell>
                       <TableCell className="text-right">
-                        <div className="flex items-center gap-1 text-xs text-muted-foreground justify-end">
+                        <div className="flex items-center gap-1 text-[11px] text-muted-foreground justify-end">
                           {acc.location}
                           <MapPin className="h-3 w-3" />
                         </div>
                       </TableCell>
                       <TableCell className="text-right">
-                        <div className="flex flex-col gap-1.5 w-full max-w-[120px] ml-auto">
-                          <div className="flex flex-row-reverse justify-between text-[10px] font-black">
+                        <div className="flex flex-col gap-1.5 w-full max-w-[100px] ml-auto">
+                          <div className="flex flex-row-reverse justify-between text-[9px] font-black">
                             <span>{toArabicDigits(acc.currentOccupants)}/{toArabicDigits(acc.capacity)}</span>
                             <span>{toArabicDigits(Math.round(occupancyRate))}%</span>
                           </div>
                           <Progress 
                             value={occupancyRate} 
-                            className={`h-1.5 ${occupancyRate > 90 ? 'bg-rose-100' : ''}`} 
+                            className="h-1" 
                           />
                         </div>
                       </TableCell>
                       <TableCell className="text-right">
                         <Badge 
                           variant={occupancyRate >= 100 ? "destructive" : occupancyRate > 80 ? "secondary" : "default"}
-                          className={`rounded-lg border-none ${occupancyRate < 80 ? "bg-emerald-500" : ""}`}
+                          className={`rounded-lg text-[9px] font-bold px-2 py-0 ${occupancyRate < 80 ? "bg-emerald-500 border-none" : ""}`}
                         >
                           {occupancyRate >= 100 ? "مكتمل" : occupancyRate > 80 ? "شبه ممتلئ" : "متاح"}
                         </Badge>
                       </TableCell>
                       <TableCell className="text-right">
-                        <div className="flex items-center gap-1 font-mono font-black justify-end">
+                        <div className="flex items-center gap-1 font-black justify-end text-xs">
                           {formatCurrencyValue(acc.monthlyCost)}
-                          <SaudiRiyalIcon className="h-4 w-4 opacity-70" />
+                          <SaudiRiyalIcon className="h-3.5 w-3.5 opacity-70" />
                         </div>
                       </TableCell>
                       <TableCell className="text-center">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon" className="rounded-lg h-8 w-8">
+                            <Button variant="ghost" size="icon" className="rounded-xl h-8 w-8">
                               <MoreVertical className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-40 font-headline">
-                            <DropdownMenuItem className="flex justify-end gap-2 text-right" onClick={() => handleAction("عرض التفاصيل", acc.name)}>
+                          <DropdownMenuContent align="end" className="w-44 font-headline rounded-2xl">
+                            <DropdownMenuItem className="flex justify-end gap-2 text-right text-xs py-2" onClick={() => handleAction("عرض التفاصيل", acc.name)}>
                               <span>عرض التفاصيل</span>
                               <Eye className="h-4 w-4" />
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="flex justify-end gap-2 text-right" onClick={() => handleAction("تعديل", acc.name)}>
-                              <span>تعديل المبنى</span>
+                            <DropdownMenuItem className="flex justify-end gap-2 text-right text-xs py-2" onClick={() => handleAction("تعديل", acc.name)}>
+                              <span>تعديل السجل</span>
                               <Edit className="h-4 w-4" />
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem className="flex justify-end gap-2 text-right text-rose-600 focus:text-rose-600 focus:bg-rose-50" onClick={() => handleAction("حذف", acc.name)}>
+                            <DropdownMenuItem className="flex justify-end gap-2 text-right text-xs py-2 text-rose-600" onClick={() => handleAction("حذف", acc.name)}>
                               <span>حذف السجل</span>
                               <Trash2 className="h-4 w-4" />
                             </DropdownMenuItem>

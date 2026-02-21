@@ -51,10 +51,10 @@ export default function EmployeesPage() {
       <SidebarInset className="bg-[#F2F2F7]">
         <header className="flex h-16 shrink-0 items-center justify-between gap-2 px-6 border-b bg-white/60 backdrop-blur-xl sticky top-0 z-30">
           <div className="flex items-center gap-2">
-            <SidebarTrigger className="-ml-1" />
-            <h1 className="font-headline text-xl font-bold text-primary">الموارد البشرية</h1>
+            <SidebarTrigger className="-ml-1 text-primary" />
+            <h1 className="font-headline text-lg font-bold text-primary">الموارد البشرية</h1>
           </div>
-          <Button className="gap-2 rounded-xl shadow-lg shadow-primary/20" onClick={() => handleAction("إضافة", "جديد")}>
+          <Button className="gap-2 rounded-xl shadow-sm" onClick={() => handleAction("إضافة", "جديد")}>
             <Plus className="h-4 w-4" />
             إضافة موظف
           </Button>
@@ -63,101 +63,82 @@ export default function EmployeesPage() {
           <div className="flex items-center justify-between gap-4">
             <div className="relative flex-1 max-w-sm">
               <Search className="absolute right-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="بحث بالاسم، الهوية أو المسمى..." className="pr-9 rounded-xl border-slate-200 text-right" dir="rtl" />
+              <Input placeholder="بحث بالاسم أو الهوية..." className="pr-9 rounded-xl border-slate-200 text-right bg-white/80" dir="rtl" />
             </div>
             <div className="flex items-center gap-2">
-              <Badge variant="outline" className="px-3 py-1 rounded-lg">نشط: {toArabicDigits(128)}</Badge>
-              <Badge variant="secondary" className="px-3 py-1 bg-blue-50 text-blue-700 border-none rounded-lg">في إجازة: {toArabicDigits(14)}</Badge>
+              <Badge variant="outline" className="px-3 py-1 rounded-lg text-[10px] font-bold bg-white">نشط: {toArabicDigits(128)}</Badge>
+              <Badge variant="secondary" className="px-3 py-1 bg-blue-50 text-blue-700 border-none rounded-lg text-[10px] font-bold">في إجازة: {toArabicDigits(14)}</Badge>
             </div>
           </div>
 
-          <div className="rounded-2xl border bg-card overflow-hidden shadow-sm">
+          <div className="rounded-3xl border-none bg-white/80 overflow-hidden shadow-sm">
             <Table>
               <TableHeader>
-                <TableRow className="bg-slate-50/50">
-                  <TableHead className="w-[300px] text-right font-bold">الموظف</TableHead>
-                  <TableHead className="text-right font-bold">الإقامة / الهوية</TableHead>
-                  <TableHead className="text-right font-bold">القسم</TableHead>
-                  <TableHead className="text-right font-bold">المسمى الوظيفي</TableHead>
-                  <TableHead className="text-right font-bold">الحالة</TableHead>
-                  <TableHead className="text-right font-bold">السكن</TableHead>
-                  <TableHead className="text-right font-bold">الراتب</TableHead>
-                  <TableHead className="w-[80px] text-center font-bold">إجراءات</TableHead>
+                <TableRow className="bg-slate-50/50 hover:bg-slate-50/50">
+                  <TableHead className="w-[250px] text-right font-bold text-xs">الموظف</TableHead>
+                  <TableHead className="text-right font-bold text-xs">الإقامة / الهوية</TableHead>
+                  <TableHead className="text-right font-bold text-xs">القسم</TableHead>
+                  <TableHead className="text-right font-bold text-xs">المسمى</TableHead>
+                  <TableHead className="text-right font-bold text-xs">الحالة</TableHead>
+                  <TableHead className="text-right font-bold text-xs">الراتب</TableHead>
+                  <TableHead className="w-[80px] text-center font-bold text-xs">إجراءات</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {mockEmployees.map((emp) => (
-                  <TableRow key={emp.id} className="hover:bg-muted/50 transition-colors">
+                  <TableRow key={emp.id} className="hover:bg-muted/30 transition-colors border-b border-slate-100/50 last:border-0">
                     <TableCell className="text-right">
                       <div className="flex items-center gap-3 justify-end">
                         <div className="flex flex-col text-right">
-                          <span className="font-bold text-sm">{emp.name}</span>
-                          <span className="text-[10px] text-muted-foreground font-mono">emp_{emp.id.padStart(3, '0')}@alsalam.sa</span>
+                          <span className="font-bold text-[13px]">{emp.name}</span>
+                          <span className="text-[9px] text-muted-foreground font-mono">emp_{emp.id.padStart(3, '0')}</span>
                         </div>
-                        <Avatar className="h-9 w-9 border-2 border-primary/20">
-                          <AvatarFallback className="bg-primary/10 text-primary font-bold">
+                        <Avatar className="h-8 w-8 border-2 border-primary/10">
+                          <AvatarFallback className="bg-primary/5 text-primary text-xs font-bold">
                             {emp.name.split(' ').map(n => n[0]).join('')}
                           </AvatarFallback>
                         </Avatar>
                       </div>
                     </TableCell>
-                    <TableCell className="text-right font-mono text-xs">{toArabicDigits(emp.iqamaNumber)}</TableCell>
+                    <TableCell className="text-right font-mono text-[11px]">{toArabicDigits(emp.iqamaNumber)}</TableCell>
                     <TableCell className="text-right">
-                      <Badge variant="outline" className="font-normal rounded-lg">
+                      <Badge variant="outline" className="font-bold rounded-lg text-[9px] px-2 py-0">
                         {emp.department === 'Admin' ? 'الإدارة' : emp.department === 'Field' ? 'الميدان' : emp.department === 'Fleet' ? 'الأسطول' : 'الحسابات'}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-right text-sm font-medium">{emp.role}</TableCell>
+                    <TableCell className="text-right text-xs font-medium">{emp.role}</TableCell>
                     <TableCell className="text-right">
                       <Badge 
                         variant={emp.status === "Active" ? "default" : "secondary"}
-                        className={`rounded-lg ${emp.status === "Active" ? "bg-emerald-500 hover:bg-emerald-600 border-none" : ""}`}
+                        className={`rounded-lg text-[9px] font-bold px-2 py-0 ${emp.status === "Active" ? "bg-emerald-500 hover:bg-emerald-600 border-none" : ""}`}
                       >
                         {emp.status === 'Active' ? 'نشط' : 'في إجازة'}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
-                      {emp.housingId ? (
-                        <div className="flex items-center gap-1.5 text-xs text-emerald-700 font-bold justify-end">
-                          <span>مخصص له</span>
-                          <Users className="h-3 w-3" />
-                        </div>
-                      ) : (
-                        <span className="text-xs text-muted-foreground italic">سكن خاص</span>
-                      )}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex items-center gap-1 font-mono font-black justify-end">
+                      <div className="flex items-center gap-1 font-black justify-end text-xs">
                         {formatCurrencyValue(emp.salary)}
-                        <SaudiRiyalIcon className="h-4 w-4 opacity-70" />
+                        <SaudiRiyalIcon className="h-3.5 w-3.5 opacity-70" />
                       </div>
                     </TableCell>
                     <TableCell className="text-center">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="rounded-lg h-8 w-8">
+                          <Button variant="ghost" size="icon" className="rounded-xl h-8 w-8">
                             <MoreVertical className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-48 font-headline">
-                          <DropdownMenuItem className="flex justify-end gap-2 text-right" onClick={() => handleAction("عرض ملف", emp.name)}>
+                        <DropdownMenuContent align="end" className="w-44 font-headline rounded-2xl">
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right text-xs py-2" onClick={() => handleAction("عرض ملف", emp.name)}>
                             <span>ملف الموظف</span>
                             <Eye className="h-4 w-4" />
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="flex justify-end gap-2 text-right" onClick={() => handleAction("تعديل بيانات", emp.name)}>
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right text-xs py-2" onClick={() => handleAction("تعديل بيانات", emp.name)}>
                             <span>تعديل البيانات</span>
                             <Edit className="h-4 w-4" />
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="flex justify-end gap-2 text-right" onClick={() => handleAction("تغيير حالة", emp.name)}>
-                            <span>تغيير الحالة</span>
-                            <UserCheck className="h-4 w-4" />
-                          </DropdownMenuItem>
                           <DropdownMenuSeparator />
-                          <DropdownMenuItem className="flex justify-end gap-2 text-right text-amber-600" onClick={() => handleAction("تعليق", emp.name)}>
-                            <span>تعليق العمل</span>
-                            <ShieldAlert className="h-4 w-4" />
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="flex justify-end gap-2 text-right text-rose-600 focus:text-rose-600 focus:bg-rose-50" onClick={() => handleAction("إنهاء خدمات", emp.name)}>
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right text-xs py-2 text-rose-600" onClick={() => handleAction("إنهاء خدمات", emp.name)}>
                             <span>إنهاء الخدمات</span>
                             <Trash2 className="h-4 w-4" />
                           </DropdownMenuItem>

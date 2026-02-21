@@ -1,7 +1,6 @@
-
 "use client";
 
-import { Settings, Shield, UserCog, Lock, Users, Save } from "lucide-react";
+import { Shield, UserCog, Lock, Users, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/layout/app-sidebar";
@@ -17,6 +16,7 @@ import {
   TableRow 
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { toArabicDigits } from "@/lib/utils";
 
 const roles = [
   { name: "مدير خارق", users: 2, access: "جميع الوحدات", level: "Full" },
@@ -29,38 +29,38 @@ export default function SettingsPage() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 px-6 border-b">
-          <SidebarTrigger className="-ml-1" />
-          <h1 className="font-headline text-xl font-bold text-primary">الإدارة والأدوار</h1>
+      <SidebarInset className="bg-[#F2F2F7]">
+        <header className="flex h-16 shrink-0 items-center gap-2 px-6 border-b bg-white/60 backdrop-blur-xl sticky top-0 z-30">
+          <SidebarTrigger className="-ml-1 text-primary" />
+          <h1 className="font-headline text-lg font-bold text-primary">الإدارة والأدوار</h1>
         </header>
 
         <div className="flex flex-1 flex-col gap-6 p-6">
           <div className="grid gap-6 md:grid-cols-2">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Shield className="h-5 w-5 text-primary" />
+            <Card className="border-none shadow-sm rounded-3xl bg-white/80 overflow-hidden">
+              <CardHeader className="p-6 text-right">
+                <CardTitle className="flex flex-row-reverse items-center gap-2 text-sm font-bold">
+                  <Shield className="h-4 w-4 text-primary" />
                   إدارة أدوار المستخدمين
                 </CardTitle>
-                <CardDescription>تحديد صلاحيات النظام ومستويات الوصول.</CardDescription>
+                <CardDescription className="text-[10px]">تحديد صلاحيات النظام ومستويات الوصول.</CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-6 pt-0">
                 <Table>
                   <TableHeader>
-                    <TableRow>
-                      <TableHead className="text-right">الدور</TableHead>
-                      <TableHead className="text-right">المستخدمين</TableHead>
-                      <TableHead className="text-right">المستوى</TableHead>
+                    <TableRow className="bg-slate-50/50">
+                      <TableHead className="text-right font-bold text-xs">الدور</TableHead>
+                      <TableHead className="text-right font-bold text-xs">المستخدمين</TableHead>
+                      <TableHead className="text-right font-bold text-xs">المستوى</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {roles.map((role) => (
-                      <TableRow key={role.name}>
-                        <TableCell className="font-medium">{role.name}</TableCell>
-                        <TableCell>{role.users}</TableCell>
-                        <TableCell>
-                          <Badge variant={role.level === "Full" ? "default" : "secondary"}>
+                      <TableRow key={role.name} className="border-b border-slate-100/50 last:border-0">
+                        <TableCell className="font-bold text-xs text-right">{role.name}</TableCell>
+                        <TableCell className="text-right text-xs font-mono">{toArabicDigits(role.users)}</TableCell>
+                        <TableCell className="text-right">
+                          <Badge variant={role.level === "Full" ? "default" : "secondary"} className="text-[9px] font-bold rounded-lg px-2">
                             {role.level === 'Full' ? 'كامل' : 'مقيد'}
                           </Badge>
                         </TableCell>
@@ -69,77 +69,77 @@ export default function SettingsPage() {
                   </TableBody>
                 </Table>
               </CardContent>
-              <CardFooter className="border-t pt-4">
-                <Button variant="outline" className="w-full gap-2">
+              <CardFooter className="border-t border-slate-100 p-4">
+                <Button variant="ghost" className="w-full gap-2 rounded-xl text-xs font-bold">
                   <UserCog className="h-4 w-4" />
                   إدارة جميع الأدوار
                 </Button>
               </CardFooter>
             </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Lock className="h-5 w-5 text-primary" />
+            <Card className="border-none shadow-sm rounded-3xl bg-white/80 overflow-hidden">
+              <CardHeader className="p-6 text-right">
+                <CardTitle className="flex flex-row-reverse items-center gap-2 text-sm font-bold">
+                  <Lock className="h-4 w-4 text-primary" />
                   سياسة الأمن
                 </CardTitle>
-                <CardDescription>تكوين إعدادات الأمان العالمية لنظام السلام.</CardDescription>
+                <CardDescription className="text-[10px]">تكوين إعدادات الأمان العالمية لنظام السلام.</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="flex items-center justify-between space-x-2">
-                  <div className="flex flex-col space-y-1">
-                    <Label className="font-bold">المصادقة الثنائية</Label>
-                    <p className="text-xs text-muted-foreground">طلب 2FA لجميع المستخدمين الإداريين.</p>
-                  </div>
+              <CardContent className="p-6 pt-0 space-y-6">
+                <div className="flex items-center justify-between">
                   <Switch defaultChecked />
-                </div>
-                <div className="flex items-center justify-between space-x-2">
-                  <div className="flex flex-col space-y-1">
-                    <Label className="font-bold">قفل الجلسة التلقائي</Label>
-                    <p className="text-xs text-muted-foreground">تسجيل خروج المستخدمين بعد 15 دقيقة من عدم النشاط.</p>
+                  <div className="flex flex-col text-right">
+                    <Label className="font-bold text-xs">المصادقة الثنائية</Label>
+                    <p className="text-[10px] text-muted-foreground">طلب 2FA لجميع المستخدمين الإداريين.</p>
                   </div>
+                </div>
+                <div className="flex items-center justify-between">
                   <Switch defaultChecked />
-                </div>
-                <div className="flex items-center justify-between space-x-2">
-                  <div className="flex flex-col space-y-1">
-                    <Label className="font-bold">الوصول إلى واجهة برمجة التطبيقات</Label>
-                    <p className="text-xs text-muted-foreground">السماح بعمليات التكامل مع أطراف ثالثة (مثل الزكاة والضريبة).</p>
+                  <div className="flex flex-col text-right">
+                    <Label className="font-bold text-xs">قفل الجلسة التلقائي</Label>
+                    <p className="text-[10px] text-muted-foreground">تسجيل خروج المستخدمين بعد 15 دقيقة.</p>
                   </div>
+                </div>
+                <div className="flex items-center justify-between">
                   <Switch />
+                  <div className="flex flex-col text-right">
+                    <Label className="font-bold text-xs">تكاملات الـ API</Label>
+                    <p className="text-[10px] text-muted-foreground">السماح بالربط مع الزكاة والضريبة.</p>
+                  </div>
                 </div>
               </CardContent>
-              <CardFooter className="border-t pt-4">
-                <Button className="w-full gap-2">
+              <CardFooter className="border-t border-slate-100 p-4">
+                <Button className="w-full gap-2 rounded-xl text-xs font-bold">
                   <Save className="h-4 w-4" />
-                  حفظ إعدادات الأمان
+                  حفظ الإعدادات
                 </Button>
               </CardFooter>
             </Card>
           </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Users className="h-5 w-5 text-primary" />
+          <Card className="border-none shadow-sm rounded-3xl bg-white/80 overflow-hidden">
+            <CardHeader className="p-6 text-right">
+              <CardTitle className="flex flex-row-reverse items-center gap-2 text-sm font-bold">
+                <Users className="h-4 w-4 text-primary" />
                 الجلسات النشطة
               </CardTitle>
-              <CardDescription>مراقبة الوصول في الوقت الفعلي إلى منصة ERP.</CardDescription>
+              <CardDescription className="text-[10px]">مراقبة الوصول في الوقت الفعلي إلى المنصة.</CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="rounded-xl border p-4 bg-muted/20 flex flex-col gap-3">
+            <CardContent className="p-6 pt-0">
+              <div className="rounded-2xl border border-slate-100 p-4 bg-white/50 flex flex-col gap-4">
                 {[
                   { user: "أحمد أ.", location: "مكتب الرياض", time: "الآن", device: "Chrome / Windows" },
-                  { user: "خالد م.", location: "ميداني (الجوال)", time: "منذ 12 دقيقة", device: "Safari / iOS" },
+                  { user: "خالد م.", location: "ميداني (الجوال)", time: "منذ ١٢ دقيقة", device: "Safari / iOS" },
                   { user: "سامي ف.", location: "عن بعد", time: "منذ ساعتين", device: "Edge / Windows" },
                 ].map((session, i) => (
-                  <div key={i} className="flex items-center justify-between text-sm border-b pb-2 last:border-0 last:pb-0">
-                    <div className="flex gap-4">
-                      <span className="font-bold">{session.user}</span>
-                      <span className="text-muted-foreground">{session.location}</span>
-                    </div>
+                  <div key={i} className="flex items-center justify-between text-xs border-b border-slate-50 pb-3 last:border-0 last:pb-0">
                     <div className="flex gap-4 items-center">
-                      <span className="text-xs text-muted-foreground">{session.device}</span>
-                      <Badge variant="outline" className="text-[10px]">{session.time}</Badge>
+                      <Badge variant="outline" className="text-[9px] font-bold bg-white">{toArabicDigits(session.time)}</Badge>
+                      <span className="text-[10px] text-muted-foreground">{session.device}</span>
+                    </div>
+                    <div className="flex gap-4 items-center text-right">
+                      <span className="text-muted-foreground text-[10px]">{session.location}</span>
+                      <span className="font-bold">{session.user}</span>
                     </div>
                   </div>
                 ))}

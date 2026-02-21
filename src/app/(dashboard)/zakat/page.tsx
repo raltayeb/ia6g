@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -17,6 +16,7 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
+import { toArabicDigits } from "@/lib/utils";
 
 export default function ZakatPage() {
   const [year, setYear] = useState("2024");
@@ -34,116 +34,116 @@ export default function ZakatPage() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center justify-between gap-2 px-6 border-b">
+      <SidebarInset className="bg-[#F2F2F7]">
+        <header className="flex h-16 shrink-0 items-center justify-between gap-2 px-6 border-b bg-white/60 backdrop-blur-xl sticky top-0 z-30">
           <div className="flex items-center gap-2">
-            <SidebarTrigger className="-ml-1" />
-            <h1 className="font-headline text-xl font-bold text-primary">تقارير الزكاة والضريبة</h1>
+            <SidebarTrigger className="-ml-1 text-primary" />
+            <h1 className="font-headline text-lg font-bold text-primary">الزكاة والضريبة</h1>
           </div>
           <div className="flex gap-2">
             <Select value={year} onValueChange={setYear}>
-              <SelectTrigger className="w-[140px]">
+              <SelectTrigger className="w-[130px] rounded-xl text-xs bg-white/80">
                 <SelectValue placeholder="السنة" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="2024">هجري 1445</SelectItem>
-                <SelectItem value="2023">هجري 1444</SelectItem>
+              <SelectContent className="rounded-xl font-headline">
+                <SelectItem value="2024" className="text-xs">١٤٤٥ هـ</SelectItem>
+                <SelectItem value="2023" className="text-xs">١٤٤٤ هـ</SelectItem>
               </SelectContent>
             </Select>
-            <Button variant="outline" className="gap-2">
+            <Button variant="outline" className="gap-2 rounded-xl border-slate-200 bg-white/80 text-xs">
               <Download className="h-4 w-4" />
-              تصدير تقرير هيئة الزكاة
+              تقرير ZATCA
             </Button>
           </div>
         </header>
 
-        <div className="flex flex-1 flex-col gap-6 p-6 overflow-auto">
-          <Alert className="bg-primary/5 border-primary/20">
+        <div className="flex flex-1 flex-col gap-6 p-6">
+          <Alert className="bg-primary/5 border-primary/10 rounded-2xl">
             <Info className="h-4 w-4 text-primary" />
-            <AlertTitle className="text-primary font-bold">تنبيه الامتثال للزكاة والضريبة</AlertTitle>
-            <AlertDescription className="text-primary/80">
-              تستند الحسابات أدناه إلى النسبة القياسية للزكاة وهي 2.5% من صافي الثروة وفقاً لإرشادات هيئة الزكاة والضريبة والجمارك (ZATCA).
+            <AlertTitle className="text-primary font-bold text-xs text-right">تنبيه الامتثال للزكاة والضريبة</AlertTitle>
+            <AlertDescription className="text-primary/70 text-[10px] text-right">
+              تستند الحسابات أدناه إلى النسبة القياسية (٢.٥٪) وفقاً لإرشادات هيئة الزكاة والضريبة والجمارك.
             </AlertDescription>
           </Alert>
 
           <div className="grid gap-6 md:grid-cols-3">
-            <Card className="md:col-span-2">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Calculator className="h-5 w-5 text-primary" />
+            <Card className="md:col-span-2 border-none shadow-sm rounded-3xl bg-white/80 overflow-hidden">
+              <CardHeader className="p-6 text-right">
+                <CardTitle className="flex flex-row-reverse items-center gap-2 text-sm font-bold">
+                  <Calculator className="h-4 w-4 text-primary" />
                   ملخص تقييم الأصول
                 </CardTitle>
-                <CardDescription>تفاصيل الأصول الخاضعة للزكاة للفترة الحالية</CardDescription>
+                <CardDescription className="text-[10px]">تفاصيل الأصول الخاضعة للزكاة للفترة الحالية</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-4">
+              <CardContent className="p-6 pt-0 space-y-6">
+                <div className="space-y-5">
                   {[
                     { label: "محفظة العقارات المملوكة", value: zakatAssets.realEstate, percentage: 60 },
                     { label: "الأسطول والمعدات الثقيلة", value: zakatAssets.fleet, percentage: 20 },
                     { label: "السيولة (أرصدة البنوك)", value: zakatAssets.cash, percentage: 15 },
                     { label: "الفواتير المستحقة (المدينون)", value: zakatAssets.accountsReceivable, percentage: 5 },
                   ].map((item) => (
-                    <div key={item.label} className="space-y-1.5">
-                      <div className="flex justify-between text-sm">
-                        <span className="font-medium">{item.label}</span>
-                        <span className="font-mono">{item.value.toLocaleString()} ر.س</span>
+                    <div key={item.label} className="space-y-2">
+                      <div className="flex flex-row-reverse justify-between text-xs">
+                        <span className="font-bold">{item.label}</span>
+                        <span className="font-mono text-[11px]">{toArabicDigits(item.value.toLocaleString())} ر.س</span>
                       </div>
-                      <Progress value={item.percentage} className="h-2" />
+                      <Progress value={item.percentage} className="h-1.5" />
                     </div>
                   ))}
                 </div>
                 
-                <div className="pt-4 border-t flex justify-between items-end">
-                  <div>
-                    <p className="text-sm text-muted-foreground uppercase tracking-wider">إجمالي الثروة الخاضعة للزكاة</p>
-                    <p className="text-3xl font-bold">{totalWealth.toLocaleString()} ر.س</p>
-                  </div>
+                <div className="pt-6 border-t border-slate-100 flex flex-row-reverse justify-between items-end">
                   <div className="text-right">
-                    <p className="text-sm text-emerald-600 font-bold uppercase tracking-wider">صافي الزكاة المستحقة (2.5%)</p>
-                    <p className="text-3xl font-bold text-emerald-600">{zakatAmount.toLocaleString()} ر.س</p>
+                    <p className="text-[10px] text-muted-foreground uppercase font-black">إجمالي الثروة</p>
+                    <p className="text-2xl font-black">{toArabicDigits(totalWealth.toLocaleString())} ر.س</p>
+                  </div>
+                  <div className="text-left">
+                    <p className="text-[10px] text-emerald-600 font-bold uppercase">الزكاة المستحقة</p>
+                    <p className="text-2xl font-black text-emerald-600">{toArabicDigits(zakatAmount.toLocaleString())} ر.س</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
             <div className="space-y-6">
-              <Card className="bg-primary text-primary-foreground">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <ShieldCheck className="h-5 w-5" />
+              <Card className="bg-primary text-primary-foreground border-none shadow-sm rounded-3xl overflow-hidden">
+                <CardHeader className="p-6 text-right">
+                  <CardTitle className="flex flex-row-reverse items-center gap-2 text-sm font-bold">
+                    <ShieldCheck className="h-4 w-4" />
                     حالة الإقرار
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="p-3 bg-white/10 rounded-lg">
-                    <p className="text-xs uppercase opacity-70">المرحلة الحالية</p>
-                    <p className="text-lg font-bold">تسوية البيانات</p>
+                <CardContent className="p-6 pt-0 space-y-4 text-right">
+                  <div className="p-3 bg-white/10 rounded-2xl">
+                    <p className="text-[9px] uppercase opacity-70">المرحلة الحالية</p>
+                    <p className="text-base font-bold">تسوية البيانات</p>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-row-reverse items-center gap-2">
                     <div className="h-2 w-2 rounded-full bg-yellow-400 animate-pulse" />
-                    <span className="text-sm">في انتظار التدقيق الخارجي</span>
+                    <span className="text-[10px] font-medium">في انتظار التدقيق الخارجي</span>
                   </div>
-                  <Button className="w-full bg-white text-primary hover:bg-white/90 font-bold mt-2">
+                  <Button className="w-full bg-white text-primary hover:bg-white/90 font-bold text-xs rounded-xl h-10 mt-2">
                     تقديم الإقرار
                   </Button>
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-sm">سجل الزكاة</CardTitle>
+              <Card className="border-none shadow-sm rounded-3xl bg-white/80 overflow-hidden">
+                <CardHeader className="p-4 text-right">
+                  <CardTitle className="text-xs font-bold">سجل الزكاة التاريخي</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="p-4 pt-0 space-y-4">
                   {[
-                    { year: "1444 هـ", amount: "1,240,000 ر.س", status: "مدفوع" },
-                    { year: "1443 هـ", amount: "1,180,000 ر.س", status: "مدفوع" },
+                    { year: "١٤٤٤ هـ", amount: "١,٢٤٠,٠٠٠ ر.س", status: "مدفوع" },
+                    { year: "١٤٤٣ هـ", amount: "١,١٨٠,٠٠٠ ر.س", status: "مدفوع" },
                   ].map((h) => (
-                    <div key={h.year} className="flex justify-between items-center text-sm border-b pb-2 last:border-0 last:pb-0">
-                      <div>
-                        <p className="font-medium">{h.year}</p>
-                        <p className="text-xs text-muted-foreground">{h.amount}</p>
+                    <div key={h.year} className="flex flex-row-reverse justify-between items-center text-xs border-b border-slate-50 pb-3 last:border-0 last:pb-0">
+                      <div className="text-right">
+                        <p className="font-bold text-[11px]">{h.year}</p>
+                        <p className="text-[9px] text-muted-foreground">{h.amount}</p>
                       </div>
-                      <Badge variant="outline" className="text-emerald-600 bg-emerald-50 border-emerald-200">
+                      <Badge variant="outline" className="text-emerald-600 bg-emerald-50 border-emerald-100 text-[9px] font-bold rounded-lg">
                         {h.status}
                       </Badge>
                     </div>
