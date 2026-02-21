@@ -9,6 +9,7 @@ import {
   Wallet,
   Settings,
   ShieldCheck,
+  ChevronRight,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -23,7 +24,13 @@ import {
   SidebarGroupLabel,
   SidebarGroupContent,
   SidebarFooter,
+  SidebarRail,
 } from "@/components/ui/sidebar";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 const mainNav = [
   { title: "لوحة التحكم", icon: LayoutDashboard, url: "/" },
@@ -46,29 +53,29 @@ export function AppSidebar() {
   const pathname = usePathname();
 
   return (
-    <Sidebar side="right">
-      <SidebarHeader className="h-16 flex items-center px-6 border-b">
+    <Sidebar side="right" collapsible="icon" className="border-l">
+      <SidebarHeader className="h-14 flex items-center px-4">
         <div className="flex items-center gap-3 w-full">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shrink-0">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-600 text-white shrink-0 shadow-sm">
             <Building2 className="h-5 w-5" />
           </div>
           <div className="flex flex-col overflow-hidden">
-            <span className="text-sm font-bold text-primary truncate leading-none">نظام السلام</span>
-            <span className="text-[10px] text-muted-foreground truncate mt-1">إدارة موارد المؤسسات</span>
+            <span className="text-sm font-bold text-emerald-900 truncate leading-none">نظام السلام</span>
+            <span className="text-[9px] text-muted-foreground truncate mt-1">إدارة موارد المؤسسات</span>
           </div>
         </div>
       </SidebarHeader>
       
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="px-4 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">العمليات</SidebarGroupLabel>
+          <SidebarGroupLabel className="px-4 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">العمليات الرئيسية</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {mainNav.map((item) => (
                 <SidebarMenuItem key={item.url}>
                   <SidebarMenuButton asChild isActive={pathname === item.url} tooltip={item.title}>
-                    <Link href={item.url} className="flex items-center gap-3 px-4">
-                      <item.icon className="h-4 w-4 shrink-0" />
+                    <Link href={item.url} className="flex items-center gap-3 px-4 transition-all hover:bg-emerald-50">
+                      <item.icon className={`h-4 w-4 shrink-0 ${pathname === item.url ? "text-emerald-600" : ""}`} />
                       <span className="text-xs font-medium">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -79,14 +86,14 @@ export function AppSidebar() {
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel className="px-4 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">المالية</SidebarGroupLabel>
+          <SidebarGroupLabel className="px-4 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">المالية والامتثال</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {financialNav.map((item) => (
                 <SidebarMenuItem key={item.url}>
                   <SidebarMenuButton asChild isActive={pathname === item.url} tooltip={item.title}>
-                    <Link href={item.url} className="flex items-center gap-3 px-4">
-                      <item.icon className="h-4 w-4 shrink-0" />
+                    <Link href={item.url} className="flex items-center gap-3 px-4 transition-all hover:bg-emerald-50">
+                      <item.icon className={`h-4 w-4 shrink-0 ${pathname === item.url ? "text-emerald-600" : ""}`} />
                       <span className="text-xs font-medium">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -97,13 +104,13 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t p-2">
+      <SidebarFooter className="p-4 border-t bg-emerald-50/20">
         <SidebarMenu>
           {adminNav.map((item) => (
             <SidebarMenuItem key={item.url}>
               <SidebarMenuButton asChild isActive={pathname === item.url} tooltip={item.title}>
-                <Link href={item.url} className="flex items-center gap-3 px-4">
-                  <item.icon className="h-4 w-4 shrink-0" />
+                <Link href={item.url} className="flex items-center gap-3 px-4 transition-all hover:bg-emerald-50">
+                  <item.icon className={`h-4 w-4 shrink-0 ${pathname === item.url ? "text-emerald-600" : ""}`} />
                   <span className="text-xs font-medium">{item.title}</span>
                 </Link>
               </SidebarMenuButton>
@@ -111,6 +118,7 @@ export function AppSidebar() {
           ))}
         </SidebarMenu>
       </SidebarFooter>
+      <SidebarRail />
     </Sidebar>
   );
 }
