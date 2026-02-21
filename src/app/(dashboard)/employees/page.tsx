@@ -25,6 +25,7 @@ import { Employee } from "@/types/erp";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { SaudiRiyalIcon } from "@/components/icons/saudi-riyal";
 import { toArabicDigits, formatCurrencyValue } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
 
 const mockEmployees: Employee[] = [
   { id: "1", name: "أحمد عبد الله", role: "مدير", iqamaNumber: "2340001234", salary: 15000, department: "Admin", status: "Active", housingId: "H1" },
@@ -35,6 +36,15 @@ const mockEmployees: Employee[] = [
 ];
 
 export default function EmployeesPage() {
+  const { toast } = useToast();
+
+  const handleAction = (action: string, name: string) => {
+    toast({
+      title: "إجراء إداري",
+      description: `تم طلب ${action} للموظف ${name}`,
+    });
+  };
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -44,7 +54,7 @@ export default function EmployeesPage() {
             <SidebarTrigger className="-ml-1" />
             <h1 className="font-headline text-xl font-bold text-primary">الموارد البشرية</h1>
           </div>
-          <Button className="gap-2 rounded-xl shadow-lg shadow-primary/20">
+          <Button className="gap-2 rounded-xl shadow-lg shadow-primary/20" onClick={() => handleAction("إضافة", "جديد")}>
             <Plus className="h-4 w-4" />
             إضافة موظف
           </Button>
@@ -130,24 +140,24 @@ export default function EmployeesPage() {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-48 font-headline">
-                          <DropdownMenuItem className="flex justify-end gap-2 text-right">
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right" onClick={() => handleAction("عرض ملف", emp.name)}>
                             <span>ملف الموظف</span>
                             <Eye className="h-4 w-4" />
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="flex justify-end gap-2 text-right">
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right" onClick={() => handleAction("تعديل بيانات", emp.name)}>
                             <span>تعديل البيانات</span>
                             <Edit className="h-4 w-4" />
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="flex justify-end gap-2 text-right">
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right" onClick={() => handleAction("تغيير حالة", emp.name)}>
                             <span>تغيير الحالة</span>
                             <UserCheck className="h-4 w-4" />
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
-                          <DropdownMenuItem className="flex justify-end gap-2 text-right text-amber-600">
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right text-amber-600" onClick={() => handleAction("تعليق", emp.name)}>
                             <span>تعليق العمل</span>
                             <ShieldAlert className="h-4 w-4" />
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="flex justify-end gap-2 text-right text-rose-600 focus:text-rose-600 focus:bg-rose-50">
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right text-rose-600 focus:text-rose-600 focus:bg-rose-50" onClick={() => handleAction("إنهاء خدمات", emp.name)}>
                             <span>إنهاء الخدمات</span>
                             <Trash2 className="h-4 w-4" />
                           </DropdownMenuItem>

@@ -25,6 +25,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Vehicle } from "@/types/erp";
 import { SaudiRiyalIcon } from "@/components/icons/saudi-riyal";
 import { toArabicDigits, formatCurrencyValue } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
 
 const mockVehicles: Vehicle[] = [
   { id: "1", plateNumber: "أ ب ج 1234", model: "تويوتا هايلكس 2023", type: "Truck", driverName: "أحمد علي", lastServiceDate: "2024-03-10", status: "Active", purchaseValue: 120000 },
@@ -35,6 +36,15 @@ const mockVehicles: Vehicle[] = [
 ];
 
 export default function VehiclesPage() {
+  const { toast } = useToast();
+
+  const handleAction = (action: string, plate: string) => {
+    toast({
+      title: "إدارة الأسطول",
+      description: `تم تنفيذ إجراء ${action} للمركبة ${plate}`,
+    });
+  };
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -44,7 +54,7 @@ export default function VehiclesPage() {
             <SidebarTrigger className="-ml-1" />
             <h1 className="font-headline text-xl font-bold text-primary">إدارة الأسطول</h1>
           </div>
-          <Button className="gap-2 rounded-xl shadow-lg shadow-primary/20">
+          <Button className="gap-2 rounded-xl shadow-lg shadow-primary/20" onClick={() => handleAction("تسجيل", "جديدة")}>
             <Plus className="h-4 w-4" />
             تسجيل مركبة
           </Button>
@@ -163,24 +173,24 @@ export default function VehiclesPage() {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-48 font-headline">
-                          <DropdownMenuItem className="flex justify-end gap-2 text-right">
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right" onClick={() => handleAction("عرض", vehicle.plateNumber)}>
                             <span>عرض المركبة</span>
                             <Eye className="h-4 w-4" />
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="flex justify-end gap-2 text-right">
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right" onClick={() => handleAction("تعديل", vehicle.plateNumber)}>
                             <span>تعديل البيانات</span>
                             <Edit className="h-4 w-4" />
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="flex justify-end gap-2 text-right">
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right" onClick={() => handleAction("سجل العمليات", vehicle.plateNumber)}>
                             <span>سجل العمليات</span>
                             <History className="h-4 w-4" />
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="flex justify-end gap-2 text-right">
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right" onClick={() => handleAction("جدولة صيانة", vehicle.plateNumber)}>
                             <span>جدولة صيانة</span>
                             <Wrench className="h-4 w-4" />
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
-                          <DropdownMenuItem className="flex justify-end gap-2 text-right text-rose-600 focus:text-rose-600 focus:bg-rose-50">
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right text-rose-600 focus:text-rose-600 focus:bg-rose-50" onClick={() => handleAction("شطب", vehicle.plateNumber)}>
                             <span>شطب المركبة</span>
                             <Trash2 className="h-4 w-4" />
                           </DropdownMenuItem>

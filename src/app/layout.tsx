@@ -1,5 +1,6 @@
 import type {Metadata} from 'next';
 import './globals.css';
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: 'نظام السلام | إدارة موارد المؤسسات',
@@ -20,6 +21,7 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased bg-[#F2F2F7] text-[#1C1C1E] selection:bg-primary/20 selection:text-primary">
         {children}
+        <Toaster />
       </body>
     </html>
   );
