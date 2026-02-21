@@ -1,6 +1,6 @@
 "use client";
 
-import { Shield, UserCog, Lock, Users, Save } from "lucide-react";
+import { Shield, UserCog, Lock, Users, Save, Bell, Globe, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/layout/app-sidebar";
@@ -32,7 +32,7 @@ export default function SettingsPage() {
       <SidebarInset className="bg-[#F2F2F7]">
         <header className="flex h-16 shrink-0 items-center gap-2 px-6 border-b bg-white/60 backdrop-blur-xl sticky top-0 z-30">
           <SidebarTrigger className="-ml-1 text-primary" />
-          <h1 className="font-headline text-lg font-bold text-primary">الإدارة والأدوار</h1>
+          <h1 className="text-sm font-black text-primary">الإعدادات والأدوار</h1>
         </header>
 
         <div className="flex flex-1 flex-col gap-6 p-6">
@@ -47,11 +47,11 @@ export default function SettingsPage() {
               </CardHeader>
               <CardContent className="p-6 pt-0">
                 <Table>
-                  <TableHeader>
-                    <TableRow className="bg-slate-50/50">
-                      <TableHead className="text-right font-bold text-xs">الدور</TableHead>
-                      <TableHead className="text-right font-bold text-xs">المستخدمين</TableHead>
-                      <TableHead className="text-right font-bold text-xs">المستوى</TableHead>
+                  <TableHeader className="bg-slate-50/50">
+                    <TableRow>
+                      <TableHead className="text-right font-bold text-[11px] uppercase">الدور</TableHead>
+                      <TableHead className="text-right font-bold text-[11px] uppercase">المستخدمين</TableHead>
+                      <TableHead className="text-right font-bold text-[11px] uppercase">المستوى</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -60,7 +60,7 @@ export default function SettingsPage() {
                         <TableCell className="font-bold text-xs text-right">{role.name}</TableCell>
                         <TableCell className="text-right text-xs font-mono">{toArabicDigits(role.users)}</TableCell>
                         <TableCell className="text-right">
-                          <Badge variant={role.level === "Full" ? "default" : "secondary"} className="text-[9px] font-bold rounded-lg px-2">
+                          <Badge variant="secondary" className="text-[9px] font-bold rounded-lg px-2 bg-emerald-50 text-emerald-700 border-none">
                             {role.level === 'Full' ? 'كامل' : 'مقيد'}
                           </Badge>
                         </TableCell>
@@ -70,7 +70,7 @@ export default function SettingsPage() {
                 </Table>
               </CardContent>
               <CardFooter className="border-t border-slate-100 p-4">
-                <Button variant="ghost" className="w-full gap-2 rounded-xl text-xs font-bold">
+                <Button variant="ghost" className="w-full gap-2 rounded-xl text-[10px] font-bold">
                   <UserCog className="h-4 w-4" />
                   إدارة جميع الأدوار
                 </Button>
@@ -83,7 +83,7 @@ export default function SettingsPage() {
                   <Lock className="h-4 w-4 text-primary" />
                   سياسة الأمن
                 </CardTitle>
-                <CardDescription className="text-[10px]">تكوين إعدادات الأمان العالمية لنظام السلام.</CardDescription>
+                <CardDescription className="text-[10px]">تكوين إعدادات الأمان العالمية للنظام.</CardDescription>
               </CardHeader>
               <CardContent className="p-6 pt-0 space-y-6">
                 <div className="flex items-center justify-between">
@@ -109,7 +109,7 @@ export default function SettingsPage() {
                 </div>
               </CardContent>
               <CardFooter className="border-t border-slate-100 p-4">
-                <Button className="w-full gap-2 rounded-xl text-xs font-bold">
+                <Button className="w-full gap-2 rounded-xl text-[10px] font-bold shadow-sm">
                   <Save className="h-4 w-4" />
                   حفظ الإعدادات
                 </Button>
@@ -134,7 +134,7 @@ export default function SettingsPage() {
                 ].map((session, i) => (
                   <div key={i} className="flex items-center justify-between text-xs border-b border-slate-50 pb-3 last:border-0 last:pb-0">
                     <div className="flex gap-4 items-center">
-                      <Badge variant="outline" className="text-[9px] font-bold bg-white">{toArabicDigits(session.time)}</Badge>
+                      <Badge variant="outline" className="text-[9px] font-bold bg-white border-slate-100">{toArabicDigits(session.time)}</Badge>
                       <span className="text-[10px] text-muted-foreground">{session.device}</span>
                     </div>
                     <div className="flex gap-4 items-center text-right">

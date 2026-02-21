@@ -6,11 +6,11 @@ import {
   Users, 
   ArrowUpRight,
   Wallet,
-  TrendingUp,
   Activity,
   Bell,
   Search,
-  ChevronRight
+  ChevronRight,
+  TrendingUp
 } from "lucide-react";
 import { SaudiRiyalIcon } from "@/components/icons/saudi-riyal";
 import { 
@@ -46,126 +46,99 @@ const financialData = [
 ];
 
 const stats = [
-  { title: "العقارات", value: 24, icon: Building2, trend: "+٢", color: "text-emerald-600", bg: "bg-emerald-100/50" },
-  { title: "الأسطول", value: 58, icon: Car, trend: "+٥", color: "text-blue-600", bg: "bg-blue-100/50" },
-  { title: "الموظفين", value: 142, icon: Users, trend: "+١٢", color: "text-amber-600", bg: "bg-amber-100/50" },
-  { title: "الإيرادات", value: 1200000, isCurrency: true, icon: Wallet, trend: "+١٢.٥٪", color: "text-emerald-700", bg: "bg-emerald-200/50" },
+  { title: "العقارات", value: 24, icon: Building2, trend: "+٢", color: "text-emerald-600", bg: "bg-emerald-50" },
+  { title: "الأسطول", value: 58, icon: Car, trend: "+٥", color: "text-blue-600", bg: "bg-blue-50" },
+  { title: "الموظفين", value: 142, icon: Users, trend: "+١٢", color: "text-amber-600", bg: "bg-amber-50" },
+  { title: "الإيرادات", value: 1200000, isCurrency: true, icon: Wallet, trend: "+١٢.٥٪", color: "text-emerald-700", bg: "bg-emerald-100" },
 ];
 
 export default function Dashboard() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset className="bg-background">
-        <header className="flex h-20 shrink-0 items-center justify-between gap-4 px-8 sticky top-0 bg-background/80 backdrop-blur-xl z-30">
-          <div className="flex items-center gap-6 flex-1">
-            <SidebarTrigger className="h-10 w-10 rounded-full hover:bg-secondary transition-all" />
-            <div className="relative w-full max-w-md group group-data-[collapsible=icon]:hidden">
-              <Search className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
-              <Input 
-                placeholder="ابحث في العقارات، المركبات أو الموظفين..." 
-                className="w-full pr-11 h-12 bg-secondary/50 border-none rounded-full focus-visible:ring-2 focus-visible:ring-primary/20 text-sm font-medium"
-                dir="rtl"
-              />
+      <SidebarInset className="bg-[#F2F2F7]">
+        <header className="flex h-16 shrink-0 items-center justify-between gap-2 px-6 border-b bg-white/60 backdrop-blur-xl sticky top-0 z-30">
+          <div className="flex items-center gap-4">
+            <SidebarTrigger className="-ml-1 text-primary" />
+            <div className="flex flex-col items-start">
+              <h1 className="text-sm font-black text-primary">لوحة التحكم</h1>
+              <span className="text-[10px] font-bold text-muted-foreground">{toHijriDate()}</span>
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="flex flex-col items-end group-data-[collapsible=icon]:hidden">
-              <span className="text-[10px] font-black text-primary uppercase tracking-tighter">{toHijriDate()}</span>
-              <span className="text-xs font-bold text-muted-foreground">صباح الخير، مدير النظام</span>
+          <div className="flex items-center gap-2">
+            <div className="relative hidden md:block">
+              <Search className="absolute right-2.5 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
+              <Input placeholder="بحث سريع..." className="h-8 w-64 pr-8 rounded-xl bg-white/50 border-none text-xs" dir="rtl" />
             </div>
-            <Button variant="secondary" size="icon" className="h-12 w-12 rounded-full relative">
-              <Bell className="h-5 w-5" />
-              <span className="absolute top-3 left-3 h-2 w-2 bg-destructive rounded-full border-2 border-background" />
+            <Button variant="ghost" size="icon" className="rounded-full relative h-9 w-9">
+              <Bell className="h-4 w-4" />
+              <span className="absolute top-2 left-2 h-1.5 w-1.5 bg-destructive rounded-full" />
             </Button>
           </div>
         </header>
 
-        <div className="flex flex-1 flex-col gap-8 p-8 pt-4">
-          {/* M3 Hero Section */}
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="flex flex-1 flex-col gap-6 p-6">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {stats.map((stat) => (
-              <Card key={stat.title} className="m3-card group hover:bg-primary/5 transition-all cursor-pointer">
-                <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-4">
-                  <div className={`p-4 rounded-3xl ${stat.bg}`}>
-                    <stat.icon className={`h-6 w-6 ${stat.color}`} />
+              <Card key={stat.title} className="border-none shadow-sm rounded-3xl bg-white/80 group hover:bg-white transition-all">
+                <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                  <div className={`p-2.5 rounded-2xl ${stat.bg}`}>
+                    <stat.icon className={`h-5 w-5 ${stat.color}`} />
                   </div>
-                  <Badge variant="outline" className="rounded-full border-primary/10 bg-primary/5 text-primary text-[10px] font-black">
+                  <Badge variant="secondary" className="rounded-lg text-[9px] font-bold bg-emerald-50 text-emerald-700 border-none">
                     {toArabicDigits(stat.trend)}
                   </Badge>
                 </CardHeader>
-                <CardContent className="pt-2">
-                  <p className="text-xs font-bold text-muted-foreground mb-1 uppercase tracking-widest">{stat.title}</p>
-                  <div className="flex items-center gap-1">
-                    <span className="text-3xl font-black tracking-tighter">
+                <CardContent>
+                  <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">{stat.title}</p>
+                  <div className="flex items-center gap-1 mt-1">
+                    <span className="text-xl font-black">
                       {stat.isCurrency ? formatCurrencyValue(stat.value as number) : toArabicDigits(stat.value)}
                     </span>
-                    {stat.isCurrency && <SaudiRiyalIcon className="h-5 w-5 text-primary opacity-60" />}
+                    {stat.isCurrency && <SaudiRiyalIcon className="h-4 w-4 text-primary opacity-60" />}
                   </div>
                 </CardContent>
               </Card>
             ))}
           </div>
 
-          <div className="grid gap-8 lg:grid-cols-12">
-            <Card className="lg:col-span-8 rounded-[32px] border-none bg-card shadow-sm overflow-hidden">
-              <CardHeader className="px-8 py-6 flex flex-row items-center justify-between">
+          <div className="grid gap-6 lg:grid-cols-12">
+            <Card className="lg:col-span-8 border-none shadow-sm rounded-3xl bg-white/80 overflow-hidden">
+              <CardHeader className="px-6 py-4 flex flex-row items-center justify-between">
                 <div>
-                  <CardTitle className="text-xl font-black text-foreground">الأداء المالي</CardTitle>
-                  <CardDescription className="text-xs font-medium text-muted-foreground mt-1">مقارنة الإيرادات بالمصروفات التشغيلية</CardDescription>
+                  <CardTitle className="text-sm font-bold">الأداء المالي</CardTitle>
+                  <CardDescription className="text-[10px]">مقارنة الإيرادات بالمصروفات التشغيلية</CardDescription>
                 </div>
-                <Button variant="secondary" className="rounded-full gap-2 text-xs font-bold px-6">
-                  عرض التقرير الكامل
-                  <ArrowUpRight className="h-4 w-4" />
+                <Button variant="ghost" size="sm" className="text-[10px] font-bold gap-1 rounded-xl">
+                  تصدير التقرير
+                  <ArrowUpRight className="h-3 w-3" />
                 </Button>
               </CardHeader>
-              <CardContent className="px-8 pb-8 pt-4">
-                <div className="h-[320px]" dir="ltr">
+              <CardContent className="px-6 pb-6 pt-2">
+                <div className="h-[280px]" dir="ltr">
                   <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={financialData} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
-                      <CartesianGrid strokeDasharray="8 8" vertical={false} stroke="oklch(var(--border))" opacity={0.5} />
+                    <BarChart data={financialData}>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
                       <XAxis 
                         dataKey="month" 
-                        stroke="oklch(var(--muted-foreground))" 
-                        fontSize={11} 
-                        fontWeight={700}
+                        stroke="#94A3B8" 
+                        fontSize={10} 
                         tickLine={false} 
                         axisLine={false} 
-                        tick={{dy: 15}}
                       />
                       <YAxis 
-                        stroke="oklch(var(--muted-foreground))" 
-                        fontSize={11} 
-                        fontWeight={700}
+                        stroke="#94A3B8" 
+                        fontSize={10} 
                         tickLine={false} 
                         axisLine={false} 
-                        tickFormatter={(value) => toArabicDigits(`${value/1000}ألف`)}
+                        tickFormatter={(value) => toArabicDigits(`${value/1000}ك`)}
                       />
                       <Tooltip 
-                        cursor={{fill: 'oklch(var(--secondary))', radius: 12}}
-                        content={({ active, payload }) => {
-                          if (active && payload && payload.length) {
-                            return (
-                              <div className="rounded-[20px] bg-background p-4 shadow-2xl border-none text-right min-w-[160px]">
-                                <p className="text-xs font-black mb-3 border-b border-primary/5 pb-2 text-primary">{payload[0].payload.month}</p>
-                                <div className="space-y-2">
-                                  <div className="flex justify-between items-center gap-6">
-                                    <span className="text-[10px] font-bold text-muted-foreground">الإيرادات</span>
-                                    <span className="text-xs font-black text-primary">{formatCurrencyValue(payload[0].value as number)} ر.س</span>
-                                  </div>
-                                  <div className="flex justify-between items-center gap-6">
-                                    <span className="text-[10px] font-bold text-muted-foreground">المصروفات</span>
-                                    <span className="text-xs font-black text-rose-500">{formatCurrencyValue(payload[1].value as number)} ر.س</span>
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          }
-                          return null;
-                        }}
+                        contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                        itemStyle={{ fontSize: '10px', fontWeight: 'bold' }}
                       />
-                      <Bar dataKey="revenue" fill="oklch(var(--primary))" radius={[12, 12, 12, 12]} barSize={36} />
-                      <Bar dataKey="expense" fill="oklch(var(--accent))" radius={[12, 12, 12, 12]} barSize={36} />
+                      <Bar dataKey="revenue" fill="oklch(var(--primary))" radius={[6, 6, 0, 0]} barSize={30} />
+                      <Bar dataKey="expense" fill="oklch(var(--muted-foreground))" radius={[6, 6, 0, 0]} barSize={30} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
@@ -173,42 +146,40 @@ export default function Dashboard() {
             </Card>
 
             <div className="lg:col-span-4 flex flex-col gap-6">
-              <Card className="rounded-[32px] border-none bg-primary text-primary-foreground shadow-xl shadow-primary/20 overflow-hidden">
-                <CardHeader className="px-8 pt-8 pb-4">
+              <Card className="border-none shadow-sm rounded-3xl bg-primary text-primary-foreground overflow-hidden">
+                <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg font-black">النشاط الأخير</CardTitle>
-                    <Activity className="h-5 w-5 opacity-60" />
+                    <CardTitle className="text-sm font-bold">النشاط الأخير</CardTitle>
+                    <Activity className="h-4 w-4 opacity-60" />
                   </div>
                 </CardHeader>
-                <CardContent className="px-4 pb-8">
-                  <div className="space-y-2">
-                    {[
-                      { title: "تجديد عقد", sub: "مجمع السلام - و ٤", time: "٢س", color: "bg-white/20" },
-                      { title: "صيانة مركبة", sub: "تويوتا - أ ب ج", time: "٥س", color: "bg-white/10" },
-                      { title: "تعيين جديد", sub: "سارة م. - محاسبة", time: "١٠س", color: "bg-white/10" },
-                    ].map((item, i) => (
-                      <div key={i} className={`flex items-center gap-4 p-4 rounded-3xl transition-all cursor-pointer hover:bg-white/20 ${item.color}`}>
-                        <div className="flex-1">
-                          <p className="text-sm font-bold leading-none">{item.title}</p>
-                          <p className="text-[10px] opacity-70 font-medium mt-1">{item.sub}</p>
-                        </div>
-                        <div className="text-[10px] font-black bg-white/30 px-2 py-1 rounded-full">{toArabicDigits(item.time)}</div>
+                <CardContent className="p-4 space-y-2">
+                  {[
+                    { title: "تجديد عقد", sub: "مجمع السلام - و ٤", time: "٢س" },
+                    { title: "صيانة مركبة", sub: "تويوتا - أ ب ج", time: "٥س" },
+                    { title: "تعيين جديد", sub: "سارة م. - محاسبة", time: "١٠س" },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center gap-3 p-3 rounded-2xl bg-white/10 hover:bg-white/20 transition-colors cursor-pointer">
+                      <div className="flex-1">
+                        <p className="text-xs font-bold">{item.title}</p>
+                        <p className="text-[9px] opacity-70">{item.sub}</p>
                       </div>
-                    ))}
-                  </div>
-                  <Button variant="secondary" className="w-full mt-6 rounded-full h-12 bg-white text-primary hover:bg-white/90 font-black text-xs gap-2">
+                      <span className="text-[9px] font-black bg-white/20 px-2 py-0.5 rounded-full">{toArabicDigits(item.time)}</span>
+                    </div>
+                  ))}
+                  <Button variant="secondary" className="w-full mt-2 rounded-xl h-9 bg-white text-primary hover:bg-white/90 font-bold text-[10px] gap-1">
                     مشاهدة الكل
-                    <ChevronRight className="h-4 w-4" />
+                    <ChevronRight className="h-3 w-3" />
                   </Button>
                 </CardContent>
               </Card>
 
-              <Card className="rounded-[32px] border-none bg-secondary/50 p-8 flex items-center justify-between group cursor-pointer hover:bg-secondary transition-all">
+              <Card className="border-none shadow-sm rounded-3xl bg-white/80 p-6 flex items-center justify-between group cursor-pointer hover:bg-white transition-all">
                 <div className="flex flex-col gap-1">
-                  <span className="text-[10px] font-black text-primary uppercase tracking-widest">حالة النظام</span>
-                  <span className="text-sm font-bold text-foreground">جميع الخدمات تعمل بكفاءة</span>
+                  <span className="text-[9px] font-black text-primary uppercase tracking-widest">حالة النظام</span>
+                  <span className="text-xs font-bold text-foreground">جميع الخدمات تعمل بكفاءة</span>
                 </div>
-                <div className="h-3 w-3 rounded-full bg-emerald-500 animate-pulse ring-4 ring-emerald-500/20" />
+                <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse ring-4 ring-emerald-500/10" />
               </Card>
             </div>
           </div>

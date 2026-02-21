@@ -1,6 +1,6 @@
 "use client";
 
-import { Users, Plus, Search, MoreVertical, Edit, Trash2, Eye, UserCheck } from "lucide-react";
+import { Users, Plus, Search, MoreVertical, Edit, Trash2, Eye, UserCheck, Wallet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SaudiRiyalIcon } from "@/components/icons/saudi-riyal";
 import { toArabicDigits, formatCurrencyValue } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
@@ -49,53 +49,44 @@ export default function EmployeesPage() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center justify-between px-6 border-b sticky top-0 bg-background/95 backdrop-blur z-30">
+      <SidebarInset className="bg-[#F2F2F7]">
+        <header className="flex h-16 shrink-0 items-center justify-between px-6 border-b bg-white/60 backdrop-blur-xl sticky top-0 z-30">
           <div className="flex items-center gap-2">
-            <SidebarTrigger className="-ml-1" />
-            <h1 className="text-sm font-bold tracking-tight">الموارد البشرية</h1>
+            <SidebarTrigger className="-ml-1 text-primary" />
+            <h1 className="text-sm font-black text-primary">الموارد البشرية</h1>
           </div>
-          <Button size="sm" className="gap-2 h-8 font-bold" onClick={() => handleAction("إضافة", "جديد")}>
-            <Plus className="h-3.5 w-3.5" />
+          <Button size="sm" className="gap-2 rounded-xl shadow-sm font-bold h-9" onClick={() => handleAction("إضافة", "جديد")}>
+            <Plus className="h-4 w-4" />
             إضافة موظف
           </Button>
         </header>
 
         <div className="flex flex-1 flex-col gap-6 p-6">
           <div className="grid gap-4 md:grid-cols-3">
-            <Card className="shadow-none border rounded-xl">
-              <CardContent className="p-4 flex items-center justify-between">
-                <div className="text-right">
-                  <p className="text-[10px] text-muted-foreground font-bold uppercase mb-1">إجمالي الموظفين</p>
-                  <p className="text-xl font-black">{toArabicDigits(142)}</p>
-                </div>
-                <div className="p-2 bg-blue-50 rounded-lg">
-                  <Users className="h-4 w-4 text-blue-600" />
-                </div>
+            <Card className="border-none shadow-sm rounded-3xl bg-white/80">
+              <CardHeader className="pb-2 text-right">
+                <CardTitle className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">إجمالي الموظفين</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-xl font-black text-right">{toArabicDigits(142)}</p>
               </CardContent>
             </Card>
-            <Card className="shadow-none border rounded-xl">
-              <CardContent className="p-4 flex items-center justify-between">
-                <div className="text-right">
-                  <p className="text-[10px] text-muted-foreground font-bold uppercase mb-1">الموظفين النشطين</p>
-                  <p className="text-xl font-black text-emerald-600">{toArabicDigits(128)}</p>
-                </div>
-                <div className="p-2 bg-emerald-50 rounded-lg">
-                  <UserCheck className="h-4 w-4 text-emerald-600" />
-                </div>
+            <Card className="border-none shadow-sm rounded-3xl bg-white/80">
+              <CardHeader className="pb-2 text-right">
+                <CardTitle className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">الموظفين النشطين</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-xl font-black text-right text-emerald-600">{toArabicDigits(128)}</p>
               </CardContent>
             </Card>
-            <Card className="shadow-none border rounded-xl">
-              <CardContent className="p-4 flex items-center justify-between">
-                <div className="text-right">
-                  <p className="text-[10px] text-muted-foreground font-bold uppercase mb-1">الرواتب الشهرية</p>
-                  <div className="flex items-center gap-1 justify-end">
-                    <span className="text-xl font-black">{formatCurrencyValue(845000)}</span>
-                    <SaudiRiyalIcon className="h-4 w-4 opacity-70" />
-                  </div>
-                </div>
-                <div className="p-2 bg-muted rounded-lg">
-                  <Wallet className="h-4 w-4 text-muted-foreground" />
+            <Card className="border-none shadow-sm rounded-3xl bg-white/80">
+              <CardHeader className="pb-2 text-right">
+                <CardTitle className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">الرواتب الشهرية</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center gap-1 justify-end">
+                  <span className="text-xl font-black">{formatCurrencyValue(845000)}</span>
+                  <SaudiRiyalIcon className="h-4 w-4 text-primary opacity-70" />
                 </div>
               </CardContent>
             </Card>
@@ -104,17 +95,17 @@ export default function EmployeesPage() {
           <div className="flex items-center justify-between gap-4">
             <div className="relative flex-1 max-w-sm">
               <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="بحث بالاسم أو الهوية..." className="pr-10 h-9 rounded-lg text-xs" dir="rtl" />
+              <Input placeholder="بحث بالاسم أو الهوية..." className="pr-10 h-10 rounded-2xl border-none bg-white/80 text-xs" dir="rtl" />
             </div>
           </div>
 
-          <Card className="rounded-xl border shadow-none overflow-hidden">
+          <Card className="rounded-3xl border-none bg-white/80 overflow-hidden shadow-sm">
             <Table>
-              <TableHeader>
-                <TableRow className="bg-muted/50">
+              <TableHeader className="bg-slate-50/50">
+                <TableRow>
                   <TableHead className="text-right font-bold text-[11px] uppercase tracking-wider">الموظف</TableHead>
                   <TableHead className="text-right font-bold text-[11px] uppercase tracking-wider">الإقامة / الهوية</TableHead>
-                  <TableHead className="text-right font-bold text-[11px] uppercase tracking-wider">القسم والمنصب</TableHead>
+                  <TableHead className="text-right font-bold text-[11px] uppercase tracking-wider">المنصب</TableHead>
                   <TableHead className="text-right font-bold text-[11px] uppercase tracking-wider">الحالة</TableHead>
                   <TableHead className="text-right font-bold text-[11px] uppercase tracking-wider">الراتب</TableHead>
                   <TableHead className="w-[50px]"></TableHead>
@@ -122,15 +113,15 @@ export default function EmployeesPage() {
               </TableHeader>
               <TableBody>
                 {mockEmployees.map((emp) => (
-                  <TableRow key={emp.id} className="hover:bg-muted/30 transition-colors">
+                  <TableRow key={emp.id} className="hover:bg-muted/30 transition-colors border-b border-slate-100/50 last:border-0">
                     <TableCell className="text-right">
                       <div className="flex items-center gap-3 justify-end">
                         <div className="flex flex-col text-right">
                           <span className="font-bold text-xs">{emp.name}</span>
                           <span className="text-[9px] text-muted-foreground font-mono">#{emp.id.padStart(3, '0')}</span>
                         </div>
-                        <Avatar className="h-8 w-8 border shrink-0">
-                          <AvatarFallback className="bg-primary/5 text-primary text-[10px] font-bold">
+                        <Avatar className="h-8 w-8 rounded-xl border-none bg-emerald-50 shrink-0">
+                          <AvatarFallback className="text-emerald-700 text-[10px] font-bold">
                             {emp.name.split(' ').map(n => n[0]).join('')}
                           </AvatarFallback>
                         </Avatar>
@@ -147,10 +138,10 @@ export default function EmployeesPage() {
                     </TableCell>
                     <TableCell className="text-right">
                       <Badge 
-                        variant={emp.status === "Active" ? "default" : "secondary"}
-                        className={`rounded-full px-2 py-0.5 text-[9px] font-bold ${emp.status === "Active" ? "bg-emerald-500 hover:bg-emerald-600 border-none" : ""}`}
+                        variant="secondary"
+                        className={`rounded-lg px-3 py-0.5 text-[9px] font-bold border-none ${emp.status === "Active" ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-slate-600"}`}
                       >
-                        {emp.status === 'Active' ? 'نشط' : 'في إجازة'}
+                        {emp.status === 'Active' ? 'نشط' : 'إجازة'}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
@@ -162,21 +153,21 @@ export default function EmployeesPage() {
                     <TableCell>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg">
+                          <Button variant="ghost" size="icon" className="h-8 w-8 rounded-xl">
                             <MoreVertical className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-40">
-                          <DropdownMenuItem className="flex justify-end gap-2 text-right" onClick={() => handleAction("عرض ملف", emp.name)}>
+                        <DropdownMenuContent align="end" className="w-40 rounded-2xl">
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right text-xs" onClick={() => handleAction("عرض ملف", emp.name)}>
                             <span>ملف الموظف</span>
                             <Eye className="h-4 w-4" />
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="flex justify-end gap-2 text-right" onClick={() => handleAction("تعديل", emp.name)}>
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right text-xs" onClick={() => handleAction("تعديل", emp.name)}>
                             <span>تعديل البيانات</span>
                             <Edit className="h-4 w-4" />
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
-                          <DropdownMenuItem className="flex justify-end gap-2 text-right text-rose-600" onClick={() => handleAction("إنهاء", emp.name)}>
+                          <DropdownMenuItem className="flex justify-end gap-2 text-right text-xs text-rose-600" onClick={() => handleAction("إنهاء", emp.name)}>
                             <span>إنهاء خدمات</span>
                             <Trash2 className="h-4 w-4" />
                           </DropdownMenuItem>
@@ -193,5 +184,3 @@ export default function EmployeesPage() {
     </SidebarProvider>
   );
 }
-
-import { Wallet } from "lucide-react";
