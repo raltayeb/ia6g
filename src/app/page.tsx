@@ -47,8 +47,8 @@ export default function Dashboard() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset className="bg-muted/30">
-        <header className="flex h-16 shrink-0 items-center justify-between px-6 bg-background sticky top-0 z-30 border-b">
+      <SidebarInset className="bg-[#F8F9FB]">
+        <header className="flex h-16 shrink-0 items-center justify-between px-6 bg-white/60 backdrop-blur-xl sticky top-0 z-30 border-b">
           <div className="flex items-center gap-4">
             <SidebarTrigger className="-ml-1 text-muted-foreground" />
             <div className="text-right">
@@ -58,12 +58,12 @@ export default function Dashboard() {
           </div>
         </header>
 
-        <div className="flex flex-1 flex-col gap-6 p-6 max-w-7xl mx-auto w-full">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div className="flex flex-1 flex-col gap-8 p-6 max-w-7xl mx-auto w-full">
+          <div className="relative grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {stats.map((stat) => (
-              <Card key={stat.title}>
+              <Card key={stat.title} className="bg-white border-0 ring-1 ring-foreground/5 shadow-none">
                 <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">{stat.title}</CardTitle>
+                  <CardTitle className="text-xs font-medium text-muted-foreground uppercase">{stat.title}</CardTitle>
                   <stat.icon className={`h-4 w-4 ${stat.color}`} />
                 </CardHeader>
                 <CardContent>
@@ -71,12 +71,12 @@ export default function Dashboard() {
                     <span className="text-2xl font-bold">
                       {stat.isCurrency ? formatCurrencyValue(stat.value as number) : toArabicDigits(stat.value)}
                     </span>
-                    {stat.isCurrency && <SaudiRiyalIcon className="h-5 w-5 text-primary" />}
+                    {stat.isCurrency && <stat.icon className="h-5 w-5 text-primary" />}
                   </div>
                   <p className="text-xs text-muted-foreground mt-1">
                     <span className="text-primary font-medium inline-flex items-center">
                       <ArrowUpRight className="h-3 w-3 ml-0.5" />
-                      {stat.trend}
+                      {toArabicDigits(stat.trend)}
                     </span>{" "}
                     عن الشهر السابق
                   </p>
@@ -85,27 +85,27 @@ export default function Dashboard() {
             ))}
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-            <Card className="lg:col-span-4">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
+            <Card className="lg:col-span-4 bg-white border-0 ring-1 ring-foreground/5">
               <CardHeader>
-                <CardTitle className="text-base font-bold">نمو الإيرادات</CardTitle>
+                <CardTitle className="text-sm font-bold">نمو الإيرادات</CardTitle>
                 <CardDescription>تحليل الأداء المالي الربعي</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="h-[300px]" dir="ltr">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={financialData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
                       <XAxis 
                         dataKey="month" 
-                        stroke="#888888" 
+                        stroke="#94A3B8" 
                         fontSize={12} 
                         tickLine={false} 
                         axisLine={false} 
                         fontFamily="Cairo"
                       />
                       <YAxis 
-                        stroke="#888888" 
+                        stroke="#94A3B8" 
                         fontSize={12} 
                         tickLine={false} 
                         axisLine={false} 
@@ -113,24 +113,25 @@ export default function Dashboard() {
                         fontFamily="Cairo"
                       />
                       <Tooltip 
+                        cursor={{fill: '#F1F5F9'}}
                         content={({ active, payload }) => {
                           if (active && payload && payload.length) {
                             return (
-                              <div className="rounded-lg border bg-background p-3 shadow-sm text-right">
-                                <p className="text-xs font-bold mb-1">{payload[0].payload.month}</p>
-                                <div className="space-y-1">
+                              <div className="rounded-lg border bg-white p-3 shadow-lg text-right ring-1 ring-black/5">
+                                <p className="text-xs font-bold mb-2">{payload[0].payload.month}</p>
+                                <div className="space-y-1.5">
                                   <div className="flex items-center justify-between gap-4">
                                     <span className="text-xs text-muted-foreground">الإيرادات:</span>
                                     <div className="flex items-center gap-0.5">
                                       <span className="text-xs font-bold text-primary">{formatCurrencyValue(payload[0].value as number)}</span>
-                                      <SaudiRiyalIcon className="h-3 w-3 text-primary" />
+                                      <SaudiRiyalIcon className="size-3 text-primary" />
                                     </div>
                                   </div>
                                   <div className="flex items-center justify-between gap-4">
                                     <span className="text-xs text-muted-foreground">المصروفات:</span>
                                     <div className="flex items-center gap-0.5">
                                       <span className="text-xs font-bold text-destructive">{formatCurrencyValue(payload[1].value as number)}</span>
-                                      <SaudiRiyalIcon className="h-3 w-3 text-destructive" />
+                                      <SaudiRiyalIcon className="size-3 text-destructive" />
                                     </div>
                                   </div>
                                 </div>
@@ -148,26 +149,26 @@ export default function Dashboard() {
               </CardContent>
             </Card>
 
-            <Card className="lg:col-span-3">
+            <Card className="lg:col-span-3 bg-white border-0 ring-1 ring-foreground/5">
               <CardHeader>
-                <CardTitle className="text-base font-bold">النشاط الأخير</CardTitle>
+                <CardTitle className="text-sm font-bold">النشاط الأخير</CardTitle>
                 <CardDescription>آخر التحديثات عبر جميع الأقسام</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
                   {[
                     { title: "تجديد عقد إيجار", sub: "مبنى الجوهرة - وحدة ٠٤", time: "قبل ساعتين", color: "bg-blue-500" },
-                    { title: "صيانة أسطول", sub: "شاحنة نقل رقم ٤٥٢", time: "قبل ٥ ساعات", color: "bg-green-500" },
-                    { title: "تعيين موظف", sub: "سارة محمد - محاسبة", time: "أمس", color: "bg-purple-500" },
+                    { title: "صيانة أسطول", sub: "شاحنة نقل رقم ٤٥٢", time: "قبل ٥ ساعات", color: "bg-emerald-500" },
+                    { title: "تعيين موظف", sub: "سارة محمد - محاسبة", time: "أمس", color: "bg-indigo-500" },
                     { title: "سداد زكاة", sub: "دفعة الربع الأول ١٤٤٥", time: "منذ يومين", color: "bg-primary" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-3">
-                      <div className={`mt-1.5 h-2 w-2 rounded-full ${item.color}`} />
+                      <div className={`mt-1.5 size-2 rounded-full ${item.color} ring-2 ring-white`} />
                       <div className="flex-1 space-y-1 text-right">
                         <p className="text-sm font-medium">{item.title}</p>
-                        <p className="text-xs text-muted-foreground">{item.sub}</p>
+                        <p className="text-xs text-muted-foreground line-clamp-1">{item.sub}</p>
                       </div>
-                      <div className="text-[10px] text-muted-foreground">{toArabicDigits(item.time)}</div>
+                      <div className="text-[10px] text-muted-foreground whitespace-nowrap">{toArabicDigits(item.time)}</div>
                     </div>
                   ))}
                 </div>
