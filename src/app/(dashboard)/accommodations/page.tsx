@@ -1,6 +1,7 @@
 "use client";
 
-import { Home, Plus, Search, MapPin, MoreVertical, Edit, Trash2, Eye } from "lucide-react";
+import { useState } from "react";
+import { Home, Plus, Search, MapPin, MoreVertical, Edit, Trash2, Eye, Loader2, Building2, Users, Wallet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
@@ -27,6 +28,20 @@ import { Accommodation } from "@/types/erp";
 import { SaudiRiyalIcon } from "@/components/icons/saudi-riyal";
 import { toArabicDigits, formatCurrencyValue } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter } from "@/components/ui/sheet";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+
+const accommodationSchema = z.object({
+  name: z.string().min(3, "اسم المبنى يجب أن يكون ٣ أحرف على الأقل"),
+  capacity: z.coerce.number().min(1, "السعة يجب أن تكون أكبر من صفر"),
+  location: z.string().min(5, "الموقع مطلوب بدقة"),
+  monthlyCost: z.coerce.number().min(0, "التكلفة لا يمكن أن تكون سالبة"),
+});
+
+type AccommodationFormValues = z.infer<typeof accommodationSchema>;
 
 const mockAccommodations: Accommodation[] = [
   { id: "A1", name: "سكن موظفي السلام أ", capacity: 50, currentOccupants: 42, location: "الرياض، المنطقة الصناعية", monthlyCost: 25000 },
@@ -37,152 +52,182 @@ const mockAccommodations: Accommodation[] = [
 
 export default function AccommodationsPage() {
   const { toast } = useToast();
+  const [selectedAcc, setSelectedAcc] = useState<Accommodation | null>(null);
+  const [isAddSheetOpen, setIsAddSheetOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const form = useForm<AccommodationFormValues>({
+    resolver: zodResolver(accommodationSchema),
+    defaultValues: {
+      name: "",
+      capacity: 0,
+      location: "",
+      monthlyCost: 0,
+    },
+  });
+
+  const onSubmit = (values: AccommodationFormValues) => {
+    setIsSubmitting(true);
+    setTimeout(() => {
+      console.log("Saving accommodation:", values);
+      setIsSubmitting(false);
+      setIsAddSheetOpen(false);
+      form.reset();
+      toast({
+        title: "تمت إضافة السكن",
+        description: `تم تسجيل "${values.name}" بنجاح كجزء من أصول السكن.`,
+      });
+    }, 1000);
+  };
 
   const handleAction = (action: string, name: string) => {
     toast({
-      title: "تم تنفيذ الإجراء",
-      description: `تم اختيار ${action} لـ ${name}`,
+      title: "إدارة السكن",
+      description: `تم طلب إجراء "${action}" لـ ${name}`,
     });
   };
 
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset className="bg-[#F2F2F7]">
-        <header className="flex h-16 shrink-0 items-center justify-between gap-2 px-6 border-b bg-white/60 backdrop-blur-xl sticky top-0 z-30">
+      <SidebarInset className="bg-[#F8F9FA]">
+        <header className="m3-header">
           <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1 text-primary" />
-            <h1 className="font-headline text-lg font-bold text-primary">إدارة السكن</h1>
+            <h1 className="text-sm font-medium text-primary">إدارة السكن والإعاشة</h1>
           </div>
-          <Button className="gap-2 rounded-xl shadow-sm" onClick={() => handleAction("إضافة", "مبنى جديد")}>
+          <Button 
+            size="sm" 
+            className="gap-2 rounded-full shadow-sm font-medium h-9 px-5 transition-all hover:scale-105 active:scale-95" 
+            onClick={() => setIsAddSheetOpen(true)}
+          >
             <Plus className="h-4 w-4" />
             مبنى جديد
           </Button>
         </header>
         
-        <div className="flex flex-1 flex-col gap-6 p-6">
+        <div className="flex flex-1 flex-col gap-6 p-6" dir="rtl">
           <div className="grid gap-4 md:grid-cols-3">
-            <Card className="border-none shadow-sm rounded-3xl bg-white/80">
-              <CardHeader className="pb-2 text-right">
-                <CardTitle className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">إجمالي السعة</CardTitle>
+            <Card className="m3-card border-none">
+              <CardHeader className="pb-2 text-right p-0">
+                <CardTitle className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">إجمالي السعة</CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="text-xl font-black text-right">{toArabicDigits(212)} وحدة</div>
-                <div className="flex flex-row-reverse items-center gap-3 mt-3">
-                  <Progress value={83} className="h-1.5 flex-1" />
-                  <span className="text-[10px] font-bold text-blue-600">{toArabicDigits(83)}%</span>
+              <CardContent className="p-0 pt-2">
+                <div className="text-xl font-medium text-right">{toArabicDigits(212)} وحدة</div>
+                <div className="flex items-center gap-3 mt-3 flex-row-reverse">
+                  <Progress value={83} className="h-1 flex-1" />
+                  <span className="text-[10px] font-medium text-primary">{toArabicDigits(83)}%</span>
                 </div>
               </CardContent>
             </Card>
-            <Card className="border-none shadow-sm rounded-3xl bg-white/80">
-              <CardHeader className="pb-2 text-right">
-                <CardTitle className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">التكلفة الشهرية</CardTitle>
+            <Card className="m3-card border-none">
+              <CardHeader className="pb-2 text-right p-0">
+                <CardTitle className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">التكلفة الشهرية</CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="flex items-center gap-1 justify-end">
-                  <span className="text-xl font-black">{formatCurrencyValue(93000)}</span>
-                  <SaudiRiyalIcon className="h-4 w-4 text-primary opacity-80" />
+              <CardContent className="p-0 pt-2">
+                <div className="flex items-center gap-1 justify-start flex-row-reverse">
+                  <span className="text-xl font-medium">{formatCurrencyValue(93000)}</span>
+                  <SaudiRiyalIcon className="h-4 w-4 text-primary opacity-60" />
                 </div>
-                <p className="text-[9px] text-muted-foreground mt-2 font-bold text-right">بمتوسط {toArabicDigits(438)} ريال / ساكن</p>
               </CardContent>
             </Card>
-            <Card className="border-none shadow-sm rounded-3xl bg-white/80 border-r-4 border-r-emerald-500">
-              <CardHeader className="pb-2 text-right">
-                <CardTitle className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">الوحدات الشاغرة</CardTitle>
+            <Card className="m3-card border-none">
+              <CardHeader className="pb-2 text-right p-0">
+                <CardTitle className="text-[10px] font-medium text-emerald-600 uppercase tracking-widest">الوحدات الشاغرة</CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="text-xl font-black text-emerald-600 text-right">{toArabicDigits(35)} وحدة</div>
-                <p className="text-[9px] text-muted-foreground mt-2 font-bold text-right">جاهزة للتسكين الفوري</p>
+              <CardContent className="p-0 pt-2">
+                <div className="text-xl font-medium text-emerald-600 text-right">{toArabicDigits(35)} وحدة</div>
               </CardContent>
             </Card>
           </div>
 
           <div className="flex items-center justify-between gap-4">
             <div className="relative flex-1 max-w-sm">
-              <Search className="absolute right-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="بحث عن السكن..." className="pr-9 rounded-xl border-slate-200 text-right bg-white/80" dir="rtl" />
+              <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input placeholder="بحث عن السكن..." className="pr-10 h-10 rounded-full border-none bg-white shadow-sm text-xs" dir="rtl" />
             </div>
           </div>
 
-          <div className="rounded-3xl border-none bg-white/80 overflow-hidden shadow-sm">
+          <div className="m3-table-container">
             <Table>
-              <TableHeader>
-                <TableRow className="bg-slate-50/50">
-                  <TableHead className="w-[300px] text-right font-bold text-xs">المبنى / المجمع</TableHead>
-                  <TableHead className="text-right font-bold text-xs">الموقع</TableHead>
-                  <TableHead className="text-right font-bold text-xs">الإشغال</TableHead>
-                  <TableHead className="text-right font-bold text-xs">الحالة</TableHead>
-                  <TableHead className="text-right font-bold text-xs">الإيجار</TableHead>
-                  <TableHead className="w-[80px] text-center font-bold text-xs">إجراءات</TableHead>
+              <TableHeader className="m3-table-header">
+                <TableRow className="border-none hover:bg-transparent">
+                  <TableHead className="text-right font-medium py-4 px-6">المبنى / المجمع</TableHead>
+                  <TableHead className="text-right font-medium py-4 px-6">الموقع</TableHead>
+                  <TableHead className="text-right font-medium py-4 px-6">الإشغال</TableHead>
+                  <TableHead className="text-right font-medium py-4 px-6">الحالة</TableHead>
+                  <TableHead className="text-right font-medium py-4 px-6">الإيجار</TableHead>
+                  <TableHead className="w-[50px] py-4 px-6"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {mockAccommodations.map((acc) => {
                   const occupancyRate = (acc.currentOccupants / acc.capacity) * 100;
                   return (
-                    <TableRow key={acc.id} className="hover:bg-muted/30 transition-colors border-b border-slate-100/50 last:border-0">
-                      <TableCell className="font-medium text-right">
-                        <div className="flex items-center gap-3 justify-end">
+                    <TableRow 
+                      key={acc.id} 
+                      className="m3-table-row cursor-pointer"
+                      onClick={() => setSelectedAcc(acc)}
+                    >
+                      <TableCell className="text-right py-4 px-6">
+                        <div className="flex items-center gap-3 justify-start flex-row-reverse">
                           <div className="flex flex-col text-right">
-                            <span className="font-bold text-[13px]">{acc.name}</span>
-                            <span className="text-[9px] text-muted-foreground font-mono">{acc.id}</span>
+                            <span className="font-medium text-xs">{acc.name}</span>
+                            <span className="text-[9px] text-muted-foreground font-mono">#{acc.id}</span>
                           </div>
-                          <div className="p-2 bg-primary/5 rounded-xl shrink-0">
+                          <div className="p-2 bg-emerald-50 rounded-xl shrink-0">
                             <Home className="h-4 w-4 text-primary" />
                           </div>
                         </div>
                       </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex items-center gap-1 text-[11px] text-muted-foreground justify-end">
+                      <TableCell className="text-right py-4 px-6">
+                        <div className="flex items-center gap-1 text-[11px] text-muted-foreground justify-start flex-row-reverse">
                           {acc.location}
                           <MapPin className="h-3 w-3" />
                         </div>
                       </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex flex-col gap-1.5 w-full max-w-[100px] ml-auto">
-                          <div className="flex flex-row-reverse justify-between text-[9px] font-black">
+                      <TableCell className="text-right py-4 px-6">
+                        <div className="flex flex-col gap-1 w-24">
+                          <div className="flex flex-row-reverse justify-between text-[9px] font-medium">
                             <span>{toArabicDigits(acc.currentOccupants)}/{toArabicDigits(acc.capacity)}</span>
                             <span>{toArabicDigits(Math.round(occupancyRate))}%</span>
                           </div>
-                          <Progress 
-                            value={occupancyRate} 
-                            className="h-1" 
-                          />
+                          <Progress value={occupancyRate} className="h-1" />
                         </div>
                       </TableCell>
-                      <TableCell className="text-right">
+                      <TableCell className="text-right py-4 px-6">
                         <Badge 
-                          variant={occupancyRate >= 100 ? "destructive" : occupancyRate > 80 ? "secondary" : "default"}
-                          className={`rounded-lg text-[9px] font-bold px-2 py-0 ${occupancyRate < 80 ? "bg-emerald-500 border-none" : ""}`}
+                          variant="secondary"
+                          className={`rounded-full px-3 py-0.5 text-[9px] font-medium border-none ${occupancyRate >= 90 ? "bg-rose-50 text-rose-700" : "bg-emerald-50 text-emerald-700"}`}
                         >
                           {occupancyRate >= 100 ? "مكتمل" : occupancyRate > 80 ? "شبه ممتلئ" : "متاح"}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex items-center gap-1 font-black justify-end text-xs">
+                      <TableCell className="text-right py-4 px-6">
+                        <div className="flex items-center gap-1 font-medium justify-start flex-row-reverse text-xs">
                           {formatCurrencyValue(acc.monthlyCost)}
-                          <SaudiRiyalIcon className="h-3.5 w-3.5 opacity-70" />
+                          <SaudiRiyalIcon className="h-3.5 w-3.5 opacity-60" />
                         </div>
                       </TableCell>
-                      <TableCell className="text-center">
+                      <TableCell className="py-4 px-6">
                         <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon" className="rounded-xl h-8 w-8">
+                          <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full">
                               <MoreVertical className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-44 font-headline rounded-2xl">
-                            <DropdownMenuItem className="flex justify-end gap-2 text-right text-xs py-2" onClick={() => handleAction("عرض التفاصيل", acc.name)}>
+                          <DropdownMenuContent align="end" className="w-40 rounded-2xl border-none shadow-lg">
+                            <DropdownMenuItem className="flex justify-end gap-2 text-right text-xs" onClick={() => setSelectedAcc(acc)}>
                               <span>عرض التفاصيل</span>
                               <Eye className="h-4 w-4" />
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="flex justify-end gap-2 text-right text-xs py-2" onClick={() => handleAction("تعديل", acc.name)}>
-                              <span>تعديل السجل</span>
+                            <DropdownMenuItem className="flex justify-end gap-2 text-right text-xs" onClick={() => handleAction("تعديل", acc.name)}>
+                              <span>تعديل</span>
                               <Edit className="h-4 w-4" />
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem className="flex justify-end gap-2 text-right text-xs py-2 text-rose-600" onClick={() => handleAction("حذف", acc.name)}>
-                              <span>حذف السجل</span>
+                            <DropdownMenuItem className="flex justify-end gap-2 text-right text-xs text-rose-600" onClick={() => handleAction("حذف", acc.name)}>
+                              <span>حذف</span>
                               <Trash2 className="h-4 w-4" />
                             </DropdownMenuItem>
                           </DropdownMenuContent>
@@ -195,6 +240,139 @@ export default function AccommodationsPage() {
             </Table>
           </div>
         </div>
+
+        {/* نافذة إضافة مبنى سكن جديد */}
+        <Sheet open={isAddSheetOpen} onOpenChange={setIsAddSheetOpen}>
+          <SheetContent side="right" className="rounded-l-3xl border-none p-8 w-full max-w-md sm:max-w-lg" dir="rtl">
+            <SheetHeader className="text-right mb-8">
+              <SheetTitle className="text-lg font-medium text-primary">إضافة مبنى سكن جديد</SheetTitle>
+              <SheetDescription className="text-xs">أدخل تفاصيل المبنى الجديد لتحديث سجلات الإسكان</SheetDescription>
+            </SheetHeader>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 text-right">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs font-medium">اسم المبنى / المجمع</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input placeholder="مثال: سكن السلام للموظفين - بلوك ب" {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10" />
+                          <Building2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground opacity-50" />
+                        </div>
+                      </FormControl>
+                      <FormMessage className="text-[10px]" />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="location"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs font-medium">الموقع الجغرافي</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input placeholder="المدينة، الحي، الشارع..." {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10" />
+                          <MapPin className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground opacity-50" />
+                        </div>
+                      </FormControl>
+                      <FormMessage className="text-[10px]" />
+                    </FormItem>
+                  )}
+                />
+
+                <div className="grid grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="capacity"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-xs font-medium">السعة القصوى (أفراد)</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Input type="number" placeholder="0" {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10" />
+                            <Users className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground opacity-50" />
+                          </div>
+                        </FormControl>
+                        <FormMessage className="text-[10px]" />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="monthlyCost"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-xs font-medium">التكلفة الشهرية</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Input type="number" placeholder="0" {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10" />
+                            <Wallet className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary opacity-50" />
+                          </div>
+                        </FormControl>
+                        <FormMessage className="text-[10px]" />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <SheetFooter className="pt-8 gap-3 flex-row-reverse sm:justify-start">
+                  <Button type="submit" className="rounded-full h-11 flex-1 font-medium" disabled={isSubmitting}>
+                    {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin ml-2" /> : "حفظ المبنى"}
+                  </Button>
+                  <Button type="button" variant="ghost" className="rounded-full h-11 flex-1 font-medium" onClick={() => setIsAddSheetOpen(false)}>
+                    إلغاء
+                  </Button>
+                </SheetFooter>
+              </form>
+            </Form>
+          </SheetContent>
+        </Sheet>
+
+        {/* نافذة عرض تفاصيل السكن */}
+        <Sheet open={!!selectedAcc} onOpenChange={() => setSelectedAcc(null)}>
+          <SheetContent side="right" className="rounded-l-3xl border-none p-8" dir="rtl">
+            <SheetHeader className="text-right mb-8">
+              <SheetTitle className="text-lg font-medium text-primary">تفاصيل السكن</SheetTitle>
+              <SheetDescription className="text-xs">بيانات السعة والإشغال والتكلفة</SheetDescription>
+            </SheetHeader>
+            {selectedAcc && (
+              <div className="space-y-6 text-right">
+                <div className="grid gap-4">
+                  <div className="p-4 bg-slate-50 rounded-2xl">
+                    <p className="text-[10px] text-muted-foreground uppercase mb-1">اسم المبنى</p>
+                    <p className="text-sm font-medium">{selectedAcc.name}</p>
+                  </div>
+                  <div className="p-4 bg-slate-50 rounded-2xl">
+                    <p className="text-[10px] text-muted-foreground uppercase mb-1">الموقع</p>
+                    <p className="text-sm font-medium">{selectedAcc.location}</p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="p-4 bg-slate-50 rounded-2xl">
+                      <p className="text-[10px] text-muted-foreground uppercase mb-1">السعة الكلية</p>
+                      <p className="text-sm font-medium">{toArabicDigits(selectedAcc.capacity)} فرد</p>
+                    </div>
+                    <div className="p-4 bg-slate-50 rounded-2xl">
+                      <p className="text-[10px] text-muted-foreground uppercase mb-1">المشغول حالياً</p>
+                      <p className="text-sm font-medium text-primary">{toArabicDigits(selectedAcc.currentOccupants)} فرد</p>
+                    </div>
+                  </div>
+                  <div className="p-4 bg-slate-50 rounded-2xl">
+                    <p className="text-[10px] text-muted-foreground uppercase mb-1">التكلفة الشهرية</p>
+                    <div className="flex items-center gap-1 justify-start flex-row-reverse text-sm font-medium">
+                      {formatCurrencyValue(selectedAcc.monthlyCost)}
+                      <SaudiRiyalIcon className="h-3 w-3" />
+                    </div>
+                  </div>
+                </div>
+                <Button className="w-full rounded-full h-11" onClick={() => setSelectedAcc(null)}>إغلاق</Button>
+              </div>
+            )}
+          </SheetContent>
+        </Sheet>
       </SidebarInset>
     </SidebarProvider>
   );
