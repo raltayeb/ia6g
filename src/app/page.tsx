@@ -47,7 +47,7 @@ export default function LoginPage() {
         <Card className="rounded-[32px] border-none shadow-xl bg-white overflow-hidden">
           <CardHeader className="pt-8 px-8 pb-4 text-right">
             <CardTitle className="text-lg font-medium">تسجيل الدخول</CardTitle>
-            <CardDescription className="text-xs">أدخل بياناتك للوصول إلى لوحة التحكم</CardDescription>
+            <CardDescription className="text-xs">استخدم أي بيانات للدخول (نسخة تجريبية)</CardDescription>
           </CardHeader>
           <CardContent className="px-8">
             <form onSubmit={handleLogin} className="space-y-5">
@@ -57,7 +57,7 @@ export default function LoginPage() {
                   <Input 
                     id="email" 
                     type="email" 
-                    placeholder="name@company.com" 
+                    placeholder="admin@tj-erp.com" 
                     className="rounded-2xl bg-slate-50 border-none h-12 pr-11 text-right"
                     required
                   />
@@ -94,9 +94,11 @@ export default function LoginPage() {
             </form>
           </CardContent>
           <CardFooter className="pb-8 px-8 pt-6 flex justify-center border-t border-slate-50 mt-4">
-            <p className="text-[10px] text-muted-foreground">
-              ليس لديك حساب؟ <Button variant="link" className="text-[10px] h-auto p-0 text-primary font-medium">اتصل بمدير النظام</Button>
-            </p>
+            <div className="text-center space-y-2">
+              <p className="text-[10px] text-muted-foreground">
+                بيانات تجريبية: <span className="font-mono text-primary">admin@tj-erp.com</span> / <span className="font-mono text-primary">123456</span>
+              </p>
+            </div>
           </CardFooter>
         </Card>
 
