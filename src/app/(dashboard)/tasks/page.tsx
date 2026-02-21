@@ -21,6 +21,14 @@ import { toArabicDigits } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { Task } from "@/types/erp";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter } from "@/components/ui/sheet";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -122,32 +130,32 @@ export default function TasksPage() {
               <CardHeader className="pb-2 text-right p-0">
                 <CardTitle className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">إجمالي المهام</CardTitle>
               </CardHeader>
-              <CardContent className="p-0 pt-2">
-                <p className="text-xl font-medium text-right">{toArabicDigits(58)}</p>
+              <CardContent className="p-0 pt-2 text-right">
+                <p className="text-xl font-medium">{toArabicDigits(58)}</p>
               </CardContent>
             </Card>
             <Card className="m3-card border-none">
               <CardHeader className="pb-2 text-right p-0">
                 <CardTitle className="text-[10px] font-medium text-amber-600 uppercase tracking-widest">قيد التنفيذ</CardTitle>
               </CardHeader>
-              <CardContent className="p-0 pt-2 text-amber-600">
-                <p className="text-xl font-medium text-right">{toArabicDigits(12)}</p>
+              <CardContent className="p-0 pt-2 text-amber-600 text-right">
+                <p className="text-xl font-medium">{toArabicDigits(12)}</p>
               </CardContent>
             </Card>
             <Card className="m3-card border-none">
               <CardHeader className="pb-2 text-right p-0">
                 <CardTitle className="text-[10px] font-medium text-emerald-600 uppercase tracking-widest">مكتملة</CardTitle>
               </CardHeader>
-              <CardContent className="p-0 pt-2 text-emerald-600">
-                <p className="text-xl font-medium text-right">{toArabicDigits(34)}</p>
+              <CardContent className="p-0 pt-2 text-emerald-600 text-right">
+                <p className="text-xl font-medium">{toArabicDigits(34)}</p>
               </CardContent>
             </Card>
             <Card className="m3-card border-none">
               <CardHeader className="pb-2 text-right p-0">
                 <CardTitle className="text-[10px] font-medium text-rose-600 uppercase tracking-widest">متأخرة</CardTitle>
               </CardHeader>
-              <CardContent className="p-0 pt-2 text-rose-600">
-                <p className="text-xl font-medium text-right">{toArabicDigits(4)}</p>
+              <CardContent className="p-0 pt-2 text-rose-600 text-right">
+                <p className="text-xl font-medium">{toArabicDigits(4)}</p>
               </CardContent>
             </Card>
           </div>
@@ -185,7 +193,7 @@ export default function TasksPage() {
                       onClick={() => setSelectedTask(task)}
                     >
                       <TableCell className="text-right py-4 px-6">
-                        <div className="flex flex-col">
+                        <div className="flex flex-col text-right">
                           <span className="font-medium text-xs">{task.title}</span>
                           <span className="text-[9px] text-muted-foreground">
                             {task.category === 'CRM' ? 'المبيعات' : task.category === 'HR' ? 'الموارد البشرية' : task.category === 'Fleet' ? 'الأسطول' : 'أخرى'}
@@ -202,9 +210,9 @@ export default function TasksPage() {
                         {task.priority === 'High' ? 'عالية' : task.priority === 'Medium' ? 'متوسطة' : 'منخفضة'}
                       </TableCell>
                       <TableCell className="text-right py-4 px-6">
-                        <div className="flex items-center gap-1.5 text-xs justify-end">
-                          <span className="text-[11px] font-medium">{task.assigneeName || "غير معين"}</span>
+                        <div className="flex items-center gap-1.5 text-xs justify-start flex-row-reverse">
                           <User className="h-3.5 w-3.5 text-muted-foreground opacity-50" />
+                          <span className="text-[11px] font-medium">{task.assigneeName || "غير معين"}</span>
                         </div>
                       </TableCell>
                       <TableCell className="text-right text-[11px] text-muted-foreground font-mono py-4 px-6">
@@ -218,13 +226,13 @@ export default function TasksPage() {
           </div>
         </div>
 
-        {/* نافذة إضافة مهمة جديدة */}
-        <Sheet open={isAddSheetOpen} onOpenChange={setIsAddSheetOpen}>
-          <SheetContent side="right" className="rounded-l-3xl border-none p-8" dir="rtl">
-            <SheetHeader className="text-right mb-8">
-              <SheetTitle className="text-lg font-medium text-primary">إنشاء مهمة عمل</SheetTitle>
-              <SheetDescription className="text-xs">حدد تفاصيل المهمة والمسؤول عن تنفيذها</SheetDescription>
-            </SheetHeader>
+        {/* نافذة إضافة مهمة جديدة - تم تحويلها إلى Dialog Popup */}
+        <Dialog open={isAddSheetOpen} onOpenChange={setIsAddSheetOpen}>
+          <DialogContent className="rounded-[28px] border-none p-8 max-w-md w-[95%] sm:w-full" dir="rtl">
+            <DialogHeader className="text-right mb-6">
+              <DialogTitle className="text-lg font-medium text-primary">إنشاء مهمة عمل</DialogTitle>
+              <DialogDescription className="text-xs">حدد تفاصيل المهمة والمسؤول عن تنفيذها</DialogDescription>
+            </DialogHeader>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 text-right">
                 <FormField
@@ -234,7 +242,7 @@ export default function TasksPage() {
                     <FormItem>
                       <FormLabel className="text-xs font-medium">وصف المهمة الرئيسي</FormLabel>
                       <FormControl>
-                        <Input placeholder="ما الذي يجب القيام به؟" {...field} className="rounded-xl bg-slate-50 border-none h-11" />
+                        <Input placeholder="ما الذي يجب القيام به؟" {...field} className="rounded-xl bg-slate-50 border-none h-11 text-right" />
                       </FormControl>
                       <FormMessage className="text-[10px]" />
                     </FormItem>
@@ -250,11 +258,11 @@ export default function TasksPage() {
                         <FormLabel className="text-xs font-medium">القسم / الفئة</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
-                            <SelectTrigger className="rounded-xl bg-slate-50 border-none h-11 text-xs">
+                            <SelectTrigger className="rounded-xl bg-slate-50 border-none h-11 text-xs text-right">
                               <SelectValue placeholder="اختر الفئة" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="rounded-xl border-none shadow-xl">
+                          <SelectContent className="rounded-xl border-none shadow-xl text-right">
                             <SelectItem value="CRM" className="text-xs">المبيعات والعملاء</SelectItem>
                             <SelectItem value="HR" className="text-xs">الموارد البشرية</SelectItem>
                             <SelectItem value="Fleet" className="text-xs">إدارة الأسطول</SelectItem>
@@ -274,11 +282,11 @@ export default function TasksPage() {
                         <FormLabel className="text-xs font-medium">الأولوية</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
-                            <SelectTrigger className="rounded-xl bg-slate-50 border-none h-11 text-xs">
+                            <SelectTrigger className="rounded-xl bg-slate-50 border-none h-11 text-xs text-right">
                               <SelectValue placeholder="اختر الأولوية" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="rounded-xl border-none shadow-xl">
+                          <SelectContent className="rounded-xl border-none shadow-xl text-right">
                             <SelectItem value="High" className="text-xs text-rose-600 font-medium">عالية جداً</SelectItem>
                             <SelectItem value="Medium" className="text-xs text-amber-600 font-medium">متوسطة</SelectItem>
                             <SelectItem value="Low" className="text-xs text-blue-600 font-medium">منخفضة</SelectItem>
@@ -299,7 +307,7 @@ export default function TasksPage() {
                         <FormLabel className="text-xs font-medium">تاريخ الاستحقاق</FormLabel>
                         <FormControl>
                           <div className="relative">
-                            <Input type="date" {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10" />
+                            <Input type="date" {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10 text-right" />
                             <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground opacity-50" />
                           </div>
                         </FormControl>
@@ -315,7 +323,7 @@ export default function TasksPage() {
                         <FormLabel className="text-xs font-medium">إسناد إلى موظف</FormLabel>
                         <FormControl>
                           <div className="relative">
-                            <Input placeholder="اسم الموظف..." {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10" />
+                            <Input placeholder="اسم الموظف..." {...field} className="rounded-xl bg-slate-50 border-none h-11 pr-10 text-right" />
                             <User className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground opacity-50" />
                           </div>
                         </FormControl>
@@ -325,16 +333,58 @@ export default function TasksPage() {
                   />
                 </div>
 
-                <SheetFooter className="pt-8 gap-3 flex-row-reverse sm:justify-start">
+                <DialogFooter className="pt-8 gap-3 flex-row-reverse sm:justify-start">
                   <Button type="submit" className="rounded-full h-11 flex-1 font-medium" disabled={isSubmitting}>
                     {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin ml-2" /> : "إسناد المهمة"}
                   </Button>
                   <Button type="button" variant="ghost" className="rounded-full h-11 flex-1 font-medium" onClick={() => setIsAddSheetOpen(false)}>
                     إلغاء
                   </Button>
-                </SheetFooter>
+                </DialogFooter>
               </form>
             </Form>
+          </DialogContent>
+        </Dialog>
+
+        {/* نافذة عرض تفاصيل المهمة */}
+        <Sheet open={!!selectedTask} onOpenChange={() => setSelectedTask(null)}>
+          <SheetContent side="right" className="rounded-l-3xl border-none p-8" dir="rtl">
+            <SheetHeader className="text-right mb-8">
+              <SheetTitle className="text-lg font-medium text-primary">تفاصيل المهمة</SheetTitle>
+              <SheetDescription className="text-xs">بيانات العمل والمسؤول عن التنفيذ</SheetDescription>
+            </SheetHeader>
+            {selectedTask && (
+              <div className="space-y-6 text-right">
+                <div className="grid gap-4">
+                  <div className="p-4 bg-slate-50 rounded-2xl text-right">
+                    <p className="text-[10px] text-muted-foreground uppercase mb-1">عنوان المهمة</p>
+                    <p className="text-sm font-medium">{selectedTask.title}</p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="p-4 bg-slate-50 rounded-2xl text-right">
+                      <p className="text-[10px] text-muted-foreground uppercase mb-1">الحالة</p>
+                      <Badge className={`text-[10px] border-none ${getStatusBadge(selectedTask.status).color}`}>
+                        {getStatusBadge(selectedTask.status).label}
+                      </Badge>
+                    </div>
+                    <div className="p-4 bg-slate-50 rounded-2xl text-right">
+                      <p className="text-[10px] text-muted-foreground uppercase mb-1">الأولوية</p>
+                      <p className={`text-sm font-medium ${getPriorityColor(selectedTask.priority)}`}>
+                        {selectedTask.priority === 'High' ? 'عالية' : selectedTask.priority === 'Medium' ? 'متوسطة' : 'منخفضة'}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="p-4 bg-slate-50 rounded-2xl text-right">
+                    <p className="text-[10px] text-muted-foreground uppercase mb-1">المسؤول</p>
+                    <div className="flex items-center gap-2 justify-start flex-row-reverse">
+                      <User className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm font-medium">{selectedTask.assigneeName || "غير معين"}</span>
+                    </div>
+                  </div>
+                </div>
+                <Button className="w-full rounded-full h-11" onClick={() => setSelectedTask(null)}>إغلاق</Button>
+              </div>
+            )}
           </SheetContent>
         </Sheet>
       </SidebarInset>
