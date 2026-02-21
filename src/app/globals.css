@@ -67,3 +67,12 @@
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
+
+@layer utilities {
+  .font-body {
+    font-family: 'Noto Sans Arabic', 'Inter', sans-serif;
+  }
+  .font-headline {
+    font-family: 'Noto Sans Arabic', 'Inter', sans-serif;
+  }
+}

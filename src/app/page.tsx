@@ -1,3 +1,4 @@
+
 "use client";
 
 import { 
@@ -34,19 +35,19 @@ import {
 } from "recharts";
 
 const financialData = [
-  { month: "Jan", revenue: 45000, expense: 32000 },
-  { month: "Feb", revenue: 52000, expense: 31000 },
-  { month: "Mar", revenue: 48000, expense: 35000 },
-  { month: "Apr", revenue: 61000, expense: 38000 },
-  { month: "May", revenue: 55000, expense: 42000 },
-  { month: "Jun", revenue: 67000, expense: 40000 },
+  { month: "يناير", revenue: 45000, expense: 32000 },
+  { month: "فبراير", revenue: 52000, expense: 31000 },
+  { month: "مارس", revenue: 48000, expense: 35000 },
+  { month: "أبريل", revenue: 61000, expense: 38000 },
+  { month: "مايو", revenue: 55000, expense: 42000 },
+  { month: "يونيو", revenue: 67000, expense: 40000 },
 ];
 
 const stats = [
-  { title: "Total Properties", value: "24", icon: Building2, trend: "+2", color: "text-blue-600" },
-  { title: "Fleet Size", value: "58", icon: Car, trend: "+5", color: "text-green-600" },
-  { title: "Total Workforce", value: "142", icon: Users, trend: "+12", color: "text-purple-600" },
-  { title: "Monthly Revenue", value: "SAR 1.2M", icon: DollarSign, trend: "+12.5%", color: "text-emerald-600" },
+  { title: "إجمالي العقارات", value: "24", icon: Building2, trend: "+2", color: "text-blue-600" },
+  { title: "حجم الأسطول", value: "58", icon: Car, trend: "+5", color: "text-green-600" },
+  { title: "إجمالي الموظفين", value: "142", icon: Users, trend: "+12", color: "text-purple-600" },
+  { title: "الإيرادات الشهرية", value: "1.2 مليون ر.س", icon: DollarSign, trend: "+12.5%", color: "text-emerald-600" },
 ];
 
 export default function Dashboard() {
@@ -56,7 +57,7 @@ export default function Dashboard() {
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 px-4 border-b">
           <SidebarTrigger className="-ml-1" />
-          <h1 className="font-headline text-xl font-bold text-primary">Al-Salam Dashboard</h1>
+          <h1 className="font-headline text-xl font-bold text-primary">لوحة قيادة السلام</h1>
         </header>
         <div className="flex flex-1 flex-col gap-6 p-6 overflow-auto">
           {/* Quick Stats */}
@@ -74,7 +75,7 @@ export default function Dashboard() {
                       <ArrowUpRight className="h-3 w-3 mr-1" />
                       {stat.trend}
                     </span>{" "}
-                    vs last month
+                    مقارنة بالشهر الماضي
                   </p>
                 </CardContent>
               </Card>
@@ -85,8 +86,8 @@ export default function Dashboard() {
             {/* Financial Trend */}
             <Card className="lg:col-span-4">
               <CardHeader>
-                <CardTitle>Financial Performance</CardTitle>
-                <CardDescription>Monthly revenue vs expenses (SAR)</CardDescription>
+                <CardTitle>الأداء المالي</CardTitle>
+                <CardDescription>الإيرادات مقابل المصروفات شهرياً (ر.س)</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="h-[300px]">
@@ -94,7 +95,7 @@ export default function Dashboard() {
                     <BarChart data={financialData}>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} />
                       <XAxis dataKey="month" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} />
-                      <YAxis stroke="#888888" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `SAR ${value/1000}k`} />
+                      <YAxis stroke="#888888" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `${value/1000}k`} />
                       <Tooltip 
                         content={({ active, payload }) => {
                           if (active && payload && payload.length) {
@@ -102,11 +103,11 @@ export default function Dashboard() {
                               <div className="rounded-lg border bg-background p-2 shadow-sm">
                                 <div className="grid grid-cols-2 gap-2">
                                   <div className="flex flex-col">
-                                    <span className="text-[0.70rem] uppercase text-muted-foreground">Revenue</span>
+                                    <span className="text-[0.70rem] uppercase text-muted-foreground">الإيرادات</span>
                                     <span className="font-bold text-emerald-600">{payload[0].value}</span>
                                   </div>
                                   <div className="flex flex-col">
-                                    <span className="text-[0.70rem] uppercase text-muted-foreground">Expense</span>
+                                    <span className="text-[0.70rem] uppercase text-muted-foreground">المصروفات</span>
                                     <span className="font-bold text-red-600">{payload[1].value}</span>
                                   </div>
                                 </div>
@@ -127,16 +128,16 @@ export default function Dashboard() {
             {/* Recent Activities */}
             <Card className="lg:col-span-3">
               <CardHeader>
-                <CardTitle>Recent Updates</CardTitle>
-                <CardDescription>Latest events from modules</CardDescription>
+                <CardTitle>آخر التحديثات</CardTitle>
+                <CardDescription>أحدث الأحداث من جميع الأقسام</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
                   {[
-                    { title: "New Lease Agreement", sub: "Building A - Unit 402", time: "2h ago", type: "property" },
-                    { title: "Vehicle Service Completed", sub: "Truck #42 (Volvo FH)", time: "5h ago", type: "vehicle" },
-                    { title: "New Employee Onboarded", sub: "Ahmed Khalid - Fleet Manager", time: "Yesterday", type: "hr" },
-                    { title: "Zakat Payment Processed", sub: "Q2 2024 Filing", time: "2 days ago", type: "finance" },
+                    { title: "عقد إيجار جديد", sub: "مبنى أ - وحدة 402", time: "منذ ساعتين", type: "property" },
+                    { title: "إتمام صيانة مركبة", sub: "شاحنة #42 (فولفو)", time: "منذ 5 ساعات", type: "vehicle" },
+                    { title: "موظف جديد", sub: "أحمد خالد - مدير أسطول", time: "بالأمس", type: "hr" },
+                    { title: "معالجة دفعة زكاة", sub: "إقرار الربع الثاني 2024", time: "منذ يومين", type: "finance" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-4">
                       <div className="h-2 w-2 rounded-full bg-primary" />
