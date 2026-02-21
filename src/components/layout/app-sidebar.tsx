@@ -45,37 +45,37 @@ export function AppSidebar() {
   const pathname = usePathname();
 
   return (
-    <Sidebar side="right" collapsible="icon" className="border-l-0 bg-background">
+    <Sidebar side="right" collapsible="icon" className="border-l border-slate-100 bg-white">
       <SidebarHeader className="h-20 flex items-center justify-center px-6">
         <div className="flex items-center gap-3 w-full">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/20 shrink-0">
-            <Building2 className="h-6 w-6" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-50 text-primary shrink-0">
+            <Building2 className="h-5 w-5" />
           </div>
-          <div className="flex flex-col group-data-[collapsible=icon]:hidden">
-            <span className="text-base font-bold tracking-tight text-foreground">نظام السلام</span>
-            <span className="text-[10px] text-muted-foreground uppercase font-black tracking-widest opacity-70">ERP v3.0</span>
+          <div className="flex flex-col group-data-[collapsible=icon]:hidden text-right">
+            <span className="text-sm font-medium tracking-tight text-foreground">نظام السلام</span>
+            <span className="text-[9px] text-muted-foreground uppercase font-medium tracking-widest opacity-70">ERP v3.0</span>
           </div>
         </div>
       </SidebarHeader>
       
       <SidebarContent className="px-3">
         <div className="mb-6 px-3 group-data-[collapsible=icon]:hidden">
-          <Button className="w-full justify-start gap-3 rounded-2xl h-14 bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/20">
+          <Button className="w-full justify-start gap-3 rounded-[20px] h-12 bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm border-none transition-transform active:scale-95">
             <Plus className="h-5 w-5" />
-            <span className="font-bold">إضافة سريعة</span>
+            <span className="font-medium text-xs">إضافة سريعة</span>
           </Button>
         </div>
 
         <SidebarGroup>
-          <SidebarGroupLabel className="px-4 text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2">الرئيسية</SidebarGroupLabel>
+          <SidebarGroupLabel className="px-4 text-[10px] font-medium text-muted-foreground uppercase tracking-widest mb-2 text-right w-full">الرئيسية</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {mainNav.map((item) => (
                 <SidebarMenuItem key={item.url} className="mb-1">
-                  <SidebarMenuButton asChild isActive={pathname === item.url} tooltip={item.title} className="h-12 rounded-full px-4 transition-all hover:bg-secondary/50 data-[active=true]:bg-secondary data-[active=true]:text-secondary-foreground">
-                    <Link href={item.url} className="flex items-center gap-4">
-                      <item.icon className={`h-5 w-5 shrink-0 ${pathname === item.url ? "text-primary" : "text-muted-foreground"}`} />
-                      <span className="text-sm font-medium">{item.title}</span>
+                  <SidebarMenuButton asChild isActive={pathname === item.url} tooltip={item.title} className="h-11 rounded-full px-4 transition-all hover:bg-emerald-50/50 data-[active=true]:bg-emerald-50 data-[active=true]:text-primary border-none">
+                    <Link href={item.url} className="flex items-center gap-4 flex-row-reverse w-full justify-end">
+                      <span className="text-[13px] font-medium">{item.title}</span>
+                      <item.icon className={`h-5 w-5 shrink-0 ${pathname === item.url ? "text-primary" : "text-slate-400"}`} />
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -85,15 +85,15 @@ export function AppSidebar() {
         </SidebarGroup>
 
         <SidebarGroup className="mt-4">
-          <SidebarGroupLabel className="px-4 text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2">المالية</SidebarGroupLabel>
+          <SidebarGroupLabel className="px-4 text-[10px] font-medium text-muted-foreground uppercase tracking-widest mb-2 text-right w-full">المالية</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {financeNav.map((item) => (
                 <SidebarMenuItem key={item.url} className="mb-1">
-                  <SidebarMenuButton asChild isActive={pathname === item.url} tooltip={item.title} className="h-12 rounded-full px-4 transition-all hover:bg-secondary/50 data-[active=true]:bg-secondary data-[active=true]:text-secondary-foreground">
-                    <Link href={item.url} className="flex items-center gap-4">
-                      <item.icon className={`h-5 w-5 shrink-0 ${pathname === item.url ? "text-primary" : "text-muted-foreground"}`} />
-                      <span className="text-sm font-medium">{item.title}</span>
+                  <SidebarMenuButton asChild isActive={pathname === item.url} tooltip={item.title} className="h-11 rounded-full px-4 transition-all hover:bg-emerald-50/50 data-[active=true]:bg-emerald-50 data-[active=true]:text-primary border-none">
+                    <Link href={item.url} className="flex items-center gap-4 flex-row-reverse w-full justify-end">
+                      <span className="text-[13px] font-medium">{item.title}</span>
+                      <item.icon className={`h-5 w-5 shrink-0 ${pathname === item.url ? "text-primary" : "text-slate-400"}`} />
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -103,13 +103,13 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-4 bg-background">
+      <SidebarFooter className="p-4 bg-white">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild isActive={pathname === "/settings"} className="h-12 rounded-full px-4 transition-all hover:bg-secondary/50">
-              <Link href="/settings" className="flex items-center gap-4">
-                <Settings className="h-5 w-5 text-muted-foreground" />
-                <span className="text-sm font-medium">الإعدادات</span>
+            <SidebarMenuButton asChild isActive={pathname === "/settings"} className="h-11 rounded-full px-4 transition-all hover:bg-slate-50 border-none">
+              <Link href="/settings" className="flex items-center gap-4 flex-row-reverse w-full justify-end">
+                <span className="text-[13px] font-medium">الإعدادات</span>
+                <Settings className="h-5 w-5 text-slate-400" />
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

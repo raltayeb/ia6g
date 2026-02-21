@@ -22,19 +22,6 @@
     --border: oklch(0.92 0.004 286.32);
     --input: oklch(0.92 0.004 286.32);
     --ring: oklch(0.841 0.238 128.85);
-    --chart-1: oklch(0.871 0.15 154.449);
-    --chart-2: oklch(0.723 0.219 149.579);
-    --chart-3: oklch(0.627 0.194 149.214);
-    --chart-4: oklch(0.527 0.154 150.069);
-    --chart-5: oklch(0.448 0.119 151.328);
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.141 0.005 285.823);
-    --sidebar-primary: oklch(0.648 0.2 131.684);
-    --sidebar-primary-foreground: oklch(0.986 0.031 120.757);
-    --sidebar-accent: oklch(0.967 0.001 286.375);
-    --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
-    --sidebar-border: oklch(0.92 0.004 286.32);
-    --sidebar-ring: oklch(0.841 0.238 128.85);
     --radius: 0.65rem;
   }
 
@@ -57,19 +44,6 @@
     --border: oklch(1 0 0 / 10%);
     --input: oklch(1 0 0 / 15%);
     --ring: oklch(0.405 0.101 131.063);
-    --chart-1: oklch(0.871 0.15 154.449);
-    --chart-2: oklch(0.723 0.219 149.579);
-    --chart-3: oklch(0.627 0.194 149.214);
-    --chart-4: oklch(0.527 0.154 150.069);
-    --chart-5: oklch(0.448 0.119 151.328);
-    --sidebar: oklch(0.21 0.006 285.885);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.768 0.233 130.85);
-    --sidebar-primary-foreground: oklch(0.986 0.031 120.757);
-    --sidebar-accent: oklch(0.274 0.006 286.033);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.405 0.101 131.063);
   }
 }
 
@@ -78,19 +52,32 @@
     @apply border-border outline-none transition-colors duration-200;
   }
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-[#F8F9FA] text-foreground font-sans antialiased text-right;
   }
 }
 
-/* Material Design 3 Custom Utilities */
+/* Material Design 3 Utilities */
 .m3-card {
-  @apply bg-card border border-border shadow-sm rounded-3xl p-6;
+  @apply bg-card border-none shadow-sm rounded-[28px] p-6 transition-all hover:shadow-md;
+}
+
+.m3-header {
+  @apply h-16 shrink-0 flex items-center justify-between px-6 bg-white/80 backdrop-blur-xl border-b border-slate-100 sticky top-0 z-30;
 }
 
 .m3-sidebar-item {
   @apply flex items-center gap-3 px-4 py-2.5 rounded-full transition-all duration-200;
 }
 
-.m3-sidebar-item.active {
-  @apply bg-secondary text-secondary-foreground font-bold;
+/* Custom Table Styling for MD3 */
+.m3-table-container {
+  @apply rounded-[28px] overflow-hidden bg-white shadow-sm border-none;
+}
+
+.m3-table-header {
+  @apply bg-slate-50/50 text-muted-foreground font-medium text-xs text-right;
+}
+
+.m3-table-row {
+  @apply border-b border-slate-50 hover:bg-slate-50/80 transition-colors last:border-0;
 }
