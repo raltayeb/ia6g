@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Kufi_Arabic } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { DirectionProvider } from "@/components/ui/direction";
 
 const notoKufiArabic = Noto_Kufi_Arabic({
   subsets: ["arabic"],
@@ -21,8 +22,10 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl" className={`${notoKufiArabic.variable} antialiased`}>
       <body className="font-sans">
-        {children}
-        <Toaster />
+        <DirectionProvider direction="rtl">
+          {children}
+          <Toaster />
+        </DirectionProvider>
       </body>
     </html>
   );
