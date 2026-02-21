@@ -19,10 +19,10 @@ import {
 import { Badge } from "@/components/ui/badge";
 
 const roles = [
-  { name: "Super Admin", users: 2, access: "All Modules", level: "Full" },
-  { name: "Fleet Manager", users: 3, access: "Vehicles, Maintenance", level: "Restricted" },
-  { name: "Accountant", users: 4, access: "Finance, Zakat, Payroll", level: "Restricted" },
-  { name: "Property Manager", users: 5, access: "Properties, Accommodations", level: "Restricted" },
+  { name: "مدير خارق", users: 2, access: "جميع الوحدات", level: "Full" },
+  { name: "مدير أسطول", users: 3, access: "المركبات، الصيانة", level: "Restricted" },
+  { name: "محاسب", users: 4, access: "المالية، الزكاة، الرواتب", level: "Restricted" },
+  { name: "مدير عقارات", users: 5, access: "العقارات، السكن", level: "Restricted" },
 ];
 
 export default function SettingsPage() {
@@ -32,7 +32,7 @@ export default function SettingsPage() {
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 px-6 border-b">
           <SidebarTrigger className="-ml-1" />
-          <h1 className="font-headline text-xl font-bold text-primary">Administration & Roles</h1>
+          <h1 className="font-headline text-xl font-bold text-primary">الإدارة والأدوار</h1>
         </header>
 
         <div className="flex flex-1 flex-col gap-6 p-6">
@@ -41,17 +41,17 @@ export default function SettingsPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Shield className="h-5 w-5 text-primary" />
-                  User Role Management
+                  إدارة أدوار المستخدمين
                 </CardTitle>
-                <CardDescription>Define system-wide permissions and access levels.</CardDescription>
+                <CardDescription>تحديد صلاحيات النظام ومستويات الوصول.</CardDescription>
               </CardHeader>
               <CardContent>
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Role</TableHead>
-                      <TableHead>Users</TableHead>
-                      <TableHead>Level</TableHead>
+                      <TableHead className="text-right">الدور</TableHead>
+                      <TableHead className="text-right">المستخدمين</TableHead>
+                      <TableHead className="text-right">المستوى</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -61,7 +61,7 @@ export default function SettingsPage() {
                         <TableCell>{role.users}</TableCell>
                         <TableCell>
                           <Badge variant={role.level === "Full" ? "default" : "secondary"}>
-                            {role.level}
+                            {role.level === 'Full' ? 'كامل' : 'مقيد'}
                           </Badge>
                         </TableCell>
                       </TableRow>
@@ -72,7 +72,7 @@ export default function SettingsPage() {
               <CardFooter className="border-t pt-4">
                 <Button variant="outline" className="w-full gap-2">
                   <UserCog className="h-4 w-4" />
-                  Manage All Roles
+                  إدارة جميع الأدوار
                 </Button>
               </CardFooter>
             </Card>
@@ -81,29 +81,29 @@ export default function SettingsPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Lock className="h-5 w-5 text-primary" />
-                  Security Policy
+                  سياسة الأمن
                 </CardTitle>
-                <CardDescription>Configure global security settings for Al-Salam ERP.</CardDescription>
+                <CardDescription>تكوين إعدادات الأمان العالمية لنظام السلام.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="flex items-center justify-between space-x-2">
                   <div className="flex flex-col space-y-1">
-                    <Label className="font-bold">Two-Factor Authentication</Label>
-                    <p className="text-xs text-muted-foreground">Require 2FA for all administrative users.</p>
+                    <Label className="font-bold">المصادقة الثنائية</Label>
+                    <p className="text-xs text-muted-foreground">طلب 2FA لجميع المستخدمين الإداريين.</p>
                   </div>
                   <Switch defaultChecked />
                 </div>
                 <div className="flex items-center justify-between space-x-2">
                   <div className="flex flex-col space-y-1">
-                    <Label className="font-bold">Auto-Lock Session</Label>
-                    <p className="text-xs text-muted-foreground">Log out users after 15 minutes of inactivity.</p>
+                    <Label className="font-bold">قفل الجلسة التلقائي</Label>
+                    <p className="text-xs text-muted-foreground">تسجيل خروج المستخدمين بعد 15 دقيقة من عدم النشاط.</p>
                   </div>
                   <Switch defaultChecked />
                 </div>
                 <div className="flex items-center justify-between space-x-2">
                   <div className="flex flex-col space-y-1">
-                    <Label className="font-bold">External API Access</Label>
-                    <p className="text-xs text-muted-foreground">Allow 3rd party integrations (e.g. Supabase, GAZT).</p>
+                    <Label className="font-bold">الوصول إلى واجهة برمجة التطبيقات</Label>
+                    <p className="text-xs text-muted-foreground">السماح بعمليات التكامل مع أطراف ثالثة (مثل الزكاة والضريبة).</p>
                   </div>
                   <Switch />
                 </div>
@@ -111,7 +111,7 @@ export default function SettingsPage() {
               <CardFooter className="border-t pt-4">
                 <Button className="w-full gap-2">
                   <Save className="h-4 w-4" />
-                  Save Security Settings
+                  حفظ إعدادات الأمان
                 </Button>
               </CardFooter>
             </Card>
@@ -121,16 +121,16 @@ export default function SettingsPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Users className="h-5 w-5 text-primary" />
-                Active Sessions
+                الجلسات النشطة
               </CardTitle>
-              <CardDescription>Monitoring real-time access to the ERP platform.</CardDescription>
+              <CardDescription>مراقبة الوصول في الوقت الفعلي إلى منصة ERP.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="rounded-xl border p-4 bg-muted/20 flex flex-col gap-3">
                 {[
-                  { user: "Ahmed A.", location: "Riyadh Office", time: "Now", device: "Chrome / Windows" },
-                  { user: "Khalid M.", location: "Mobile (Field)", time: "12m ago", device: "Safari / iOS" },
-                  { user: "Sami F.", location: "Remote", time: "2h ago", device: "Edge / Windows" },
+                  { user: "أحمد أ.", location: "مكتب الرياض", time: "الآن", device: "Chrome / Windows" },
+                  { user: "خالد م.", location: "ميداني (الجوال)", time: "منذ 12 دقيقة", device: "Safari / iOS" },
+                  { user: "سامي ف.", location: "عن بعد", time: "منذ ساعتين", device: "Edge / Windows" },
                 ].map((session, i) => (
                   <div key={i} className="flex items-center justify-between text-sm border-b pb-2 last:border-0 last:pb-0">
                     <div className="flex gap-4">

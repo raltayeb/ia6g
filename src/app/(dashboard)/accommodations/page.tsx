@@ -18,10 +18,10 @@ import { Progress } from "@/components/ui/progress";
 import { Accommodation } from "@/types/erp";
 
 const mockAccommodations: Accommodation[] = [
-  { id: "A1", name: "Al-Salam Staff Housing A", capacity: 50, currentOccupants: 42, location: "Riyadh, Industrial Area", monthlyCost: 25000 },
-  { id: "A2", name: "Executive Suites North", capacity: 12, currentOccupants: 8, location: "Riyadh, Olaya", monthlyCost: 15000 },
-  { id: "A3", name: "Worker Camp Complex B", capacity: 120, currentOccupants: 115, location: "Jeddah, Port Road", monthlyCost: 45000 },
-  { id: "A4", name: "Fleet Drivers Dormitory", capacity: 30, currentOccupants: 12, location: "Dammam", monthlyCost: 8000 },
+  { id: "A1", name: "سكن موظفي السلام أ", capacity: 50, currentOccupants: 42, location: "الرياض، المنطقة الصناعية", monthlyCost: 25000 },
+  { id: "A2", name: "أجنحة التنفيذيين شمال", capacity: 12, currentOccupants: 8, location: "الرياض، العليا", monthlyCost: 15000 },
+  { id: "A3", name: "مجمع كامب العمال ب", capacity: 120, currentOccupants: 115, location: "جدة، طريق الميناء", monthlyCost: 45000 },
+  { id: "A4", name: "سكن سائقي الأسطول", capacity: 30, currentOccupants: 12, location: "الدمام", monthlyCost: 8000 },
 ];
 
 export default function AccommodationsPage() {
@@ -32,11 +32,11 @@ export default function AccommodationsPage() {
         <header className="flex h-16 shrink-0 items-center justify-between gap-2 px-6 border-b">
           <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1" />
-            <h1 className="font-headline text-xl font-bold text-primary">Accommodation Management</h1>
+            <h1 className="font-headline text-xl font-bold text-primary">إدارة السكن</h1>
           </div>
           <Button className="gap-2">
             <Plus className="h-4 w-4" />
-            New Building
+            مبنى جديد
           </Button>
         </header>
         
@@ -44,40 +44,40 @@ export default function AccommodationsPage() {
           <div className="grid gap-4 md:grid-cols-3">
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground uppercase">Total Capacity</CardTitle>
+                <CardTitle className="text-sm font-medium text-muted-foreground uppercase">إجمالي السعة</<<<<<<< CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">212 Units</div>
+                <div className="text-2xl font-bold">212 وحدة</div>
                 <div className="flex items-center gap-2 mt-2">
                   <Progress value={83} className="h-2" />
-                  <span className="text-xs font-medium">83% Occupied</span>
+                  <span className="text-xs font-medium">83% مشغول</span>
                 </div>
               </CardContent>
             </Card>
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground uppercase">Total Monthly Cost</CardTitle>
+                <CardTitle className="text-sm font-medium text-muted-foreground uppercase">التكلفة الشهرية الإجمالية</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">SAR 93,000</div>
-                <p className="text-xs text-muted-foreground mt-1">Average SAR 438 per occupant</p>
+                <div className="text-2xl font-bold">93,000 ر.س</div>
+                <p className="text-xs text-muted-foreground mt-1">بمتوسط 438 ر.س لكل ساكن</p>
               </CardContent>
             </Card>
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground uppercase">Vacant Units</CardTitle>
+                <CardTitle className="text-sm font-medium text-muted-foreground uppercase">الوحدات الشاغرة</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-emerald-600">35 Units</div>
-                <p className="text-xs text-muted-foreground mt-1">Ready for immediate move-in</p>
+                <div className="text-2xl font-bold text-emerald-600">35 وحدة</div>
+                <p className="text-xs text-muted-foreground mt-1">جاهزة للتسكين الفوري</p>
               </CardContent>
             </Card>
           </div>
 
           <div className="flex items-center justify-between gap-4">
             <div className="relative flex-1 max-w-sm">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="Search accommodations..." className="pl-9" />
+              <Search className="absolute right-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input placeholder="بحث عن السكن..." className="pr-9" />
             </div>
           </div>
 
@@ -85,11 +85,11 @@ export default function AccommodationsPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[300px]">Building / Complex</TableHead>
-                  <TableHead>Location</TableHead>
-                  <TableHead>Occupancy</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Monthly Rent</TableHead>
+                  <TableHead className="w-[300px] text-right">المبنى / المجمع</TableHead>
+                  <TableHead className="text-right">الموقع</TableHead>
+                  <TableHead className="text-right">نسبة الإشغال</TableHead>
+                  <TableHead className="text-right">الحالة</TableHead>
+                  <TableHead className="text-left">الإيجار الشهري</TableHead>
                   <TableHead className="w-[50px]"></TableHead>
                 </TableRow>
               </TableHeader>
@@ -132,11 +132,11 @@ export default function AccommodationsPage() {
                           variant={occupancyRate >= 100 ? "destructive" : occupancyRate > 80 ? "secondary" : "default"}
                           className={occupancyRate < 80 ? "bg-emerald-500" : ""}
                         >
-                          {occupancyRate >= 100 ? "Full" : occupancyRate > 80 ? "Near Capacity" : "Available"}
+                          {occupancyRate >= 100 ? "مكتمل" : occupancyRate > 80 ? "شبه ممتلئ" : "متاح"}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-right font-mono text-sm">
-                        SAR {acc.monthlyCost.toLocaleString()}
+                      <TableCell className="text-left font-mono text-sm">
+                        {acc.monthlyCost.toLocaleString()} ر.س
                       </TableCell>
                       <TableCell>
                         <Button variant="ghost" size="icon">

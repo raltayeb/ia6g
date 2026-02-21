@@ -1,3 +1,6 @@
+
+"use client";
+
 import { Car, Plus, Search, MapPin, MoreVertical, Fuel, Wrench, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,11 +19,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Vehicle } from "@/types/erp";
 
 const mockVehicles: Vehicle[] = [
-  { id: "1", plateNumber: "ABC 1234", model: "Toyota Hilux 2023", type: "Truck", driverName: "Ahmed Ali", lastServiceDate: "2024-03-10", status: "Active", purchaseValue: 120000 },
-  { id: "2", plateNumber: "DEF 5678", model: "Hyundai Elantra 2022", type: "Sedan", driverName: "Mohammed Khalid", lastServiceDate: "2024-02-15", status: "Maintenance", purchaseValue: 75000 },
-  { id: "3", plateNumber: "GHI 9012", model: "Mercedes Actros", type: "Truck", driverName: "Saeed Salem", lastServiceDate: "2024-04-01", status: "Active", purchaseValue: 450000 },
-  { id: "4", plateNumber: "JKL 3456", model: "Toyota Hiace", type: "Van", driverName: "Yousef Ibrahim", lastServiceDate: "2023-12-20", status: "Out of Service", purchaseValue: 110000 },
-  { id: "5", plateNumber: "MNO 7890", model: "Ford F-150", type: "Truck", driverName: "Faisal Ahmed", lastServiceDate: "2024-03-25", status: "Active", purchaseValue: 180000 },
+  { id: "1", plateNumber: "أ ب ج 1234", model: "تويوتا هايلكس 2023", type: "Truck", driverName: "أحمد علي", lastServiceDate: "2024-03-10", status: "Active", purchaseValue: 120000 },
+  { id: "2", plateNumber: "د هـ و 5678", model: "هيونداي إلنترا 2022", type: "Sedan", driverName: "محمد خالد", lastServiceDate: "2024-02-15", status: "Maintenance", purchaseValue: 75000 },
+  { id: "3", plateNumber: "ز ح ط 9012", model: "مرسيدس أكتروس", type: "Truck", driverName: "سعيد سالم", lastServiceDate: "2024-04-01", status: "Active", purchaseValue: 450000 },
+  { id: "4", plateNumber: "ي ك ل 3456", model: "تويوتا هايس", type: "Van", driverName: "يوسف إبراهيم", lastServiceDate: "2023-12-20", status: "Out of Service", purchaseValue: 110000 },
+  { id: "5", plateNumber: "م ن و 7890", model: "فورد F-150", type: "Truck", driverName: "فيصل أحمد", lastServiceDate: "2024-03-25", status: "Active", purchaseValue: 180000 },
 ];
 
 export default function VehiclesPage() {
@@ -31,11 +34,11 @@ export default function VehiclesPage() {
         <header className="flex h-16 shrink-0 items-center justify-between gap-2 px-6 border-b">
           <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1" />
-            <h1 className="font-headline text-xl font-bold text-primary">Fleet Management</h1>
+            <h1 className="font-headline text-xl font-bold text-primary">إدارة الأسطول</h1>
           </div>
           <Button className="gap-2">
             <Plus className="h-4 w-4" />
-            Register Vehicle
+            تسجيل مركبة
           </Button>
         </header>
         <div className="flex flex-1 flex-col gap-6 p-6">
@@ -46,7 +49,7 @@ export default function VehiclesPage() {
                   <Car className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-xs text-emerald-700 font-bold uppercase">Total Units</p>
+                  <p className="text-xs text-emerald-700 font-bold uppercase">إجمالي الوحدات</p>
                   <p className="text-2xl font-bold text-emerald-900">58</p>
                 </div>
               </CardContent>
@@ -57,7 +60,7 @@ export default function VehiclesPage() {
                   <User className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-xs text-blue-700 font-bold uppercase">Active Drivers</p>
+                  <p className="text-xs text-blue-700 font-bold uppercase">السائقين النشطين</p>
                   <p className="text-2xl font-bold text-blue-900">42</p>
                 </div>
               </CardContent>
@@ -68,7 +71,7 @@ export default function VehiclesPage() {
                   <Wrench className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-xs text-amber-700 font-bold uppercase">In Service</p>
+                  <p className="text-xs text-amber-700 font-bold uppercase">في الصيانة</p>
                   <p className="text-2xl font-bold text-amber-900">6</p>
                 </div>
               </CardContent>
@@ -79,8 +82,8 @@ export default function VehiclesPage() {
                   <Fuel className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-xs text-slate-700 font-bold uppercase">Fuel Costs (MTD)</p>
-                  <p className="text-2xl font-bold text-slate-900">SAR 12.4k</p>
+                  <p className="text-xs text-slate-700 font-bold uppercase">تكاليف الوقود</p>
+                  <p className="text-2xl font-bold text-slate-900">12.4 ألف ر.س</p>
                 </div>
               </CardContent>
             </Card>
@@ -88,8 +91,8 @@ export default function VehiclesPage() {
 
           <div className="flex items-center justify-between gap-4">
             <div className="relative flex-1 max-w-sm">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="Search by plate or model..." className="pl-9" />
+              <Search className="absolute right-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input placeholder="بحث برقم اللوحة أو الموديل..." className="pr-9" />
             </div>
           </div>
 
@@ -97,12 +100,12 @@ export default function VehiclesPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[150px]">Plate Number</TableHead>
-                  <TableHead>Model & Type</TableHead>
-                  <TableHead>Driver</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Last Service</TableHead>
-                  <TableHead className="text-right">Valuation</TableHead>
+                  <TableHead className="w-[150px] text-right">رقم اللوحة</TableHead>
+                  <TableHead className="text-right">الموديل والنوع</TableHead>
+                  <TableHead className="text-right">السائق</TableHead>
+                  <TableHead className="text-right">الحالة</TableHead>
+                  <TableHead className="text-right">آخر صيانة</TableHead>
+                  <TableHead className="text-left">التقييم</TableHead>
                   <TableHead className="w-[50px]"></TableHead>
                 </TableRow>
               </TableHeader>
@@ -113,7 +116,9 @@ export default function VehiclesPage() {
                     <TableCell>
                       <div className="flex flex-col">
                         <span className="font-medium">{vehicle.model}</span>
-                        <span className="text-xs text-muted-foreground">{vehicle.type}</span>
+                        <span className="text-xs text-muted-foreground">
+                          {vehicle.type === 'Truck' ? 'شاحنة' : vehicle.type === 'Sedan' ? 'سيدان' : vehicle.type === 'Van' ? 'فان' : 'حافلة'}
+                        </span>
                       </div>
                     </TableCell>
                     <TableCell>
@@ -121,7 +126,7 @@ export default function VehiclesPage() {
                         <div className="h-6 w-6 rounded-full bg-accent flex items-center justify-center text-[10px] text-white font-bold">
                           {vehicle.driverName?.split(' ').map(n => n[0]).join('')}
                         </div>
-                        {vehicle.driverName || "Unassigned"}
+                        {vehicle.driverName || "غير محدد"}
                       </div>
                     </TableCell>
                     <TableCell>
@@ -129,12 +134,12 @@ export default function VehiclesPage() {
                         variant={vehicle.status === "Active" ? "default" : vehicle.status === "Maintenance" ? "secondary" : "destructive"}
                         className={vehicle.status === "Active" ? "bg-emerald-500 hover:bg-emerald-600" : ""}
                       >
-                        {vehicle.status}
+                        {vehicle.status === 'Active' ? 'نشط' : vehicle.status === 'Maintenance' ? 'صيانة' : 'خارج الخدمة'}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-muted-foreground">{vehicle.lastServiceDate}</TableCell>
-                    <TableCell className="text-right font-mono">
-                      SAR {vehicle.purchaseValue.toLocaleString()}
+                    <TableCell className="text-left font-mono">
+                      {vehicle.purchaseValue.toLocaleString()} ر.س
                     </TableCell>
                     <TableCell>
                       <Button variant="ghost" size="icon">
